@@ -13,23 +13,37 @@
 
         /* ===== THEME TOKENS ===== */
         :root, html.dark {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --surface-border: #334155;
+            --bg: #0b1220;
+            --bg-2: #0f1a2e;
+            --surface: #131f33;
+            --surface-2: #182942;
+            --surface-border: #233452;
             --text-strong: #f1f5f9;
+            --accent: #14b8a6;
+            --accent-2: #0ea5e9;
+            --accent-warm: #f59e0b;
         }
         html.light {
-            --bg: #eef2f7;
+            --bg: #f6f8fc;
+            --bg-2: #eef2f9;
             --surface: #ffffff;
-            --surface-border: #e2e8f0;
-            --text-strong: #0f172a;
+            --surface-2: #f1f5f9;
+            --surface-border: #dbe2ec;
+            --text-strong: #0b1220;
+            --accent: #0d9488;
+            --accent-2: #0284c7;
+            --accent-warm: #d97706;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
             color: var(--text-strong);
-            transition: background-color .35s ease, color .35s ease;
+            background:
+              radial-gradient(900px 600px at 80% -10%, rgba(20,184,166,.10), transparent 60%),
+              radial-gradient(900px 600px at -10% 110%, rgba(14,165,233,.08), transparent 60%),
+              linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+            background-attachment: fixed;
+            transition: color .35s ease;
         }
         .bg-fintech-card {
             background-color: var(--surface);
@@ -45,19 +59,226 @@
         html.light .bg-slate-900\/60    { background-color: rgba(241,245,249,.6) !important; }
         html.light tr.hover\:bg-slate-900\/40:hover { background-color: #f1f5f9 !important; }
 
-        html.light .text-white          { color: #0f172a !important; }
+        html.light .text-white          { color: #0b1220 !important; }
         html.light .text-slate-200      { color: #1e293b !important; }
         html.light .text-slate-300      { color: #334155 !important; }
         html.light .text-slate-400      { color: #475569 !important; }
         html.light .text-slate-500      { color: #64748b !important; }
+        html.light .text-emerald-400    { color: #0d9488 !important; }
+        html.light .text-emerald-500    { color: #0d9488 !important; }
+        html.light .border-emerald-500  { border-color: #0d9488 !important; }
+        html.light .bg-emerald-600      { background-color: #0d9488 !important; }
 
         html.light .border-slate-700    { border-color: #cbd5e1 !important; }
         html.light .border-slate-800    { border-color: #e2e8f0 !important; }
         html.light .divide-slate-800 > :not([hidden]) ~ :not([hidden]) { border-color: #e2e8f0 !important; }
 
-        html.light input,
-        html.light select               { color: #0f172a !important; }
-        html.light input::placeholder   { color: #94a3b8; }
+        /* ===== ULTRA 3D ONBOARDING SECTIONS ===== */
+        .panel-3d {
+            position: relative;
+            border-radius: 18px;
+            background:
+              linear-gradient(180deg, rgba(20,184,166,.04), transparent 40%),
+              var(--surface);
+            border: 1px solid var(--surface-border);
+            box-shadow:
+              0 30px 60px -36px rgba(0,0,0,.55),
+              inset 0 1px 0 rgba(255,255,255,.04);
+            transform-style: preserve-3d;
+            overflow: hidden;
+        }
+        .panel-3d::before {
+            content: ""; position: absolute; inset: -1px; border-radius: 19px; pointer-events: none;
+            background: linear-gradient(120deg, rgba(20,184,166,.35), rgba(14,165,233,.18) 35%, transparent 60%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px; opacity: .55;
+        }
+        .panel-3d::after {
+            content: ""; position: absolute; top: -40%; left: -10%; width: 60%; height: 180%;
+            background: linear-gradient(110deg, transparent 40%, rgba(20,184,166,.08) 50%, transparent 60%);
+            transform: translateX(-100%); animation: panelSweep 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes panelSweep { 0%{transform:translateX(-100%)} 60%,100%{transform:translateX(220%)} }
+
+        .section-head {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .sec-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 10px;
+            font-family: ui-monospace, monospace; font-weight: 800; font-size: 12px;
+            color: #5eead4;
+            background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(14,165,233,.15));
+            border: 1px solid rgba(20,184,166,.35);
+            box-shadow: 0 6px 14px -8px rgba(20,184,166,.6);
+            transform: perspective(300px) rotateY(-12deg);
+        }
+        html.light .sec-num { color: #0f766e; }
+
+        .field {
+            position: relative;
+            background: var(--surface-2);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 10px 12px 12px;
+            transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+        }
+        .field:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -18px rgba(20,184,166,.45); border-color: rgba(20,184,166,.45); }
+        .field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(20,184,166,.18), 0 14px 26px -18px rgba(20,184,166,.45); }
+        .field-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #94a3b8; margin-bottom: 6px; }
+        html.light .field-label { color: #475569; }
+        .field-icon { width: 14px; height: 14px; color: var(--accent); }
+        .field select, .field input {
+            width: 100%; background: transparent !important; border: 0 !important; outline: none;
+            color: var(--text-strong); font-size: 12px; font-weight: 500;
+            padding: 0; appearance: none;
+        }
+        .field select { padding-right: 18px; background-image: linear-gradient(45deg, transparent 50%, #94a3b8 50%), linear-gradient(135deg, #94a3b8 50%, transparent 50%) !important; background-position: calc(100% - 12px) 8px, calc(100% - 7px) 8px !important; background-size: 5px 5px, 5px 5px !important; background-repeat: no-repeat !important; }
+        .field .field-help { font-size: 10px; color: #64748b; margin-top: 6px; line-height: 1.5; }
+
+        .surplus-card {
+            background: linear-gradient(135deg, rgba(20,184,166,.12), rgba(14,165,233,.08));
+            border: 1px solid rgba(20,184,166,.35);
+            border-radius: 12px; padding: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: relative; overflow: hidden;
+        }
+        .surplus-card .surplus-val { font-family: ui-monospace, monospace; font-weight: 800; font-size: 18px; color: #5eead4; letter-spacing: -.01em; }
+        html.light .surplus-card .surplus-val { color: #0d9488; }
+        .surplus-card .live-pill {
+            font-size: 9px; font-weight: 800; letter-spacing: .14em; padding: 3px 8px; border-radius: 999px;
+            background: rgba(20,184,166,.18); color: #5eead4; border: 1px solid rgba(20,184,166,.4);
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        html.light .surplus-card .live-pill { color: #0f766e; }
+
+        /* SUBMIT button (premium) */
+        .cta-submit {
+            position: relative;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #fff; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+            padding: 14px 28px; border-radius: 12px; cursor: pointer;
+            box-shadow: 0 18px 34px -16px rgba(20,184,166,.6);
+            transition: transform .15s ease, box-shadow .3s ease, filter .2s ease;
+            overflow: hidden;
+        }
+        .cta-submit:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(20,184,166,.7); }
+        .cta-submit:active { transform: scale(.97); }
+        .cta-submit::after {
+            content: ""; position: absolute; inset: 0; border-radius: 12px;
+            background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%);
+            transform: translateX(-120%); animation: btnShine 3.4s ease-in-out infinite;
+        }
+        @keyframes btnShine { 0%{transform:translateX(-120%)} 60%,100%{transform:translateX(220%)} }
+
+        .reveal-fade { opacity: 0; animation: revealUp .55s cubic-bezier(.16,1,.3,1) forwards; }
+        .grid-stagger > * { opacity: 0; animation: revealUp .5s cubic-bezier(.16,1,.3,1) forwards; }
+        .grid-stagger > :nth-child(1){animation-delay:.05s} .grid-stagger > :nth-child(2){animation-delay:.14s}
+        .grid-stagger > :nth-child(3){animation-delay:.23s} .grid-stagger > :nth-child(4){animation-delay:.32s}
+        .grid-stagger > :nth-child(5){animation-delay:.41s} .grid-stagger > :nth-child(6){animation-delay:.50s}
+
+        /* ===== AI ROBO ADVISOR (side panel) ===== */
+        .ai-fab {
+            position: fixed; bottom: 22px; right: 22px; z-index: 60;
+            width: 58px; height: 58px; border-radius: 9999px;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            border: 1px solid rgba(255,255,255,.25);
+            box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,.4);
+            animation: aiPulse 2.6s ease-out infinite;
+            transition: transform .2s ease;
+        }
+        .ai-fab:hover { transform: scale(1.07); }
+        .ai-fab:active { transform: scale(.95); }
+        @keyframes aiPulse {
+            0% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,.5); }
+            70% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 18px rgba(20,184,166,0); }
+            100% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,0); }
+        }
+        .ai-fab .ai-dot {
+            position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 9999px;
+            background: #f59e0b; border: 2px solid var(--surface);
+        }
+
+        .ai-panel {
+            position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
+            width: min(420px, 100%);
+            background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+            border-left: 1px solid var(--surface-border);
+            box-shadow: -28px 0 50px -20px rgba(0,0,0,.45);
+            transform: translateX(105%); transition: transform .45s cubic-bezier(.16,1,.3,1);
+            display: flex; flex-direction: column;
+        }
+        .ai-panel.open { transform: translateX(0); }
+        .ai-head {
+            padding: 14px 16px; border-bottom: 1px solid var(--surface-border);
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            background: linear-gradient(135deg, rgba(20,184,166,.08), rgba(14,165,233,.06));
+        }
+        .ai-avatar {
+            width: 38px; height: 38px; border-radius: 12px;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            display: flex; align-items: center; justify-content: center; color: #fff;
+            font-size: 18px; box-shadow: 0 10px 18px -8px rgba(20,184,166,.7);
+        }
+        .ai-status { font-size: 10px; color: #5eead4; display: flex; align-items: center; gap: 6px; }
+        html.light .ai-status { color: #0d9488; }
+        .ai-body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+        .ai-body::-webkit-scrollbar { width: 6px; }
+        .ai-body::-webkit-scrollbar-thumb { background: rgba(20,184,166,.35); border-radius: 999px; }
+
+        .msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 13px; line-height: 1.55; animation: msgIn .35s cubic-bezier(.16,1,.3,1); }
+        @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .msg.bot {
+            align-self: flex-start;
+            background: linear-gradient(180deg, var(--surface-2), var(--surface));
+            border: 1px solid var(--surface-border);
+            border-bottom-left-radius: 4px;
+            color: var(--text-strong);
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,.4);
+        }
+        .msg.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #fff; border-bottom-right-radius: 4px;
+            box-shadow: 0 10px 18px -10px rgba(20,184,166,.7);
+        }
+        .typing { display: inline-flex; gap: 4px; align-items: center; }
+        .typing span { width: 6px; height: 6px; background: #94a3b8; border-radius: 999px; animation: typeDot 1.2s infinite ease-in-out; }
+        .typing span:nth-child(2) { animation-delay: .15s; }
+        .typing span:nth-child(3) { animation-delay: .3s; }
+        @keyframes typeDot { 0%,80%,100% { transform: translateY(0); opacity: .35; } 40% { transform: translateY(-4px); opacity: 1; } }
+
+        .ai-suggest { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 8px; }
+        .ai-suggest button {
+            font-size: 11px; padding: 6px 10px; border-radius: 999px; cursor: pointer;
+            background: rgba(20,184,166,.10); color: #5eead4; border: 1px solid rgba(20,184,166,.3);
+            transition: background-color .2s ease, transform .15s ease;
+        }
+        html.light .ai-suggest button { color: #0d9488; }
+        .ai-suggest button:hover { background: rgba(20,184,166,.18); }
+        .ai-suggest button:active { transform: scale(.96); }
+
+        .ai-input-wrap { padding: 12px 14px; border-top: 1px solid var(--surface-border); display: flex; gap: 8px; background: var(--surface); }
+        .ai-input-wrap input {
+            flex: 1; background: var(--surface-2); border: 1px solid var(--surface-border);
+            border-radius: 10px; padding: 10px 12px; font-size: 13px; color: var(--text-strong);
+            outline: none; transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        .ai-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(20,184,166,.18); }
+        .ai-input-wrap button {
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #fff; border: 0; border-radius: 10px; padding: 0 14px; font-weight: 700; cursor: pointer;
+            transition: transform .15s ease;
+        }
+        .ai-input-wrap button:active { transform: scale(.95); }
+
+        .ai-backdrop {
+            position: fixed; inset: 0; background: rgba(2,6,23,.45); backdrop-filter: blur(2px);
+            opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 65;
+        }
+        .ai-backdrop.open { opacity: 1; pointer-events: auto; }
 
         /* ===== LOGIN ENTRANCE + CLOCK ANIMATIONS ===== */
         #authScreen { animation: authIn .6s cubic-bezier(.16,1,.3,1) both; }
@@ -322,7 +543,9 @@
             .orb, .hero-scene, .spark, .float-in, .cta-pulse,
             .floor-grid, .core-scene, .chip3d, .bar3d,
             .ov-rings span, .card-open, .btn-press.clicked,
-            .kpi-flash, .val-pop, #chartSwitchFlash.go { animation: none !important; opacity: 1 !important; }
+            .kpi-flash, .val-pop, #chartSwitchFlash.go,
+            .panel-3d::after, .cta-submit::after, .reveal-fade, .grid-stagger > *,
+            .ai-fab, .msg, .typing span { animation: none !important; opacity: 1 !important; }
             .feature-3d:hover, .tilt-card:hover, .stock-row:hover { transform: none; }
             .chart-3d, .donut-3d, .shot { transform: none; }
         }
@@ -659,92 +882,134 @@
     <main class="max-w-7xl w-full mx-auto">
         
         <!-- RISK DISCLOSURE & SOCIO-ECONOMIC CAPACITY ENGINE -->
-        <section id="onboardingScreen" class="hidden bg-fintech-card rounded-xl p-6 mb-8 shadow-xl">
-            <div class="border-b border-slate-700 pb-4 mb-6">
-                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                    <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded text-sm font-mono">M1</span>
-                    Client Risk Profiling & Liquidity Constraint Assessment
-                </h2>
-                <p class="text-xs text-slate-400 mt-1">Socio-economic parameters processing layer designed for explicit tactical active-surplus capital assignment.</p>
+        <section id="onboardingScreen" class="hidden mb-8">
+            <div class="text-center mb-6 reveal-fade">
+                <div class="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-1">Step 1 of 2 · Profile setup</div>
+                <h2 class="text-2xl font-bold text-white">Tell us about you</h2>
+                <p class="text-sm text-slate-400 mt-1">A short questionnaire — we'll match you to the right strategy in seconds.</p>
             </div>
 
-            <form id="profilerForm" onsubmit="processRiskProfile(event)" class="space-y-8">
-                <!-- Parameters Row -->
-                <div>
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section I: Investor Profile &amp; Risk Parameters</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <form id="profilerForm" onsubmit="processRiskProfile(event)" class="space-y-6">
+                <!-- SECTION I -->
+                <div class="panel-3d p-6 reveal-fade" style="animation-delay:.08s;">
+                    <div class="section-head">
+                        <span class="sec-num">01</span>
                         <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Investor Age</label>
-                            <select id="exactAge" onchange="syncAgeCohort()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono">
-                                <!-- Age options injected on load -->
-                            </select>
-                            <p id="ageHint" class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">Select your exact age to auto-match a strategy tier.</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Recommended Strategy Tier</label>
-                            <select id="stageAge" onchange="updateAgeHint()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option value="W3" selected>18–30 Years — Aggressive Growth Tier</option>
-                                <option value="W2">31–45 Years — Balanced Growth Tier</option>
-                                <option value="W1">46+ Years — Capital Preservation Tier</option>
-                            </select>
-                            <p class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">Auto-set from your age. You may override it manually.</p>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Investment Horizon</label>
-                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option>Short term — 12-month liquidity window</option>
-                                <option selected>Medium term — 2-year framework (Jan 2026 – Dec 2027)</option>
-                                <option>Long term — 5+ year market cycle</option>
-                            </select>
+                            <h3 class="text-base font-bold text-white tracking-tight">Investor profile</h3>
+                            <p class="text-[11px] text-slate-400">Your age, target tier, and time horizon shape every projection.</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Metrics Row -->
-                <div class="border-t border-slate-700 pt-6">
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section II: Cash Flow & Compliance Parameters</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Primary Capital Inflow Vertical</label>
-                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option selected>Independent Enterprise / High-Growth Entrepreneurship</option>
-                                <option>Corporate Executive Remuneration / Salaried Track</option>
-                                <option>Professional Services / Global Advisory Operations</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Estimated Gross Monthly Inflow (PKR)</label>
-                            <select id="monthlyIncomeVal" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono" onchange="calculateSurplus()">
-                                <option value="100000">100,000</option>
-                                <option value="250000" selected>250,000</option>
-                                <option value="500000">500,000</option>
-                                <option value="1000000">1,000,000</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Operational Maintenance Outflows (PKR)</label>
-                            <input type="number" id="monthlyCommitments" value="90000" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono" oninput="calculateSurplus()">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Modeled Net Surplus Capital Velocity</label>
-                            <div class="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-mono rounded px-3 py-2 text-xs flex justify-between items-center">
-                                <span id="surplusDisplay">PKR 160,000</span>
-                                <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-sans uppercase font-bold tracking-wider">Dynamic Compute</span>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 grid-stagger">
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                Investor age
                             </div>
+                            <select id="exactAge" onchange="syncAgeCohort()"></select>
+                            <p id="ageHint" class="field-help">Select your exact age to auto-match a strategy tier.</p>
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">FBR Active Taxpayer Status Validation</label>
-                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option value="filer">Active Taxpayer List (ATL Filer - Baseline CGT Rules)</option>
-                                <option value="nonfiler">Non-Filer Category (Higher Penal WHT Regime Automatically Triggered)</option>
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                Recommended tier
+                            </div>
+                            <select id="stageAge" onchange="updateAgeHint()">
+                                <option value="W3" selected>18–30 · Aggressive Growth</option>
+                                <option value="W2">31–45 · Balanced Growth</option>
+                                <option value="W1">46+ · Capital Preservation</option>
                             </select>
+                            <p class="field-help">Auto-set from your age — you can override anytime.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Investment horizon
+                            </div>
+                            <select>
+                                <option>Short term · 12 months</option>
+                                <option selected>Medium term · 2 years (2026–2027)</option>
+                                <option>Long term · 5+ years</option>
+                            </select>
+                            <p class="field-help">How long you can stay invested without needing the money.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded transition-colors shadow-lg cursor-pointer">
-                        Initialize Risk Architecture Execution
+                <!-- SECTION II -->
+                <div class="panel-3d p-6 reveal-fade" style="animation-delay:.18s;">
+                    <div class="section-head">
+                        <span class="sec-num">02</span>
+                        <div>
+                            <h3 class="text-base font-bold text-white tracking-tight">Cash flow &amp; tax status</h3>
+                            <p class="text-[11px] text-slate-400">We compute your investable surplus and apply the right tax rules.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 grid-stagger">
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.93 23.93 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                Income source
+                            </div>
+                            <select>
+                                <option selected>Business / Self-employed</option>
+                                <option>Salaried / Corporate</option>
+                                <option>Professional services</option>
+                            </select>
+                            <p class="field-help">Helps us frame tax assumptions correctly.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Monthly income (PKR)
+                            </div>
+                            <select id="monthlyIncomeVal" onchange="calculateSurplus()">
+                                <option value="100000">1,00,000</option>
+                                <option value="250000" selected>2,50,000</option>
+                                <option value="500000">5,00,000</option>
+                                <option value="1000000">10,00,000</option>
+                            </select>
+                            <p class="field-help">Approximate gross monthly income.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                Monthly expenses (PKR)
+                            </div>
+                            <input type="number" id="monthlyCommitments" value="90000" oninput="calculateSurplus()">
+                            <p class="field-help">Rent, bills, EMIs, household — your fixed monthly outflow.</p>
+                        </div>
+
+                        <div class="field md:col-span-2">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                                Monthly investable surplus
+                            </div>
+                            <div class="surplus-card">
+                                <span id="surplusDisplay" class="surplus-val num">PKR 1,60,000</span>
+                                <span class="live-pill"><span class="live-dot"></span> Live</span>
+                            </div>
+                            <p class="field-help">Income minus expenses — what you can deploy each month.</p>
+                        </div>
+
+                        <div class="field">
+                            <div class="field-label">
+                                <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Tax filer status
+                            </div>
+                            <select>
+                                <option value="filer">Filer (on FBR Active Taxpayer List)</option>
+                                <option value="nonfiler">Non-filer (higher withholding tax)</option>
+                            </select>
+                            <p class="field-help">Filers pay lower rates on dividends and capital gains.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end reveal-fade" style="animation-delay:.3s;">
+                    <button type="submit" class="cta-submit btn-press">
+                        Build my portfolio →
                     </button>
                 </div>
             </form>
@@ -925,10 +1190,45 @@
         </section>
     </main>
 
-    <!-- INTELLECTUAL PROPERTY & COMPLIANCE FOOTER -->
-    <footer class="max-w-7xl w-full mx-auto text-center py-6 text-[10px] text-slate-500 font-medium border-t border-slate-800 mt-12 uppercase tracking-widest">
-        <p>Confidential Corporate Training Matrix. Strategic asset valuations involve inherent systemic risks and pricing variance parameters.</p>
+    <!-- FOOTER -->
+    <footer class="max-w-7xl w-full mx-auto text-center py-6 text-[10px] text-slate-500 font-medium border-t border-slate-800 mt-12 tracking-wider">
+        <p>Wealth Architecture — for educational and demonstration purposes only. Equities involve market risk; past performance is not a guarantee of future results.</p>
     </footer>
+
+    <!-- ===== AI ROBO ADVISOR ===== -->
+    <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AI advisor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+            <rect x="4" y="7" width="16" height="11" rx="3"/>
+            <path stroke-linecap="round" d="M12 4v3M9 12h.01M15 12h.01M9 16h6"/>
+            <path stroke-linecap="round" d="M2 13v3M22 13v3"/>
+        </svg>
+        <span class="ai-dot"></span>
+    </button>
+
+    <div id="aiBackdrop" class="ai-backdrop" onclick="toggleAdvisor(false)"></div>
+
+    <aside id="aiPanel" class="ai-panel" role="dialog" aria-label="AI Advisor">
+        <div class="ai-head">
+            <div class="flex items-center gap-3">
+                <div class="ai-avatar">🤖</div>
+                <div>
+                    <div class="text-sm font-bold text-white">Robo Advisor</div>
+                    <div class="ai-status"><span class="live-dot"></span> Online · Ready to help</div>
+                </div>
+            </div>
+            <button onclick="toggleAdvisor(false)" class="text-slate-400 hover:text-emerald-400 cursor-pointer p-1" aria-label="Close advisor">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div id="aiBody" class="ai-body"></div>
+        <div id="aiSuggest" class="ai-suggest"></div>
+        <form class="ai-input-wrap" onsubmit="aiSubmit(event)">
+            <input id="aiInput" type="text" placeholder="Ask anything about your portfolio…" autocomplete="off">
+            <button type="submit" aria-label="Send">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+        </form>
+    </aside>
 
     <!-- STRATEGIC ENGINE EXECUTABLE LAYER -->
     <script>
@@ -1448,6 +1748,133 @@
                         <td class="p-3 font-mono text-slate-400 num">${s.beta}</td>
                     </tr>`;
             });
+        }
+        // ===== ROBO ADVISOR =====
+        const aiSuggestions = [
+            "What is the W1, W2, W3 strategy?",
+            "How is my dividend tax calculated?",
+            "Which stocks are in the High Yield bucket?",
+            "What's the difference between Filer and Non-Filer?",
+            "What return can I expect in 2 years?",
+            "How does CGT work in Pakistan?",
+            "What is beta? Should I worry about it?",
+            "Tell me about FFC",
+            "Tell me about MEBL",
+            "How do I switch between W1, W2, W3?",
+            "Why is my surplus shown live?",
+            "Explain CAGR in simple words"
+        ];
+
+        const aiKB = [
+            { keys: ["hello","hi","hey","salam","assalam"], a: "Hello! I'm your Robo Advisor. Ask me anything about your portfolio, the strategies, taxes, or any of the 28 PSX stocks." },
+            { keys: ["thanks","thank you","shukria"], a: "You're welcome! Anything else I can help with?" },
+            { keys: ["who are you","what are you","robo"], a: "I'm an in-app robo advisor. I can explain strategies, taxes, formulas, and the stocks in your universe. I don't give personalised buy/sell advice — I help you understand the app." },
+            { keys: ["w1","conservative","preservation"], a: "<b>W1 — Capital Preservation</b> is the conservative tier. Around 20% High Yield, 75% High Growth, 5% Trending. Lower volatility, steady dividends. Suited to investors 46+ or anyone wanting calmer performance." },
+            { keys: ["w2","balanced"], a: "<b>W2 — Balanced Growth</b> mixes 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation with managed risk. Best for the 31–45 age group." },
+            { keys: ["w3","aggressive","velocity","momentum"], a: "<b>W3 — Aggressive Growth</b> tilts to 30% High Yield, 50% High Growth, 20% Trending. Bigger swings, bigger potential — best for younger investors (18–30) with a long runway." },
+            { keys: ["difference between","compare","which is better","w1 vs","w2 vs","w3 vs"], a: "All three start with PKR 1 Crore base.<br>• <b>W1</b> ≈ 22.3% CAGR, calmest<br>• <b>W2</b> ≈ 21.6% CAGR, most balanced<br>• <b>W3</b> ≈ 21.7% CAGR, most volatile<br>Pick by your age and how much volatility you can stomach." },
+            { keys: ["switch","change model","change strategy","toggle"], a: "On the dashboard, click the <b>W1 / W2 / W3</b> chips at the top — KPIs, the growth chart and the allocation donut all animate to the new model instantly." },
+            { keys: ["dividend","wht","withhold"], a: "Dividends are taxed at a flat <b>15% withholding tax</b> for Filers (deducted at source). The 'Cumulative Yield' KPI is already net of this — what you see is what you keep." },
+            { keys: ["cgt","capital gain","capital gains"], a: "<b>Capital Gains Tax (CGT)</b> in Pakistan depends on how long you hold a stock. Shorter holds are taxed more heavily; longer holds are taxed gently. The 'Net Realizable Capital Gain' KPI already factors this in." },
+            { keys: ["filer","non-filer","nonfiler","atl","taxpayer"], a: "<b>Filer</b> = your name is on FBR's Active Taxpayer List → lower withholding rates. <b>Non-filer</b> → higher rates on dividends and gains. Toggle filer status in Section II and numbers recalculate." },
+            { keys: ["surplus","monthly","income","expense","cash flow"], a: "Your <b>monthly investable surplus</b> = monthly income − monthly expenses. It updates live as you change the inputs in Section II. This is the cash you can keep adding to the portfolio." },
+            { keys: ["cagr"], a: "<b>CAGR</b> (Compound Annual Growth Rate) is the smooth yearly rate that, compounded, takes you from today's value to the projected value. It lets you compare different time-spans on equal footing." },
+            { keys: ["beta","volatility"], a: "<b>Beta</b> measures how much a stock moves vs the broader market. Beta < 1 = calmer than market; Beta > 1 = more volatile. The Trending bucket has the highest betas, the High Yield bucket the lowest." },
+            { keys: ["eps","earnings"], a: "<b>EPS</b> (Earnings Per Share) is annual profit ÷ shares outstanding. Higher and rising EPS generally means a healthier company. Audited (Aud) values are confirmed; Unaud are interim." },
+            { keys: ["age","18","30","45","46","tier"], a: "Younger investors (18–30) usually pick W3, mid-career (31–45) W2, near-retirement (46+) W1. Open the age dropdown — the strategy tier syncs automatically." },
+            { keys: ["horizon","time","duration"], a: "Your <b>investment horizon</b> is how long you can stay invested. Short term (12 months), medium term (2 years — the app's default forecast), or long term (5+ years)." },
+            { keys: ["high yield","yield"], a: "The <b>High Yield</b> bucket is built around steady, dividend-paying companies — FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, MTL, ATLH and others. Lower volatility, consistent payouts." },
+            { keys: ["high growth","growth"], a: "The <b>High Growth</b> bucket leans on cyclicals and growth names — AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP. More upside, more swings." },
+            { keys: ["trending","alpha","tactical"], a: "The <b>Trending</b> bucket holds tactical / momentum picks — CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM. Highest volatility, but biggest tactical upside when their cycle hits." },
+            { keys: ["ffc"], a: "<b>FFC — Fauji Fertilizer Company.</b> Bucket: High Yield. Sector: Fertilizer. EPS ≈ Rs 45.89 (audited). Beta 0.98. A classic dividend-paying anchor." },
+            { keys: ["mcb"], a: "<b>MCB Bank Limited.</b> Bucket: High Yield. Banking sector. EPS ≈ Rs 48.62. Beta 0.87. One of Pakistan's largest commercial banks." },
+            { keys: ["ubl"], a: "<b>United Bank Limited.</b> Bucket: High Yield. Banking. EPS ≈ Rs 66.00. Beta 0.92. Strong dividend track record." },
+            { keys: ["mebl","meezan"], a: "<b>Meezan Bank.</b> Bucket: High Yield. Islamic banking leader. EPS ≈ Rs 50.47. Beta 0.85." },
+            { keys: ["ogdc"], a: "<b>OGDC — Oil &amp; Gas Development Company.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 38.94. Beta 0.36 — very low volatility, big yields." },
+            { keys: ["mari"], a: "<b>MARI — Mari Petroleum.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 120.00. Beta ~1.05. Strong cash generator." },
+            { keys: ["lci","lucky cement"], a: "<b>Lucky Cement.</b> Bucket: High Growth. EPS ≈ Rs 42.00. Beta 1.08. Cement bellwether — cyclical but high quality." },
+            { keys: ["fccl","fauji cement"], a: "<b>Fauji Cement.</b> Bucket: High Growth. EPS ≈ Rs 8.50. Beta 1.45. Higher beta — moves sharply with the cement cycle." },
+            { keys: ["cnergy","prl","nrl","refinery"], a: "Refinery names like CNERGY, PRL and NRL sit in the Trending bucket. They're event-driven — energy-policy news, fuel margins, OGRA announcements all push them. High momentum, high risk." },
+            { keys: ["projected","forecast","return","2 year"], a: "Each model projects ~48–50% total return over 2 years, with CAGR around 21–22%. These are model projections (capital gains + dividends, net of taxes), not guarantees." },
+            { keys: ["crore","lakh","format","number"], a: "All PKR figures use Pakistani grouping (e.g. 1,51,66,579) with a Crore/Lakh equivalent shown below. PKR 1 Crore = 1,00,00,000. PKR 1 Lakh = 1,00,000." },
+            { keys: ["live","clock","time"], a: "The top bar shows a 12-hour live clock with the current local date. It updates every second and gives the app a 'live terminal' feel." },
+            { keys: ["dark","light","theme","mode"], a: "Use the sun/moon icon on any screen to switch between dark and light themes. Your choice is remembered next time." },
+            { keys: ["safe","risk","lose money","loss"], a: "Stocks always carry market risk — values can fall. The app reduces risk through diversification (28 stocks across 3 buckets) and tier-matched allocations, but it can't eliminate it. Stay diversified and long-term." }
+        ];
+
+        function aiAnswer(q) {
+            const x = q.toLowerCase().trim();
+            if (!x) return "Type a question and I'll do my best to help!";
+            // best match by keyword hits
+            let best = null, bestScore = 0;
+            aiKB.forEach(item => {
+                const score = item.keys.reduce((s, k) => s + (x.includes(k) ? k.length : 0), 0);
+                if (score > bestScore) { bestScore = score; best = item; }
+            });
+            if (best && bestScore > 0) return best.a;
+            return "I don't have a direct answer to that yet, but I can explain the <b>strategies (W1/W2/W3)</b>, <b>taxes (CGT/WHT)</b>, the <b>28 stocks</b>, or any number you see on the dashboard. Try one of the suggestions below.";
+        }
+
+        function aiAppend(text, who) {
+            const body = document.getElementById('aiBody');
+            const div = document.createElement('div');
+            div.className = 'msg ' + who;
+            div.innerHTML = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+            return div;
+        }
+
+        function aiTyping(on) {
+            let t = document.getElementById('aiTyping');
+            if (on && !t) {
+                const body = document.getElementById('aiBody');
+                t = document.createElement('div');
+                t.id = 'aiTyping'; t.className = 'msg bot';
+                t.innerHTML = '<span class="typing"><span></span><span></span><span></span></span>';
+                body.appendChild(t); body.scrollTop = body.scrollHeight;
+            } else if (!on && t) { t.remove(); }
+        }
+
+        function aiAsk(text) {
+            if (!text) return;
+            aiAppend(text, 'user');
+            aiTyping(true);
+            setTimeout(() => {
+                aiTyping(false);
+                aiAppend(aiAnswer(text), 'bot');
+            }, 600 + Math.random() * 500);
+        }
+
+        function aiSubmit(e) {
+            e.preventDefault();
+            const inp = document.getElementById('aiInput');
+            const v = inp.value.trim();
+            if (!v) return;
+            inp.value = '';
+            aiAsk(v);
+        }
+
+        function renderAiSuggestions() {
+            const wrap = document.getElementById('aiSuggest');
+            // pick 4 random suggestions
+            const pool = [...aiSuggestions].sort(() => Math.random() - 0.5).slice(0, 4);
+            wrap.innerHTML = pool.map(s => `<button onclick="aiAsk('${s.replace(/'/g, "\\'")}'); renderAiSuggestions();">${s}</button>`).join('');
+        }
+
+        let _aiOpened = false;
+        function toggleAdvisor(forceState) {
+            const panel = document.getElementById('aiPanel');
+            const back = document.getElementById('aiBackdrop');
+            const next = (typeof forceState === 'boolean') ? forceState : !panel.classList.contains('open');
+            panel.classList.toggle('open', next);
+            back.classList.toggle('open', next);
+            if (next && !_aiOpened) {
+                _aiOpened = true;
+                aiAppend("Hi! I'm your <b>Robo Advisor</b>. Ask me anything about the strategies, taxes, or stocks — or pick a suggestion below.", 'bot');
+                renderAiSuggestions();
+            }
+            if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
         }
     </script>
 </body>
