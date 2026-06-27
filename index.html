@@ -8,8 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Chart.js CDN for Quant Analytics -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <!-- EmailJS SDK for real-time email OTP delivery -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -265,15 +263,68 @@
         .ov-step.active { opacity: 1; color: #34d399; }
         .ov-step.done { opacity: 1; }
 
+        /* ===== CLICK / OPEN ANIMATIONS ===== */
+        .btn-press { transition: transform .12s ease, box-shadow .25s ease, background-color .2s ease; }
+        .btn-press:active { transform: scale(.94); }
+        .btn-press.clicked { animation: btnPop .35s ease; }
+        @keyframes btnPop { 0%{transform:scale(.94)} 55%{transform:scale(1.04)} 100%{transform:scale(1)} }
+
+        .card-open { animation: cardOpen .55s cubic-bezier(.16,1,.3,1) both; transform-origin: center 60%; }
+        @keyframes cardOpen {
+            0%   { opacity: 0; transform: perspective(1100px) rotateX(14deg) translateY(34px) scale(.9); filter: blur(4px); }
+            100% { opacity: 1; transform: perspective(1100px) rotateX(0) translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* ===== MODEL SWITCH (W1/W2/W3) ===== */
+        .kpi-flash { animation: kpiFlash .6s ease; }
+        @keyframes kpiFlash {
+            0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+            30%  { box-shadow: 0 0 0 2px rgba(16,185,129,.55), 0 14px 30px -18px rgba(16,185,129,.6); transform: translateY(-3px); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); transform: translateY(0); }
+        }
+        .val-pop { animation: valPop .45s ease; display: inline-block; }
+        @keyframes valPop { 0%{transform:translateY(6px);opacity:.4} 100%{transform:translateY(0);opacity:1} }
+        #chartSwitchFlash {
+            position: absolute; inset: 0; border-radius: 12px; pointer-events: none; opacity: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(16,185,129,.18), transparent 70%);
+        }
+        #chartSwitchFlash.go { animation: switchFlash .6s ease; }
+        @keyframes switchFlash { 0%{opacity:0} 35%{opacity:1} 100%{opacity:0} }
+
+        /* ===== APP-STORE STYLE SHOWCASE ===== */
+        .shot-stage { perspective: 1600px; }
+        .shot {
+            position: relative; border-radius: 18px; overflow: hidden; transform-style: preserve-3d;
+            border: 1px solid rgba(51,65,85,.9); background: linear-gradient(165deg,#1e293b,#0f172a);
+            box-shadow: 0 38px 70px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);
+            transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+        }
+        html.light .shot { background: linear-gradient(165deg,#ffffff,#eef2f7); border-color:#e2e8f0; box-shadow:0 38px 70px -34px rgba(15,23,42,.35); }
+        .shot.s-left  { transform: rotateY(20deg) rotateX(6deg) translateZ(-10px); }
+        .shot.s-right { transform: rotateY(-20deg) rotateX(6deg) translateZ(-10px); }
+        .shot.s-mid   { transform: rotateY(0deg) rotateX(4deg) translateZ(20px) scale(1.04); z-index: 2; }
+        .shot-stage:hover .shot { transform: rotateY(0) rotateX(0) translateZ(0) scale(1); }
+        .shot-badge { position:absolute; top:10px; left:10px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; padding:3px 8px; border-radius:999px; background:rgba(16,185,129,.16); color:#34d399; border:1px solid rgba(16,185,129,.3); }
+        .mini-bar { width: 12px; border-radius: 3px 3px 0 0; background: linear-gradient(180deg,#34d399,#10b981); }
+
+        /* ===== 3D STOCKS TABLE ===== */
+        .stock-row { transition: transform .25s ease, background-color .2s ease, box-shadow .25s ease; }
+        .stock-row:hover { transform: translateX(4px) scale(1.004); box-shadow: -4px 0 0 0 #10b981 inset; }
+        .stock-table-stage { perspective: 1500px; }
+        .bk-yield  { color:#34d399; }
+        .bk-growth { color:#60a5fa; }
+        .bk-trend  { color:#fbbf24; }
+
         @media (prefers-reduced-motion: reduce) {
             #authScreen, .clock-colon, .live-dot, .clock-panel::after,
             .ag-ring, .ag-check, .ag-fade, .ag-bar > span,
             .reveal-up, .stagger > *,
             .orb, .hero-scene, .spark, .float-in, .cta-pulse,
             .floor-grid, .core-scene, .chip3d, .bar3d,
-            .ov-rings span { animation: none !important; opacity: 1 !important; }
-            .feature-3d:hover, .tilt-card:hover { transform: none; }
-            .chart-3d, .donut-3d { transform: none; }
+            .ov-rings span, .card-open, .btn-press.clicked,
+            .kpi-flash, .val-pop, #chartSwitchFlash.go { animation: none !important; opacity: 1 !important; }
+            .feature-3d:hover, .tilt-card:hover, .stock-row:hover { transform: none; }
+            .chart-3d, .donut-3d, .shot { transform: none; }
         }
     </style>
 </head>
@@ -343,10 +394,10 @@
                         and project two years of growth across 28 Pakistan Stock Exchange equities — taxes included.
                     </p>
                     <div class="float-in fi-4 flex flex-col sm:flex-row sm:items-center gap-3">
-                        <button onclick="showSignup()" class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-7 py-3 rounded-lg transition-colors shadow-lg cursor-pointer">
-                            Create Account
+                        <button onclick="showSignup(this)" class="btn-press cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-7 py-3 rounded-lg transition-colors shadow-lg cursor-pointer">
+                            Get Started →
                         </button>
-                        <button onclick="showLogin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white text-sm font-bold px-7 py-3 rounded-lg transition-colors cursor-pointer">
+                        <button onclick="showLogin(this)" class="btn-press bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white text-sm font-bold px-7 py-3 rounded-lg transition-colors cursor-pointer">
                             Sign In
                         </button>
                     </div>
@@ -434,6 +485,60 @@
                     <p class="text-xs text-slate-400 leading-relaxed">A live clock, dark &amp; light themes, and a clean, fast institutional-grade interface.</p>
                 </div>
             </div>
+
+            <!-- APP-STORE STYLE 3D SHOWCASE -->
+            <div class="mt-12 text-center float-in fi-6">
+                <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 mb-1">Take a look inside</div>
+                <h2 class="text-lg md:text-xl font-bold text-white mb-7">A real working dashboard — see it before you start</h2>
+            </div>
+            <div class="shot-stage grid grid-cols-1 md:grid-cols-3 gap-5 items-center">
+                <!-- Shot 1: Growth chart -->
+                <div class="shot s-left float-in fi-6 p-4">
+                    <span class="shot-badge">Live forecast</span>
+                    <div class="mt-7">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Projected value</div>
+                        <div class="text-lg font-bold text-emerald-400 num mb-3">PKR 1.52 Cr</div>
+                        <svg viewBox="0 0 200 80" class="w-full h-24">
+                            <defs><linearGradient id="sg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#10b981" stop-opacity=".5"/><stop offset="1" stop-color="#10b981" stop-opacity="0"/></linearGradient></defs>
+                            <polyline fill="url(#sg1)" stroke="none" points="2,70 40,58 78,46 116,50 154,26 198,10 198,80 2,80"/>
+                            <polyline fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="2,70 40,58 78,46 116,50 154,26 198,10"/>
+                        </svg>
+                        <div class="text-[10px] text-emerald-400 font-semibold num mt-2">+49.8% over 2 years</div>
+                    </div>
+                </div>
+                <!-- Shot 2: Allocation -->
+                <div class="shot s-mid float-in fi-7 p-4">
+                    <span class="shot-badge">Allocation mix</span>
+                    <div class="mt-7 flex flex-col items-center">
+                        <svg viewBox="0 0 120 120" class="w-28 h-28 -rotate-90">
+                            <circle cx="60" cy="60" r="46" fill="none" stroke="#1f2937" stroke-width="16"/>
+                            <circle cx="60" cy="60" r="46" fill="none" stroke="#10b981" stroke-width="16" stroke-dasharray="130 159" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="46" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="115 174" stroke-dashoffset="-130"/>
+                            <circle cx="60" cy="60" r="46" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="44 245" stroke-dashoffset="-245"/>
+                        </svg>
+                        <div class="flex gap-3 mt-3 text-[10px]">
+                            <span class="bk-yield font-bold num">Yield 45%</span>
+                            <span class="bk-growth font-bold num">Growth 40%</span>
+                            <span class="bk-trend font-bold num">Alpha 15%</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shot 3: Stock list -->
+                <div class="shot s-right float-in fi-8 p-4">
+                    <span class="shot-badge">PSX universe</span>
+                    <div class="mt-7 space-y-2">
+                        <div class="flex justify-between items-center text-[11px]"><span class="font-mono font-bold text-white">FFC</span><span class="bk-yield font-semibold num">EPS 45.9</span></div>
+                        <div class="flex justify-between items-center text-[11px]"><span class="font-mono font-bold text-white">MARI</span><span class="bk-yield font-semibold num">EPS 120.0</span></div>
+                        <div class="flex justify-between items-center text-[11px]"><span class="font-mono font-bold text-white">LCI</span><span class="bk-growth font-semibold num">β 1.08</span></div>
+                        <div class="flex justify-between items-center text-[11px]"><span class="font-mono font-bold text-white">PRL</span><span class="bk-trend font-semibold num">Trending</span></div>
+                        <div class="flex items-end gap-1.5 h-12 pt-2">
+                            <div class="mini-bar" style="height:40%"></div><div class="mini-bar" style="height:65%"></div>
+                            <div class="mini-bar" style="height:52%"></div><div class="mini-bar" style="height:80%"></div>
+                            <div class="mini-bar" style="height:70%"></div><div class="mini-bar" style="height:95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -513,79 +618,36 @@
     </section>
 
     <!-- ===== CREATE ACCOUNT SCREEN (with email OTP) ===== -->
+    <!-- ===== GET STARTED SCREEN ===== -->
     <section id="signupScreen" class="hidden relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
         <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
             <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
             <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
 
-        <!-- Step indicator -->
-        <div class="flex items-center justify-center gap-2 mb-5">
-            <div id="stepDot1" class="h-1.5 w-8 rounded-full bg-emerald-500"></div>
-            <div id="stepDot2" class="h-1.5 w-8 rounded-full bg-slate-700"></div>
+        <div class="text-center mb-6">
+            <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight">Get Started</h2>
+            <p class="text-xs text-slate-400 mt-1">Set up your profile and open your portfolio workspace</p>
         </div>
 
-        <!-- STEP 1: details -->
-        <div id="signupStep1">
-            <div class="text-center mb-5">
-                <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                </div>
-                <h2 class="text-xl font-bold text-white tracking-tight">Create Account</h2>
-                <p class="text-xs text-slate-400 mt-1">We'll email you a verification code to confirm it's you</p>
+        <form id="signupForm" onsubmit="handleGetStarted(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Full Name</label>
+                <input type="text" id="suName" placeholder="e.g., Muhammad Majid" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
             </div>
-
-            <form id="signupForm" onsubmit="handleSendOtp(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Full Name</label>
-                    <input type="text" id="suName" placeholder="e.g., Muhammad Majid" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Email Address</label>
-                    <input type="email" id="suEmail" required placeholder="you@gmail.com" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
-                    <p class="text-[10px] text-slate-500 mt-1">A 6-digit code will be sent to this address.</p>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
-                    <input type="password" id="suPassword" required placeholder="Create a password" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
-                </div>
-                <button type="submit" id="sendOtpBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-3 rounded transition-colors shadow-lg cursor-pointer mt-2">Send Verification Code</button>
-            </form>
-        </div>
-
-        <!-- STEP 2: OTP verification -->
-        <div id="signupStep2" class="hidden">
-            <div class="text-center mb-5">
-                <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <h2 class="text-xl font-bold text-white tracking-tight">Verify Your Email</h2>
-                <p class="text-xs text-slate-400 mt-1">Enter the 6-digit code sent to <span id="otpEmailLabel" class="text-emerald-400 font-semibold">your email</span></p>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Email or Username</label>
+                <input type="text" id="suEmail" required placeholder="you@example.com" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
             </div>
-
-            <div id="demoCodeNotice" class="hidden mb-4 text-center text-[11px] bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-lg px-3 py-2"></div>
-
-            <div class="flex justify-center gap-2 mb-2" onpaste="handleOtpPaste(event)">
-                <input class="otp-box" id="otp0" inputmode="numeric" maxlength="1" oninput="otpInput(0)" onkeydown="otpKey(event,0)">
-                <input class="otp-box" id="otp1" inputmode="numeric" maxlength="1" oninput="otpInput(1)" onkeydown="otpKey(event,1)">
-                <input class="otp-box" id="otp2" inputmode="numeric" maxlength="1" oninput="otpInput(2)" onkeydown="otpKey(event,2)">
-                <input class="otp-box" id="otp3" inputmode="numeric" maxlength="1" oninput="otpInput(3)" onkeydown="otpKey(event,3)">
-                <input class="otp-box" id="otp4" inputmode="numeric" maxlength="1" oninput="otpInput(4)" onkeydown="otpKey(event,4)">
-                <input class="otp-box" id="otp5" inputmode="numeric" maxlength="1" oninput="otpInput(5)" onkeydown="otpKey(event,5)">
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
+                <input type="password" id="suPassword" required placeholder="Create a password" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
             </div>
-            <div id="otpError" class="hidden text-center text-[11px] text-rose-400 mb-2">That code didn't match. Please try again.</div>
-
-            <button onclick="handleVerifyOtp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-3 rounded transition-colors shadow-lg cursor-pointer mt-2">Verify &amp; Create Account</button>
-
-            <div class="text-center mt-4 text-[11px] text-slate-400">
-                Didn't get it?
-                <button id="resendBtn" onclick="handleResendOtp()" class="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer disabled:text-slate-600 disabled:cursor-not-allowed" disabled>Resend code</button>
-                <span id="resendTimer" class="text-slate-500"></span>
-            </div>
-            <div class="text-center mt-1">
-                <button onclick="backToSignupStep1()" class="text-[11px] text-slate-400 hover:text-emerald-400 cursor-pointer">← Change email</button>
-            </div>
-        </div>
+            <button type="submit" class="btn-press w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-3 rounded transition-colors shadow-lg cursor-pointer mt-2">Get Started →</button>
+        </form>
 
         <div class="flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
             <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
@@ -755,6 +817,7 @@
                     <div class="chart-stage h-64 w-full">
                         <div class="chart-3d h-full w-full relative">
                             <canvas id="trajectoryChart"></canvas>
+                            <div id="chartSwitchFlash"></div>
                         </div>
                     </div>
                 </div>
@@ -781,50 +844,81 @@
             </div>
 
             <!-- UNIVERSAL PSX STOCK REGISTRY DATA MATRIX -->
-            <div class="bg-fintech-card rounded-xl p-5 shadow-lg border border-slate-700">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-slate-700 pb-3 gap-2">
+            <div class="tilt-card bg-fintech-card rounded-xl p-5 shadow-lg border border-slate-700">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-slate-700 pb-3 gap-3">
                     <h3 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
                         <span class="p-1 bg-amber-500/10 text-amber-400 rounded text-xs font-mono">M3</span>
-                        Equity Universe Analytics Matrix (28 Actively Maintained PSX Reference Assets)
+                        PSX Equity Universe — 28 Reference Stocks
                     </h3>
-                    <div class="text-xs text-slate-400 font-mono tracking-wide" id="allocation-summary-text">
-                        Loading...
+                    <div class="flex items-center gap-2">
+                        <button onclick="filterStocks('All', this)" class="stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer">All</button>
+                        <button onclick="filterStocks('High Yield', this)" class="stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700 text-slate-300 hover:bg-slate-800 cursor-pointer">Yield</button>
+                        <button onclick="filterStocks('High Growth', this)" class="stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700 text-slate-300 hover:bg-slate-800 cursor-pointer">Growth</button>
+                        <button onclick="filterStocks('Trending', this)" class="stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700 text-slate-300 hover:bg-slate-800 cursor-pointer">Trending</button>
                     </div>
                 </div>
+                <div class="text-[11px] text-slate-400 font-mono mb-3" id="allocation-summary-text">Loading…</div>
 
-                <div class="overflow-x-auto max-h-96 border border-slate-800 rounded">
+                <div class="stock-table-stage overflow-x-auto max-h-96 border border-slate-800 rounded-lg">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead class="sticky top-0 z-10 bg-slate-900 text-slate-400 text-[10px] font-bold uppercase tracking-wider border-b border-slate-700">
                             <tr>
-                                <th class="p-3">Ticker Identification</th>
-                                <th class="p-3">Asset Legal Title</th>
-                                <th class="p-3">Strategic Allocation Classification</th>
-                                <th class="p-3">Sector Categorization</th>
-                                <th class="p-3">Financial Closing Anchor</th>
-                                <th class="p-3">Audited Earnings Metric (EPS)</th>
-                                <th class="p-3">Beta Co-efficient Volatility</th>
+                                <th class="p-3">Ticker</th>
+                                <th class="p-3">Company</th>
+                                <th class="p-3">Bucket</th>
+                                <th class="p-3">Sector</th>
+                                <th class="p-3">Year End</th>
+                                <th class="p-3">EPS</th>
+                                <th class="p-3">Beta</th>
                             </tr>
                         </thead>
                         <tbody id="stocksTableBody" class="divide-y divide-slate-800">
-                            <!-- Populated Injectively via Logic Model -->
+                            <!-- Populated via JS -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- REGULATORY ENVIRONMENT DATA MATRIX -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs">
-                <div>
-                    <h4 class="font-bold text-amber-500 mb-1 uppercase tracking-wider text-[10px]">NCCPL Capital Gains Framework (CGT)</h4>
-                    <p class="text-slate-400 leading-relaxed">System holds absolute processing rules aligned with asset tenure holding durations. Section 7E metrics are fully decoupled from live computations.</p>
+            <!-- TAX & COMPLIANCE — VISUAL 3D CARDS -->
+            <div class="pt-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="p-1 bg-emerald-500/10 text-emerald-400 rounded text-xs font-mono">i</span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-white">How taxes shape your returns</h3>
                 </div>
-                <div>
-                    <h4 class="font-bold text-emerald-500 mb-1 uppercase tracking-wider text-[10px]">Dividend Withholding Tax Regime (WHT)</h4>
-                    <p class="text-slate-400 leading-relaxed">A standard 15% statutory deduction is simulated at source boundary conditions for users possessing validated ATL Filer credentials.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold text-rose-500 mb-1 uppercase tracking-wider text-[10px]">Non-Filer Structural Penalty Protocols</h4>
-                    <p class="text-slate-400 leading-relaxed">If the Filer status verification changes, structural sub-layers automatically compute statutory differential tax penalties.</p>
+                <div class="shot-stage grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Capital Gains Tax -->
+                    <div class="shot s-left tilt-card p-5">
+                        <span class="shot-badge" style="background:rgba(245,158,11,.16);color:#fbbf24;border-color:rgba(245,158,11,.3);">CGT</span>
+                        <div class="mt-7 flex items-end justify-center gap-3 h-20">
+                            <div class="text-center"><div class="mini-bar mx-auto" style="height:64px;width:26px;background:linear-gradient(180deg,#fbbf24,#d97706);"></div><div class="text-[9px] text-slate-400 mt-1">Short hold</div></div>
+                            <div class="text-center"><div class="mini-bar mx-auto" style="height:34px;width:26px;background:linear-gradient(180deg,#34d399,#10b981);"></div><div class="text-[9px] text-slate-400 mt-1">Long hold</div></div>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mt-4 mb-1">Capital Gains Tax</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">Tax depends on how long you hold a stock. Longer holding periods are taxed more gently, so the app rewards patience.</p>
+                    </div>
+                    <!-- Dividend WHT -->
+                    <div class="shot s-mid tilt-card p-5">
+                        <span class="shot-badge">WHT</span>
+                        <div class="mt-7 flex flex-col items-center">
+                            <svg viewBox="0 0 120 120" class="w-24 h-24 -rotate-90">
+                                <circle cx="60" cy="60" r="46" fill="none" stroke="#1f2937" stroke-width="14"/>
+                                <circle cx="60" cy="60" r="46" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="245 44" stroke-linecap="round"/>
+                            </svg>
+                            <div class="-mt-16 text-center"><div class="text-lg font-bold text-emerald-400 num">85%</div><div class="text-[9px] text-slate-400">you keep</div></div>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mt-6 mb-1">Dividend Tax (15%)</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">Filers pay a flat 15% on dividends at source. Every dividend figure you see already has this deducted.</p>
+                    </div>
+                    <!-- Non-filer -->
+                    <div class="shot s-right tilt-card p-5">
+                        <span class="shot-badge" style="background:rgba(244,63,94,.16);color:#fb7185;border-color:rgba(244,63,94,.3);">Filer status</span>
+                        <div class="mt-7 grid grid-cols-2 gap-2">
+                            <div class="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-2 text-center"><div class="text-[10px] text-emerald-400 font-bold">Filer</div><div class="text-[9px] text-slate-400">Lower tax</div></div>
+                            <div class="rounded-lg border border-rose-500/30 bg-rose-500/5 p-2 text-center"><div class="text-[10px] text-rose-400 font-bold">Non-filer</div><div class="text-[9px] text-slate-400">Higher tax</div></div>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mt-4 mb-1">Filer vs Non-Filer</h4>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">Being on the FBR Active Taxpayer List saves you money. Switch your status and the app recalculates instantly.</p>
+                    </div>
                 </div>
             </div>
 
@@ -921,41 +1015,34 @@
             populateAgeOptions();
             calculateSurplus();
             populateStocksTable();
-            if (EMAIL_CONFIGURED && window.emailjs) {
-                try { emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey }); } catch (e) { console.warn('EmailJS init failed', e); }
-            }
         };
 
-        // ===== EMAIL OTP CONFIG (EmailJS) =====
-        // To send REAL emails: create a free account at https://www.emailjs.com,
-        // then paste your keys below. Your EmailJS template should include the
-        // variables {{passcode}} and {{to_email}} (and optionally {{to_name}}).
-        // Until configured, the app runs in DEMO mode and shows the code on screen.
-        const EMAILJS_CONFIG = {
-            publicKey: "YOUR_PUBLIC_KEY",
-            serviceId: "YOUR_SERVICE_ID",
-            templateId: "YOUR_TEMPLATE_ID"
-        };
-        const EMAIL_CONFIGURED = !/YOUR_/.test(EMAILJS_CONFIG.publicKey + EMAILJS_CONFIG.serviceId + EMAILJS_CONFIG.templateId);
-
-        let pendingSignup = null;   // { name, email, password }
-        let currentOtp = null;
-        let resendCountdown = 0;
-        let resendTimerId = null;
-
-        // ===== PREVIEW -> SCREEN NAVIGATION =====
+        // ===== PREVIEW -> SCREEN NAVIGATION (with click + open animation) =====
+        function pressFx(btn) {
+            if (!btn || !btn.classList) return;
+            btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked');
+        }
         function hideAllAuth() {
             ['previewScreen', 'loginScreen', 'signupScreen'].forEach(id =>
                 document.getElementById(id).classList.add('hidden'));
         }
-        function revealCard(id) {
+        function openCard(id) {
             const el = document.getElementById(id);
-            el.classList.remove('hidden');
-            el.classList.remove('reveal-up'); void el.offsetWidth; el.classList.add('reveal-up');
+            // brief delay so the button press animation is visible before the screen swaps
+            setTimeout(() => {
+                hideAllAuth();
+                el.classList.remove('hidden');
+                el.classList.remove('card-open'); void el.offsetWidth; el.classList.add('card-open');
+            }, 150);
         }
-        function showLogin() { hideAllAuth(); revealCard('loginScreen'); }
-        function showSignup() { hideAllAuth(); resetSignup(); revealCard('signupScreen'); }
-        function backToPreview() { hideAllAuth(); document.getElementById('previewScreen').classList.remove('hidden'); }
+        function showLogin(btn) { pressFx(btn); openCard('loginScreen'); }
+        function showSignup(btn) { pressFx(btn); openCard('signupScreen'); }
+        function backToPreview() {
+            hideAllAuth();
+            const p = document.getElementById('previewScreen');
+            p.classList.remove('hidden');
+            p.classList.remove('card-open'); void p.offsetWidth; p.classList.add('card-open');
+        }
 
         // ===== SIGN IN =====
         function handleLogin(event) {
@@ -970,147 +1057,18 @@
                     return;
                 }
             }
-            alert("We couldn't sign you in. Please check your email and password, then try again.");
+            alert("We couldn't sign you in. Please check your details and try again.");
         }
 
-        // ===== CREATE ACCOUNT (Step 1 -> send OTP) =====
-        function resetSignup() {
-            document.getElementById('signupStep1').classList.remove('hidden');
-            document.getElementById('signupStep2').classList.add('hidden');
-            document.getElementById('stepDot1').className = "h-1.5 w-8 rounded-full bg-emerald-500";
-            document.getElementById('stepDot2').className = "h-1.5 w-8 rounded-full bg-slate-700";
-            document.getElementById('otpError').classList.add('hidden');
-            clearOtpBoxes();
-        }
-        function backToSignupStep1() { resetSignup(); }
-
-        function genOtp() { return String(Math.floor(100000 + Math.random() * 900000)); }
-
-        function handleSendOtp(event) {
+        // ===== GET STARTED (create profile + enter) =====
+        function handleGetStarted(event) {
             event.preventDefault();
             const name = document.getElementById('suName').value.trim() || "Investor";
             const email = document.getElementById('suEmail').value.trim();
             const pass = document.getElementById('suPassword').value;
             if (!email || !pass) { alert("Please fill in all fields before continuing."); return; }
-
-            pendingSignup = { name, email, password: pass, username: email };
-            currentOtp = genOtp();
-            sendOtpEmail(email, name, currentOtp);
-        }
-
-        function sendOtpEmail(email, name, code) {
-            const btn = document.getElementById('sendOtpBtn');
-            const notice = document.getElementById('demoCodeNotice');
-            btn.disabled = true; btn.innerText = "Sending…";
-
-            const goToOtpStep = (demo) => {
-                document.getElementById('otpEmailLabel').innerText = email;
-                document.getElementById('signupStep1').classList.add('hidden');
-                document.getElementById('signupStep2').classList.remove('hidden');
-                document.getElementById('stepDot2').className = "h-1.5 w-8 rounded-full bg-emerald-500";
-                clearOtpBoxes();
-                document.getElementById('otp0').focus();
-                startResendCountdown();
-                if (demo) {
-                    notice.classList.remove('hidden');
-                    notice.innerHTML = "Demo mode — your code is <b class='font-mono'>" + code + "</b>. Add EmailJS keys in the code to send real emails.";
-                } else {
-                    notice.classList.add('hidden');
-                }
-                btn.disabled = false; btn.innerText = "Send Verification Code";
-            };
-
-            if (EMAIL_CONFIGURED && window.emailjs) {
-                emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-                    passcode: code, to_email: email, to_name: name
-                }).then(() => goToOtpStep(false))
-                  .catch((err) => {
-                      console.error("EmailJS error:", err);
-                      alert("We couldn't send the email. Showing the code here instead for now.");
-                      goToOtpStep(true);
-                  });
-            } else {
-                // Demo mode (no backend / keys not set)
-                setTimeout(() => goToOtpStep(true), 600);
-            }
-        }
-
-        function startResendCountdown() {
-            resendCountdown = 30;
-            const btn = document.getElementById('resendBtn');
-            const timer = document.getElementById('resendTimer');
-            btn.disabled = true;
-            clearInterval(resendTimerId);
-            const upd = () => {
-                if (resendCountdown <= 0) {
-                    clearInterval(resendTimerId);
-                    btn.disabled = false; timer.innerText = "";
-                } else {
-                    timer.innerText = "(" + resendCountdown + "s)";
-                    resendCountdown--;
-                }
-            };
-            upd();
-            resendTimerId = setInterval(upd, 1000);
-        }
-
-        function handleResendOtp() {
-            if (!pendingSignup) return;
-            currentOtp = genOtp();
-            sendOtpEmail(pendingSignup.email, pendingSignup.name, currentOtp);
-        }
-
-        // ===== OTP BOX BEHAVIOUR =====
-        function clearOtpBoxes() {
-            for (let i = 0; i < 6; i++) {
-                const b = document.getElementById('otp' + i);
-                if (b) { b.value = ''; b.classList.remove('filled', 'err'); }
-            }
-        }
-        function readOtp() {
-            let v = '';
-            for (let i = 0; i < 6; i++) v += (document.getElementById('otp' + i).value || '');
-            return v;
-        }
-        function otpInput(i) {
-            const box = document.getElementById('otp' + i);
-            box.value = box.value.replace(/\D/g, '').slice(0, 1);
-            box.classList.toggle('filled', !!box.value);
-            document.getElementById('otpError').classList.add('hidden');
-            if (box.value && i < 5) document.getElementById('otp' + (i + 1)).focus();
-            if (readOtp().length === 6) handleVerifyOtp();
-        }
-        function otpKey(e, i) {
-            if (e.key === 'Backspace' && !document.getElementById('otp' + i).value && i > 0) {
-                document.getElementById('otp' + (i - 1)).focus();
-            }
-        }
-        function handleOtpPaste(e) {
-            e.preventDefault();
-            const txt = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-            for (let i = 0; i < 6; i++) {
-                const b = document.getElementById('otp' + i);
-                b.value = txt[i] || '';
-                b.classList.toggle('filled', !!b.value);
-            }
-            if (txt.length === 6) handleVerifyOtp();
-        }
-
-        function handleVerifyOtp() {
-            const entered = readOtp();
-            if (entered.length < 6) return;
-            if (entered === currentOtp) {
-                // create account
-                localStorage.setItem('quant_user_db', JSON.stringify(pendingSignup));
-                clearInterval(resendTimerId);
-                alert("Email verified! Your account has been created. Please sign in to continue.");
-                document.getElementById('loginEmail').value = pendingSignup.email;
-                showLogin();
-            } else {
-                document.getElementById('otpError').classList.remove('hidden');
-                for (let i = 0; i < 6; i++) document.getElementById('otp' + i).classList.add('err');
-                setTimeout(() => { for (let i = 0; i < 6; i++) document.getElementById('otp' + i).classList.remove('err'); }, 400);
-            }
+            localStorage.setItem('quant_user_db', JSON.stringify({ name: name, email: email, username: email, password: pass }));
+            enterAppWorkspace(name);
         }
 
         // ===== HERO 3D PARALLAX =====
@@ -1318,28 +1276,55 @@
             return '≈ ' + pkGroup(n);
         }
 
+        function animateCount(el, target, formatter, duration) {
+            if (!el) return;
+            if (_reduceMotion) { el.innerText = formatter(target); return; }
+            const start = performance.now();
+            const from = 0;
+            const step = (now) => {
+                const t = Math.min(1, (now - start) / duration);
+                const eased = 1 - Math.pow(1 - t, 3);
+                el.innerText = formatter(from + (target - from) * eased);
+                if (t < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+
         function switchActiveModel(modelCode) {
             const data = modelData[modelCode];
             if (!data) return;
 
             document.getElementById('activeModelTitle').innerText = data.name;
-            document.getElementById('kpi-projected').innerText = pkrFull(data.projectedValue);
-            document.getElementById('kpi-capgain').innerText = pkrFull(data.capgain);
-            document.getElementById('kpi-dividend').innerText = pkrFull(data.dividend);
-            document.getElementById('kpi-totalreturn').innerText = data.totalreturn;
-            document.getElementById('kpi-cagr').innerText = data.cagr;
+
+            // animated count-up for PKR + percentage KPIs
+            animateCount(document.getElementById('kpi-projected'), digitsOf(data.projectedValue), v => 'PKR ' + pkGroup(Math.round(v)), 700);
+            animateCount(document.getElementById('kpi-capgain'),   digitsOf(data.capgain),       v => 'PKR ' + pkGroup(Math.round(v)), 700);
+            animateCount(document.getElementById('kpi-dividend'),  digitsOf(data.dividend),      v => 'PKR ' + pkGroup(Math.round(v)), 700);
+            animateCount(document.getElementById('kpi-totalreturn'), parseFloat(data.totalreturn), v => v.toFixed(1) + '%', 700);
+            animateCount(document.getElementById('kpi-cagr'),        parseFloat(data.cagr),        v => v.toFixed(1) + '%', 700);
+
             document.getElementById('kpi-projected-c').innerText = pkrCompact(data.projectedValue);
             document.getElementById('kpi-capgain-c').innerText = pkrCompact(data.capgain);
             document.getElementById('kpi-dividend-c').innerText = pkrCompact(data.dividend);
             document.getElementById('allocation-summary-text').innerText = data.allocationText;
             document.getElementById('trafficLightBanner').innerText = data.status;
 
+            // KPI flash pulse
+            document.querySelectorAll('.tilt-card').forEach(c => {
+                if (c.querySelector('[id^="kpi-"]')) {
+                    c.classList.remove('kpi-flash'); void c.offsetWidth; c.classList.add('kpi-flash');
+                }
+            });
+            // chart flash
+            const flash = document.getElementById('chartSwitchFlash');
+            if (flash) { flash.classList.remove('go'); void flash.offsetWidth; flash.classList.add('go'); }
+
             ['W1', 'W2', 'W3'].forEach(m => {
                 const btn = document.getElementById('btn' + m);
                 if (m === modelCode) {
-                    btn.className = "px-4 py-2 rounded text-xs font-bold font-mono border-2 border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer shadow-lg";
+                    btn.className = "btn-press px-4 py-2 rounded text-xs font-bold font-mono border-2 border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer shadow-lg";
                 } else {
-                    btn.className = "px-4 py-2 rounded text-xs font-bold font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer";
+                    btn.className = "btn-press px-4 py-2 rounded text-xs font-bold font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer";
                 }
             });
 
@@ -1431,25 +1416,36 @@
             });
         }
 
+        let stockFilter = 'All';
+        function filterStocks(bucket, btn) {
+            stockFilter = bucket;
+            document.querySelectorAll('.stk-filter').forEach(b => {
+                b.className = "stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-slate-700 text-slate-300 hover:bg-slate-800 cursor-pointer";
+            });
+            if (btn) btn.className = "stk-filter px-3 py-1 rounded-full text-[10px] font-bold border border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer";
+            populateStocksTable();
+        }
+
         function populateStocksTable() {
             const tbody = document.getElementById('stocksTableBody');
             tbody.innerHTML = "";
-            stockUniverse.forEach(s => {
-                let badgeStyle = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5";
-                if(s.bucket === "High Growth") badgeStyle = "border-blue-500/30 text-blue-400 bg-blue-500/5";
-                if(s.bucket === "Trending") badgeStyle = "border-amber-500/30 text-amber-400 bg-amber-500/5";
+            const rows = stockUniverse.filter(s => stockFilter === 'All' || s.bucket === stockFilter);
+            rows.forEach((s, idx) => {
+                let badgeStyle = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5", dot = "#34d399";
+                if (s.bucket === "High Growth") { badgeStyle = "border-blue-500/30 text-blue-400 bg-blue-500/5"; dot = "#60a5fa"; }
+                if (s.bucket === "Trending") { badgeStyle = "border-amber-500/30 text-amber-400 bg-amber-500/5"; dot = "#fbbf24"; }
 
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-900/40 text-slate-300 transition-colors">
-                        <td class="p-3 font-bold text-white font-mono">${s.ticker}</td>
-                        <td class="p-3 font-medium">${s.name}</td>
-                        <td class="p-3">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeStyle}">${s.bucket}</span>
+                    <tr class="stock-row text-slate-300" style="animation: revealUp .4s cubic-bezier(.16,1,.3,1) both; animation-delay:${idx * 18}ms;">
+                        <td class="p-3 font-bold text-white font-mono">
+                            <span class="inline-flex items-center gap-2"><span style="width:7px;height:7px;border-radius:9999px;background:${dot};display:inline-block;"></span>${s.ticker}</span>
                         </td>
+                        <td class="p-3 font-medium">${s.name}</td>
+                        <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold border ${badgeStyle}">${s.bucket}</span></td>
                         <td class="p-3 text-slate-400">${s.sector}</td>
                         <td class="p-3 text-slate-400 font-mono">${s.fy}</td>
-                        <td class="p-3 text-slate-200 font-mono">${s.eps}</td>
-                        <td class="p-3 font-mono text-slate-400">${s.beta}</td>
+                        <td class="p-3 text-slate-200 font-mono num">${s.eps}</td>
+                        <td class="p-3 font-mono text-slate-400 num">${s.beta}</td>
                     </tr>`;
             });
         }
