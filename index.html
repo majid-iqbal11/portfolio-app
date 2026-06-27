@@ -91,12 +91,70 @@
         }
         @keyframes sweep { 0% { transform: translateX(-100%);} 60%,100% { transform: translateX(100%);} }
 
+        /* ===== ACCESS-GRANTED OVERLAY ===== */
+        .ag-ring {
+            width: 84px; height: 84px; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(16,185,129,.08);
+            border: 2px solid rgba(16,185,129,.45);
+            box-shadow: 0 0 0 0 rgba(16,185,129,.5);
+            animation: agRing .9s cubic-bezier(.16,1,.3,1) both, agGlow 1.8s ease-out .3s infinite;
+        }
+        @keyframes agRing { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes agGlow {
+            0% { box-shadow: 0 0 0 0 rgba(16,185,129,.45); }
+            70% { box-shadow: 0 0 0 22px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+        .ag-check { stroke-dasharray: 30; stroke-dashoffset: 30; animation: agCheck .5s ease-out .35s forwards; }
+        @keyframes agCheck { to { stroke-dashoffset: 0; } }
+        .ag-fade { opacity: 0; animation: agFade .5s ease-out forwards; }
+        .ag-fade:nth-child(2) { animation-delay: .55s; }
+        .ag-fade:nth-child(3) { animation-delay: .7s; }
+        .ag-fade:nth-child(4) { animation-delay: .85s; }
+        @keyframes agFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .ag-bar { width: 200px; height: 4px; border-radius: 9999px; background: rgba(148,163,184,.2); overflow: hidden; }
+        .ag-bar > span { display: block; height: 100%; width: 0; border-radius: 9999px;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            animation: agBar 1.5s ease-in-out .4s forwards; }
+        @keyframes agBar { from { width: 0; } to { width: 100%; } }
+
+        /* ===== STAGGERED SECTION ENTRANCE ===== */
+        .reveal-up { opacity: 0; animation: revealUp .55s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes revealUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+        .stagger > * { opacity: 0; animation: revealUp .5s cubic-bezier(.16,1,.3,1) forwards; }
+        .stagger > :nth-child(1) { animation-delay: .05s; }
+        .stagger > :nth-child(2) { animation-delay: .14s; }
+        .stagger > :nth-child(3) { animation-delay: .23s; }
+        .stagger > :nth-child(4) { animation-delay: .32s; }
+        .stagger > :nth-child(5) { animation-delay: .41s; }
+        .stagger > :nth-child(6) { animation-delay: .50s; }
+        .stagger > :nth-child(7) { animation-delay: .59s; }
+
         @media (prefers-reduced-motion: reduce) {
-            #authScreen, .clock-colon, .live-dot, .clock-panel::after { animation: none !important; }
+            #authScreen, .clock-colon, .live-dot, .clock-panel::after,
+            .ag-ring, .ag-check, .ag-fade, .ag-bar > span,
+            .reveal-up, .stagger > * { animation: none !important; opacity: 1 !important; }
         }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col justify-between">
+
+    <!-- ACCESS GRANTED REVEAL OVERLAY -->
+    <div id="accessOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-sm"></div>
+        <div class="relative text-center px-6">
+            <div class="ag-ring mx-auto mb-6">
+                <svg class="ag-check h-10 w-10 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div class="text-[11px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-2 ag-fade">Access Granted</div>
+            <div id="agUserName" class="text-xl font-semibold text-white mb-1 ag-fade">Welcome back</div>
+            <div class="text-xs text-slate-400 font-mono mb-6 ag-fade">Loading your portfolio workspace…</div>
+            <div class="ag-bar mx-auto"><span></span></div>
+        </div>
+    </div>
 
     <!-- INSTITUTIONAL HEADER LAYER -->
     <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-col md:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-700 gap-4">
@@ -111,7 +169,7 @@
         <div class="flex items-center gap-4">
             <div class="text-xs text-slate-400 text-right">
                 <div id="welcomeUser" class="text-emerald-400 font-semibold mb-1">Authenticated Terminal</div>
-                <div><strong>Live Clock:</strong> <span id="headerClock" class="font-mono text-slate-300">--:--:--</span></div>
+                <div><strong>Current Time:</strong> <span id="headerClock" class="font-mono text-slate-300">--:-- --</span></div>
                 <div><strong>System Execution:</strong> June 2026</div>
             </div>
             <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
@@ -149,8 +207,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             </div>
-            <h2 class="text-xl font-bold text-white tracking-tight">Identity & Access Management</h2>
-            <p class="text-xs text-slate-400 mt-1">Authorized Personnel Authentication Required</p>
+            <h2 class="text-xl font-bold text-white tracking-tight">Secure Account Access</h2>
+            <p class="text-xs text-slate-400 mt-1">Sign in to open your portfolio workspace</p>
         </div>
 
         <!-- LIVE TERMINAL CLOCK -->
@@ -158,12 +216,12 @@
             <div>
                 <div class="flex items-center gap-2 mb-1">
                     <span class="live-dot"></span>
-                    <span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Live Session Clock</span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Current Local Time</span>
                 </div>
-                <div id="authClockTime" class="clock-readout text-emerald-400 font-mono text-xl font-semibold">--:--:--</div>
+                <div id="authClockTime" class="clock-readout text-emerald-400 font-mono text-xl font-semibold">--:-- --</div>
             </div>
             <div class="text-right">
-                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">System Date</div>
+                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">Today's Date</div>
                 <div id="authClockDate" class="text-slate-300 font-mono text-xs">--- -- ----</div>
             </div>
         </div>
@@ -171,28 +229,28 @@
         <!-- Segmented Control Tabs -->
         <div class="flex border-b border-slate-700 mb-6 gap-2">
             <button id="tabSignup" onclick="setAuthMode('signup')" class="flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center">
-                Register Credentials
+                Create Account
             </button>
             <button id="tabLogin" onclick="setAuthMode('login')" class="flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center">
-                Secure Portal Login
+                Sign In
             </button>
         </div>
 
         <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
             <div id="fullNameGroup">
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Account Holder Name</label>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Full Name</label>
                 <input type="text" id="authName" placeholder="e.g., Muhammad Majid" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Unique Identifier / Email</label>
-                <input type="text" id="authEmail" required placeholder="Enter username or email" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Email or Username</label>
+                <input type="text" id="authEmail" required placeholder="Enter your email or username" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Security Passphrase</label>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
                 <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
             </div>
             <button type="submit" id="authSubmitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-2.5 rounded transition-colors shadow-lg cursor-pointer mt-2">
-                Initialize Provisioning
+                Create Account
             </button>
         </form>
     </section>
@@ -213,22 +271,30 @@
             <form id="profilerForm" onsubmit="processRiskProfile(event)" class="space-y-8">
                 <!-- Parameters Row -->
                 <div>
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section I: Risk Parameter Matrices</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section I: Investor Profile &amp; Risk Parameters</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Demographic Lifecycle Cohort</label>
-                            <select id="stageAge" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option value="W3" selected>18–30 Years (Aggressive Wealth Acceleration Cycle)</option>
-                                <option value="W2">31–45 Years (Strategic Growth / Capital Augmentation Track)</option>
-                                <option value="W1">46+ Years (Capital Preservation & Sovereign Yield Preference)</option>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Investor Age</label>
+                            <select id="exactAge" onchange="syncAgeCohort()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono">
+                                <!-- Age options injected on load -->
                             </select>
+                            <p id="ageHint" class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">Select your exact age to auto-match a strategy tier.</p>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-300 mb-2">Investment Horizon Constraints</label>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Recommended Strategy Tier</label>
+                            <select id="stageAge" onchange="updateAgeHint()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
+                                <option value="W3" selected>18–30 Years — Aggressive Growth Tier</option>
+                                <option value="W2">31–45 Years — Balanced Growth Tier</option>
+                                <option value="W1">46+ Years — Capital Preservation Tier</option>
+                            </select>
+                            <p class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">Auto-set from your age. You may override it manually.</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Investment Horizon</label>
                             <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
-                                <option>Tactical Horizon: 12-Month Liquidity Window</option>
-                                <option selected>Strategic Horizon: 2-Year Fixed Allocation Framework (Jan 2026 - Dec 2027)</option>
-                                <option>Cyclical Horizon: 5+ Year Macro Asset Cycle</option>
+                                <option>Short term — 12-month liquidity window</option>
+                                <option selected>Medium term — 2-year framework (Jan 2026 – Dec 2027)</option>
+                                <option>Long term — 5+ year market cycle</option>
                             </select>
                         </div>
                     </div>
@@ -504,6 +570,7 @@
         window.onload = function() {
             applySavedTheme();
             startLiveClock();
+            populateAgeOptions();
             calculateSurplus();
             populateStocksTable();
             setAuthMode('signup'); 
@@ -546,10 +613,13 @@
         function startLiveClock() {
             const tick = () => {
                 const now = new Date();
-                const hh = String(now.getHours()).padStart(2, '0');
+                let h = now.getHours();
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12; if (h === 0) h = 12;
+                const hh = String(h).padStart(2, '0');
                 const mm = String(now.getMinutes()).padStart(2, '0');
                 const ss = String(now.getSeconds()).padStart(2, '0');
-                const timeHTML = `${hh}<span class="clock-colon">:</span>${mm}<span class="clock-colon">:</span>${ss}`;
+                const timeHTML = `${hh}<span class="clock-colon">:</span>${mm}<span class="clock-colon">:</span>${ss} <span class="text-sm">${ampm}</span>`;
                 const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
                 const at = document.getElementById('authClockTime');
@@ -557,10 +627,47 @@
                 const hc = document.getElementById('headerClock');
                 if (at) at.innerHTML = timeHTML;
                 if (ad) ad.innerText = dateStr;
-                if (hc) hc.innerText = `${hh}:${mm}:${ss}`;
+                if (hc) hc.innerText = `${hh}:${mm}:${ss} ${ampm}`;
             };
             tick();
             setInterval(tick, 1000);
+        }
+
+        // ===== INVESTOR AGE SELECTOR =====
+        function populateAgeOptions() {
+            const sel = document.getElementById('exactAge');
+            if (!sel) return;
+            let html = '';
+            for (let a = 18; a <= 79; a++) {
+                html += `<option value="${a}"${a === 25 ? ' selected' : ''}>${a} years</option>`;
+            }
+            html += `<option value="80">80 years &amp; above</option>`;
+            sel.innerHTML = html;
+            syncAgeCohort();
+        }
+
+        function ageToTier(age) {
+            if (age <= 30) return 'W3';
+            if (age <= 45) return 'W2';
+            return 'W1';
+        }
+
+        function syncAgeCohort() {
+            const age = parseInt(document.getElementById('exactAge').value, 10);
+            const tier = ageToTier(age);
+            document.getElementById('stageAge').value = tier;
+            updateAgeHint();
+        }
+
+        function updateAgeHint() {
+            const tier = document.getElementById('stageAge').value;
+            const labels = {
+                W3: 'Aggressive Growth Tier — longer runway, higher volatility tolerance.',
+                W2: 'Balanced Growth Tier — steady accumulation with managed risk.',
+                W1: 'Capital Preservation Tier — yield focus and lower volatility.'
+            };
+            const hint = document.getElementById('ageHint');
+            if (hint) hint.innerText = labels[tier] || '';
         }
 
         function refreshChartTheme() {
@@ -595,12 +702,12 @@
                 tabLogin.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center";
                 tabSignup.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center";
                 fullNameGroup.classList.add('hidden');
-                authSubmitBtn.innerText = "Authorize & Enter Terminal";
+                authSubmitBtn.innerText = "Sign In to Workspace";
             } else {
                 tabSignup.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center";
                 tabLogin.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center";
                 fullNameGroup.classList.remove('hidden');
-                authSubmitBtn.innerText = "Generate Fresh Quant Credentials";
+                authSubmitBtn.innerText = "Create Account";
             }
         }
 
@@ -620,31 +727,50 @@
                         return;
                     }
                 }
-                alert("Access Denied: Invalid Security Passphrase or Unrecognized Identifier Matrix.");
+                alert("We couldn't sign you in. Please check your email and password, then try again.");
             } else {
                 // Save user explicitly 
-                const nameInput = document.getElementById('authName').value.trim() || "Pro Analyst";
+                const nameInput = document.getElementById('authName').value.trim() || "Investor";
                 if (!usernameInput || !passwordInput) {
-                    alert("Validation Error: All tracking structures must be populated.");
+                    alert("Please fill in all required fields before continuing.");
                     return;
                 }
                 localStorage.setItem('quant_user_db', JSON.stringify({ name: nameInput, username: usernameInput, password: passwordInput }));
-                alert("Security Credentials Encrypted & Registered successfully! Proceeding to Secure Portal Login.");
+                alert("Your account has been created successfully. Please sign in to continue.");
                 setAuthMode('login');
             }
         }
 
         function enterAppWorkspace(verifiedName) {
-            document.getElementById('authScreen').classList.add('hidden');
-            document.getElementById('mainHeader').classList.remove('hidden');
-            document.getElementById('onboardingScreen').classList.remove('hidden');
+            // Cool "Access Granted" reveal sequence
+            const overlay = document.getElementById('accessOverlay');
+            document.getElementById('agUserName').innerText = "Welcome, " + verifiedName;
+            overlay.classList.remove('hidden');
+
             document.getElementById('welcomeUser').innerText = "Account Holder: " + verifiedName;
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                document.getElementById('authScreen').classList.add('hidden');
+
+                const header = document.getElementById('mainHeader');
+                const onboarding = document.getElementById('onboardingScreen');
+                header.classList.remove('hidden');
+                onboarding.classList.remove('hidden');
+
+                // entrance animations
+                header.classList.add('reveal-up');
+                onboarding.classList.add('reveal-up');
+            }, 1900);
         }
 
         function handleLogout() {
             document.getElementById('mainHeader').classList.add('hidden');
+            document.getElementById('mainHeader').classList.remove('reveal-up');
             document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('onboardingScreen').classList.remove('reveal-up');
             document.getElementById('appDashboard').classList.add('hidden');
+            document.getElementById('appDashboard').classList.remove('stagger');
             setAuthMode('signup');
             document.getElementById('authScreen').classList.remove('hidden');
             document.getElementById('authForm').reset();
@@ -661,7 +787,10 @@
         function processRiskProfile(event) {
             event.preventDefault();
             document.getElementById('onboardingScreen').classList.add('hidden');
-            document.getElementById('appDashboard').classList.remove('hidden');
+            const dash = document.getElementById('appDashboard');
+            dash.classList.remove('hidden');
+            // re-trigger staggered entrance for the dashboard children
+            dash.classList.remove('stagger'); void dash.offsetWidth; dash.classList.add('stagger');
             
             initTrajectoryChart();
             initAllocationChart();
