@@ -131,10 +131,57 @@
         .stagger > :nth-child(6) { animation-delay: .50s; }
         .stagger > :nth-child(7) { animation-delay: .59s; }
 
+        /* ===== NUMBER TYPOGRAPHY ===== */
+        .num { font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+        /* ===== 3D PREVIEW / LANDING SCREEN ===== */
+        .preview-stage { perspective: 1400px; }
+        .orb { position: absolute; border-radius: 9999px; filter: blur(70px); opacity: .45; pointer-events: none; animation: orbDrift 16s ease-in-out infinite; }
+        @keyframes orbDrift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(36px,-28px) scale(1.18); } }
+
+        .hero-tilt { transform-style: preserve-3d; transition: transform .25s ease-out; }
+        .hero-scene { position: relative; width: 260px; height: 300px; transform-style: preserve-3d; animation: sceneFloat 6.5s ease-in-out infinite; }
+        @keyframes sceneFloat {
+            0%,100% { transform: rotateX(9deg) rotateY(-20deg) translateY(0); }
+            50%     { transform: rotateX(9deg) rotateY(-20deg) translateY(-16px); }
+        }
+        .glass-panel {
+            position: absolute; inset: 0; border-radius: 20px;
+            border: 1px solid rgba(16,185,129,.28);
+            background: linear-gradient(160deg, rgba(30,41,59,.92), rgba(15,23,42,.55));
+            box-shadow: 0 34px 70px -24px rgba(0,0,0,.65);
+        }
+        html.light .glass-panel { background: linear-gradient(160deg, rgba(255,255,255,.95), rgba(241,245,249,.8)); box-shadow: 0 34px 70px -28px rgba(15,23,42,.35); }
+        .glass-panel.p2 { transform: translateZ(-44px) translateY(20px) scale(.95); opacity: .7; }
+        .glass-panel.p3 { transform: translateZ(-88px) translateY(40px) scale(.9); opacity: .42; }
+
+        .spark { stroke-dasharray: 400; stroke-dashoffset: 400; animation: sparkDraw 2.4s ease-out .4s forwards; }
+        @keyframes sparkDraw { to { stroke-dashoffset: 0; } }
+
+        .feature-3d { transform-style: preserve-3d; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; will-change: transform; }
+        .feature-3d:hover { transform: translateY(-7px) rotateX(7deg) rotateY(-7deg); border-color: rgba(16,185,129,.55); box-shadow: 0 26px 44px -24px rgba(16,185,129,.5); }
+
+        .float-in { opacity: 0; animation: floatIn .7s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes floatIn { from { opacity: 0; transform: translateY(28px) rotateX(-8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
+        .fi-1 { animation-delay: .10s; } .fi-2 { animation-delay: .18s; } .fi-3 { animation-delay: .26s; }
+        .fi-4 { animation-delay: .34s; } .fi-5 { animation-delay: .42s; } .fi-6 { animation-delay: .50s; }
+        .fi-7 { animation-delay: .58s; } .fi-8 { animation-delay: .66s; }
+
+        .cta-pulse { animation: ctaPulse 2.4s ease-out infinite; }
+        @keyframes ctaPulse {
+            0% { box-shadow: 0 0 0 0 rgba(16,185,129,.5); }
+            70% { box-shadow: 0 0 0 14px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             #authScreen, .clock-colon, .live-dot, .clock-panel::after,
             .ag-ring, .ag-check, .ag-fade, .ag-bar > span,
-            .reveal-up, .stagger > * { animation: none !important; opacity: 1 !important; }
+            .reveal-up, .stagger > *,
+            .orb, .hero-scene, .spark, .float-in, .cta-pulse {
+                animation: none !important; opacity: 1 !important;
+            }
+            .feature-3d:hover { transform: none; }
         }
     </style>
 </head>
@@ -155,6 +202,120 @@
             <div class="ag-bar mx-auto"><span></span></div>
         </div>
     </div>
+
+    <!-- ===== APP PREVIEW / INTRO SCREEN (shown first) ===== -->
+    <section id="previewScreen" class="preview-stage relative max-w-6xl w-full mx-auto my-auto overflow-hidden" onmousemove="tiltHero(event)" onmouseleave="resetHero()">
+
+        <!-- ambient 3D orbs -->
+        <div class="orb" style="width:280px;height:280px;background:#10b981;top:-60px;left:-40px;"></div>
+        <div class="orb" style="width:240px;height:240px;background:#3b82f6;bottom:-50px;right:-30px;animation-delay:-6s;"></div>
+
+        <!-- theme toggle -->
+        <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
+            class="absolute top-2 right-2 z-20 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+            <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+
+        <div class="relative z-10 px-2 py-6">
+            <!-- HERO -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-10">
+                <div>
+                    <div class="float-in fi-1 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-5">
+                        <span class="live-dot"></span> Wealth Architecture · PSX Edition
+                    </div>
+                    <h1 class="float-in fi-2 text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight mb-4">
+                        Plan your wealth like<br><span class="text-emerald-400">an institution.</span>
+                    </h1>
+                    <p class="float-in fi-3 text-sm text-slate-400 leading-relaxed mb-6 max-w-md">
+                        A guided portfolio engine for Pakistani investors. Profile your risk, choose a strategy,
+                        and project two years of growth across 28 Pakistan Stock Exchange equities — taxes included.
+                    </p>
+                    <div class="float-in fi-4 flex flex-wrap items-center gap-3">
+                        <button onclick="showAuth()" class="cta-pulse bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-7 py-3 rounded-lg transition-colors shadow-lg cursor-pointer">
+                            Get Started
+                        </button>
+                        <button onclick="showAuth(true)" class="text-sm font-semibold text-slate-300 hover:text-emerald-400 px-3 py-3 transition-colors cursor-pointer">
+                            I already have an account →
+                        </button>
+                    </div>
+                    <div class="float-in fi-5 flex gap-6 mt-7">
+                        <div><div class="text-xl font-bold text-white num">28</div><div class="text-[10px] text-slate-500 uppercase tracking-wider">PSX Stocks</div></div>
+                        <div><div class="text-xl font-bold text-white num">3</div><div class="text-[10px] text-slate-500 uppercase tracking-wider">Strategy Models</div></div>
+                        <div><div class="text-xl font-bold text-white num">2 yr</div><div class="text-[10px] text-slate-500 uppercase tracking-wider">Forecast Window</div></div>
+                    </div>
+                </div>
+
+                <!-- 3D CENTERPIECE -->
+                <div class="flex justify-center lg:justify-end float-in fi-4">
+                    <div id="heroTilt" class="hero-tilt">
+                        <div class="hero-scene">
+                            <div class="glass-panel p3"></div>
+                            <div class="glass-panel p2"></div>
+                            <div class="glass-panel p1 p-5 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Projected Value</span>
+                                        <span class="text-[9px] text-slate-400 num">2027</span>
+                                    </div>
+                                    <div class="text-2xl font-bold text-white num">PKR 1.52 Cr</div>
+                                    <div class="text-[10px] text-emerald-400 font-semibold num">+49.8% · 2-yr return</div>
+                                </div>
+                                <svg viewBox="0 0 200 70" class="w-full h-20">
+                                    <polyline class="spark" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                                        points="4,60 40,52 76,40 112,44 148,22 196,8"/>
+                                    <circle cx="196" cy="8" r="4" fill="#10b981"/>
+                                </svg>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Yield</div><div class="text-[11px] font-bold text-emerald-400 num">15%</div></div>
+                                    <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Growth</div><div class="text-[11px] font-bold text-blue-400 num">75%</div></div>
+                                    <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Alpha</div><div class="text-[11px] font-bold text-amber-400 num">5%</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEATURE GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="feature-3d float-in fi-3 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-emerald-500/10 text-emerald-400 rounded-lg mb-3 border border-emerald-500/20 text-lg">🎯</div>
+                    <h3 class="text-sm font-bold text-white mb-1">Smart Risk Profiling</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Enter your exact age and income — we match you to the right strategy tier automatically.</p>
+                </div>
+                <div class="feature-3d float-in fi-4 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-blue-500/10 text-blue-400 rounded-lg mb-3 border border-blue-500/20 text-lg">⚖️</div>
+                    <h3 class="text-sm font-bold text-white mb-1">Three Strategy Models</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Conservative, Balanced and Aggressive blueprints built around a PKR 1 Crore portfolio.</p>
+                </div>
+                <div class="feature-3d float-in fi-5 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-emerald-500/10 text-emerald-400 rounded-lg mb-3 border border-emerald-500/20 text-lg">📈</div>
+                    <h3 class="text-sm font-bold text-white mb-1">2-Year Growth Forecast</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Projected value, capital gains and CAGR plotted on a live, animated timeline.</p>
+                </div>
+                <div class="feature-3d float-in fi-6 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-amber-500/10 text-amber-400 rounded-lg mb-3 border border-amber-500/20 text-lg">🏦</div>
+                    <h3 class="text-sm font-bold text-white mb-1">PSX Equity Universe</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">28 hand-picked Pakistani stocks with EPS, beta and sector breakdowns at a glance.</p>
+                </div>
+                <div class="feature-3d float-in fi-7 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-rose-500/10 text-rose-400 rounded-lg mb-3 border border-rose-500/20 text-lg">🧾</div>
+                    <h3 class="text-sm font-bold text-white mb-1">Tax-Aware Projections</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">FBR filer status, capital gains tax and 15% dividend withholding are built into every number.</p>
+                </div>
+                <div class="feature-3d float-in fi-8 bg-fintech-card rounded-xl p-4 border border-slate-700">
+                    <div class="inline-flex p-2 bg-blue-500/10 text-blue-400 rounded-lg mb-3 border border-blue-500/20 text-lg">✨</div>
+                    <h3 class="text-sm font-bold text-white mb-1">Designed for Comfort</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">A live clock, dark &amp; light themes, and a clean, fast institutional-grade interface.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- INSTITUTIONAL HEADER LAYER -->
     <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-col md:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-700 gap-4">
@@ -188,7 +349,7 @@
     </header>
 
     <!-- MANDATORY IDENTITY PROVISIONING INTERFACE (AUTH) -->
-    <section id="authScreen" class="relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
+    <section id="authScreen" class="hidden relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
 
         <!-- Theme Toggle (Auth) -->
         <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
@@ -253,6 +414,11 @@
                 Create Account
             </button>
         </form>
+
+        <div class="flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
+            <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Back to overview</button>
+            <button id="authSwitchHint" onclick="useDifferentAccount()" class="hidden text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">Use a different account</button>
+        </div>
     </section>
 
     <!-- CAPITAL QUANT INTERACTIVE WORKSPACE -->
@@ -359,7 +525,7 @@
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Active Allocation Blueprint Engine</div>
                     <div class="text-lg font-bold text-white mt-0.5 flex items-center gap-2">
                         <span id="activeModelTitle" class="text-emerald-400 font-mono">Processing...</span>
-                        <span class="text-xs font-normal text-slate-300 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">PKR 10,000,000 Reference Base</span>
+                        <span class="text-xs font-normal text-slate-300 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono num">PKR 1,00,00,000 base</span>
                     </div>
                 </div>
                 <div class="flex gap-2 w-full md:w-auto">
@@ -373,27 +539,33 @@
             <div class="grid grid-cols-2 lg:grid-cols-6 gap-4">
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Initial Base Capital</div>
-                    <div class="text-base font-bold text-white font-mono mt-1">PKR 10,000,000</div>
+                    <div class="text-base font-bold text-white font-mono num mt-1">PKR 1,00,00,000</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5">≈ 1.00 Crore</div>
                 </div>
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Projected Portfolio Value</div>
-                    <div class="text-base font-bold text-blue-400 font-mono mt-1" id="kpi-projected">-</div>
+                    <div class="text-base font-bold text-blue-400 font-mono num mt-1" id="kpi-projected">—</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5" id="kpi-projected-c">&nbsp;</div>
                 </div>
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Net Realizable Capital Gain</div>
-                    <div class="text-base font-bold text-white font-mono mt-1" id="kpi-capgain">-</div>
+                    <div class="text-base font-bold text-white font-mono num mt-1" id="kpi-capgain">—</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5" id="kpi-capgain-c">&nbsp;</div>
                 </div>
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cumulative Yield (Dividends)</div>
-                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-dividend">-</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono num mt-1" id="kpi-dividend">—</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5" id="kpi-dividend-c">&nbsp;</div>
                 </div>
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Absolute Performance</div>
-                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-totalreturn">-</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono num mt-1" id="kpi-totalreturn">—</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5">Total 2-yr return</div>
                 </div>
                 <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
                     <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">2-Year Implied CAGR</div>
-                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-cagr">-</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono num mt-1" id="kpi-cagr">—</div>
+                    <div class="text-[10px] text-slate-500 num mt-0.5">Annualised</div>
                 </div>
             </div>
 
@@ -573,8 +745,67 @@
             populateAgeOptions();
             calculateSurplus();
             populateStocksTable();
-            setAuthMode('signup'); 
         };
+
+        // ===== PREVIEW -> AUTH NAVIGATION =====
+        function showAuth(forceLogin) {
+            document.getElementById('previewScreen').classList.add('hidden');
+            const auth = document.getElementById('authScreen');
+            auth.classList.remove('hidden');
+            auth.classList.remove('reveal-up'); void auth.offsetWidth; auth.classList.add('reveal-up');
+            initAuthScreen(forceLogin);
+        }
+
+        function backToPreview() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('previewScreen').classList.remove('hidden');
+        }
+
+        // Decide which auth option to show: first-time users see Create Account only,
+        // returning users (account already saved) see Sign In only.
+        function initAuthScreen(forceLogin) {
+            const hasAccount = !!localStorage.getItem('quant_user_db');
+            const tabSignup = document.getElementById('tabSignup');
+            const tabLogin = document.getElementById('tabLogin');
+            const switchHint = document.getElementById('authSwitchHint');
+
+            if (hasAccount || forceLogin) {
+                tabSignup.classList.add('hidden');
+                tabLogin.classList.remove('hidden');
+                switchHint.classList.toggle('hidden', !hasAccount);
+                setAuthMode('login');
+            } else {
+                tabLogin.classList.add('hidden');
+                tabSignup.classList.remove('hidden');
+                switchHint.classList.add('hidden');
+                setAuthMode('signup');
+            }
+        }
+
+        function useDifferentAccount() {
+            if (confirm("This will remove the saved account on this device so you can create a new one. Continue?")) {
+                localStorage.removeItem('quant_user_db');
+                document.getElementById('authForm').reset();
+                initAuthScreen(false);
+            }
+        }
+
+        // ===== HERO 3D PARALLAX =====
+        const _reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function tiltHero(e) {
+            if (_reduceMotion) return;
+            const tilt = document.getElementById('heroTilt');
+            if (!tilt) return;
+            const stage = document.getElementById('previewScreen');
+            const r = stage.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width - 0.5;
+            const y = (e.clientY - r.top) / r.height - 0.5;
+            tilt.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 16}deg)`;
+        }
+        function resetHero() {
+            const tilt = document.getElementById('heroTilt');
+            if (tilt) tilt.style.transform = '';
+        }
 
         // ===== THEME ENGINE (DARK / LIGHT) =====
         function applySavedTheme() {
@@ -737,7 +968,8 @@
                 }
                 localStorage.setItem('quant_user_db', JSON.stringify({ name: nameInput, username: usernameInput, password: passwordInput }));
                 alert("Your account has been created successfully. Please sign in to continue.");
-                setAuthMode('login');
+                document.getElementById('authPassword').value = '';
+                initAuthScreen(true);
             }
         }
 
@@ -771,9 +1003,9 @@
             document.getElementById('onboardingScreen').classList.remove('reveal-up');
             document.getElementById('appDashboard').classList.add('hidden');
             document.getElementById('appDashboard').classList.remove('stagger');
-            setAuthMode('signup');
-            document.getElementById('authScreen').classList.remove('hidden');
             document.getElementById('authForm').reset();
+            document.getElementById('authScreen').classList.remove('hidden');
+            initAuthScreen();
         }
 
         // DEEPLY SYNCED NUMERICAL ENGINE DATA RUNS
@@ -781,7 +1013,7 @@
             const gross = parseFloat(document.getElementById('monthlyIncomeVal').value) || 0;
             const commitments = parseFloat(document.getElementById('monthlyCommitments').value) || 0;
             const net = gross - commitments;
-            document.getElementById('surplusDisplay').innerText = "PKR " + (net > 0 ? net.toLocaleString() : 0);
+            document.getElementById('surplusDisplay').innerText = "PKR " + (net > 0 ? pkGroup(net) : 0);
         }
 
         function processRiskProfile(event) {
@@ -800,16 +1032,37 @@
             switchActiveModel(suggestedTier); 
         }
 
+        // ===== PAKISTANI NUMBER FORMATTING =====
+        function digitsOf(str) { return parseInt(String(str).replace(/[^\d]/g, ''), 10) || 0; }
+        function pkGroup(n) {
+            const s = String(n);
+            if (s.length <= 3) return s;
+            const last3 = s.slice(-3);
+            let rest = s.slice(0, -3);
+            rest = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+            return rest + ',' + last3;
+        }
+        function pkrFull(str) { return 'PKR ' + pkGroup(digitsOf(str)); }
+        function pkrCompact(str) {
+            const n = digitsOf(str);
+            if (n >= 10000000) return '≈ ' + (n / 10000000).toFixed(2) + ' Crore';
+            if (n >= 100000)   return '≈ ' + (n / 100000).toFixed(2) + ' Lakh';
+            return '≈ ' + pkGroup(n);
+        }
+
         function switchActiveModel(modelCode) {
             const data = modelData[modelCode];
             if (!data) return;
 
             document.getElementById('activeModelTitle').innerText = data.name;
-            document.getElementById('kpi-projected').innerText = data.projectedValue;
-            document.getElementById('kpi-capgain').innerText = data.capgain;
-            document.getElementById('kpi-dividend').innerText = data.dividend;
+            document.getElementById('kpi-projected').innerText = pkrFull(data.projectedValue);
+            document.getElementById('kpi-capgain').innerText = pkrFull(data.capgain);
+            document.getElementById('kpi-dividend').innerText = pkrFull(data.dividend);
             document.getElementById('kpi-totalreturn').innerText = data.totalreturn;
             document.getElementById('kpi-cagr').innerText = data.cagr;
+            document.getElementById('kpi-projected-c').innerText = pkrCompact(data.projectedValue);
+            document.getElementById('kpi-capgain-c').innerText = pkrCompact(data.capgain);
+            document.getElementById('kpi-dividend-c').innerText = pkrCompact(data.dividend);
             document.getElementById('allocation-summary-text').innerText = data.allocationText;
             document.getElementById('trafficLightBanner').innerText = data.status;
 
