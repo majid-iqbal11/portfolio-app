@@ -1,52 +1,792 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAM | Institutional Engine</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Institutional Portfolio Analytics & Wealth Architecture v3.0</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js CDN for Quant Analytics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        :root[data-theme="dark"] { --bg: #0b0f19; --card: rgba(17, 24, 39, 0.8); --text: #f1f5f9; }
-        :root[data-theme="light"] { --bg: #f8fafc; --card: rgba(255, 255, 255, 0.9); --text: #1e293b; }
-        
-        body { background-color: var(--bg); color: var(--text); transition: 0.4s; font-family: 'Inter', sans-serif; }
-        .glass { background: var(--card); backdrop-filter: blur(15px); border: 1px solid rgba(128, 128, 128, 0.2); }
-        .fade-in { animation: fadeIn 0.7s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col items-center p-6">
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-    <header class="w-full max-w-6xl flex justify-between items-center mb-10">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white">WAM</div>
-            <h1 class="text-xl font-bold tracking-tighter uppercase">Wealth Matrix</h1>
-        </div>
-        <button onclick="toggleTheme()" class="px-4 py-2 bg-slate-800 rounded-full text-xs font-bold">MODE SWITCH</button>
-    </header>
-
-    <div id="loginCard" class="glass w-full max-w-md p-10 rounded-3xl shadow-2xl fade-in mt-20">
-        <h2 class="text-2xl font-bold mb-2">Secure Access</h2>
-        <p class="opacity-60 mb-8">Enter your institutional credentials</p>
-        <input type="text" placeholder="Quant ID" class="w-full bg-transparent border-b border-slate-500 py-3 mb-6 outline-none">
-        <button onclick="login()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-all">Authorize System</button>
-    </div>
-
-    <script>
-        // Theme Toggle Logic
-        function toggleTheme() {
-            const html = document.documentElement;
-            html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+        /* ===== THEME TOKENS ===== */
+        :root, html.dark {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-border: #334155;
+            --text-strong: #f1f5f9;
+        }
+        html.light {
+            --bg: #eef2f7;
+            --surface: #ffffff;
+            --surface-border: #e2e8f0;
+            --text-strong: #0f172a;
         }
 
-        // Login Animation Logic
-        function login() {
-            const card = document.getElementById('loginCard');
-            card.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-            setTimeout(() => {
-                card.style.display = 'none';
-                // Yahan aap apna dashboard show kar sakte hain
-            }, 500);
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-strong);
+            transition: background-color .35s ease, color .35s ease;
+        }
+        .bg-fintech-card {
+            background-color: var(--surface);
+            border: 1px solid var(--surface-border);
+            transition: background-color .35s ease, border-color .35s ease;
+        }
+
+        /* ===== LIGHT-MODE UTILITY OVERRIDES ===== */
+        html.light .bg-slate-900,
+        html.light .bg-slate-950        { background-color: #f1f5f9 !important; }
+        html.light .bg-slate-800        { background-color: #e2e8f0 !important; }
+        html.light .bg-slate-900\/80    { background-color: rgba(241,245,249,.85) !important; }
+        html.light .bg-slate-900\/60    { background-color: rgba(241,245,249,.6) !important; }
+        html.light tr.hover\:bg-slate-900\/40:hover { background-color: #f1f5f9 !important; }
+
+        html.light .text-white          { color: #0f172a !important; }
+        html.light .text-slate-200      { color: #1e293b !important; }
+        html.light .text-slate-300      { color: #334155 !important; }
+        html.light .text-slate-400      { color: #475569 !important; }
+        html.light .text-slate-500      { color: #64748b !important; }
+
+        html.light .border-slate-700    { border-color: #cbd5e1 !important; }
+        html.light .border-slate-800    { border-color: #e2e8f0 !important; }
+        html.light .divide-slate-800 > :not([hidden]) ~ :not([hidden]) { border-color: #e2e8f0 !important; }
+
+        html.light input,
+        html.light select               { color: #0f172a !important; }
+        html.light input::placeholder   { color: #94a3b8; }
+
+        /* ===== LOGIN ENTRANCE + CLOCK ANIMATIONS ===== */
+        #authScreen { animation: authIn .6s cubic-bezier(.16,1,.3,1) both; }
+        @keyframes authIn {
+            from { opacity: 0; transform: translateY(18px) scale(.985); }
+            to   { opacity: 1; transform: translateY(0)   scale(1); }
+        }
+
+        .clock-readout { font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+        .clock-colon { animation: blink 1s steps(1) infinite; }
+        @keyframes blink { 50% { opacity: .25; } }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 9999px;
+            background: #10b981; box-shadow: 0 0 0 0 rgba(16,185,129,.6);
+            animation: livePulse 1.6s ease-out infinite;
+        }
+        @keyframes livePulse {
+            0%   { box-shadow: 0 0 0 0 rgba(16,185,129,.55); }
+            70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+
+        /* sweeping highlight line on the clock panel */
+        .clock-panel { position: relative; overflow: hidden; }
+        .clock-panel::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(110deg, transparent 35%, rgba(16,185,129,.10) 50%, transparent 65%);
+            transform: translateX(-100%);
+            animation: sweep 3.5s ease-in-out infinite;
+        }
+        @keyframes sweep { 0% { transform: translateX(-100%);} 60%,100% { transform: translateX(100%);} }
+
+        @media (prefers-reduced-motion: reduce) {
+            #authScreen, .clock-colon, .live-dot, .clock-panel::after { animation: none !important; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col justify-between">
+
+    <!-- INSTITUTIONAL HEADER LAYER -->
+    <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-col md:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-700 gap-4">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span>WEALTH ARCHITECTURE</span> 
+                <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">v3.0 Quant Live</span>
+            </h1>
+            <p class="text-xs text-slate-400">Proprietary Asset Valuation & Risk Modeling Environment | Technical Framework</p>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <div class="text-xs text-slate-400 text-right">
+                <div id="welcomeUser" class="text-emerald-400 font-semibold mb-1">Authenticated Terminal</div>
+                <div><strong>Live Clock:</strong> <span id="headerClock" class="font-mono text-slate-300">--:--:--</span></div>
+                <div><strong>System Execution:</strong> June 2026</div>
+            </div>
+            <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
+                class="p-2 rounded bg-slate-800 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+                <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+            <button onclick="handleLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs px-3 py-1.5 rounded border border-rose-500/20 transition-colors cursor-pointer font-medium tracking-wide">
+                Terminate Session
+            </button>
+        </div>
+    </header>
+
+    <!-- MANDATORY IDENTITY PROVISIONING INTERFACE (AUTH) -->
+    <section id="authScreen" class="relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
+
+        <!-- Theme Toggle (Auth) -->
+        <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
+            class="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+            <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+
+        <div class="text-center mb-5">
+            <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <h2 class="text-xl font-bold text-white tracking-tight">Identity & Access Management</h2>
+            <p class="text-xs text-slate-400 mt-1">Authorized Personnel Authentication Required</p>
+        </div>
+
+        <!-- LIVE TERMINAL CLOCK -->
+        <div class="clock-panel bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="live-dot"></span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Live Session Clock</span>
+                </div>
+                <div id="authClockTime" class="clock-readout text-emerald-400 font-mono text-xl font-semibold">--:--:--</div>
+            </div>
+            <div class="text-right">
+                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">System Date</div>
+                <div id="authClockDate" class="text-slate-300 font-mono text-xs">--- -- ----</div>
+            </div>
+        </div>
+
+        <!-- Segmented Control Tabs -->
+        <div class="flex border-b border-slate-700 mb-6 gap-2">
+            <button id="tabSignup" onclick="setAuthMode('signup')" class="flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center">
+                Register Credentials
+            </button>
+            <button id="tabLogin" onclick="setAuthMode('login')" class="flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center">
+                Secure Portal Login
+            </button>
+        </div>
+
+        <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+            <div id="fullNameGroup">
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Account Holder Name</label>
+                <input type="text" id="authName" placeholder="e.g., Muhammad Majid" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Unique Identifier / Email</label>
+                <input type="text" id="authEmail" required placeholder="Enter username or email" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Security Passphrase</label>
+                <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+            </div>
+            <button type="submit" id="authSubmitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-2.5 rounded transition-colors shadow-lg cursor-pointer mt-2">
+                Initialize Provisioning
+            </button>
+        </form>
+    </section>
+
+    <!-- CAPITAL QUANT INTERACTIVE WORKSPACE -->
+    <main class="max-w-7xl w-full mx-auto">
+        
+        <!-- RISK DISCLOSURE & SOCIO-ECONOMIC CAPACITY ENGINE -->
+        <section id="onboardingScreen" class="hidden bg-fintech-card rounded-xl p-6 mb-8 shadow-xl">
+            <div class="border-b border-slate-700 pb-4 mb-6">
+                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <span class="p-1.5 bg-emerald-500/10 text-emerald-400 rounded text-sm font-mono">M1</span>
+                    Client Risk Profiling & Liquidity Constraint Assessment
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Socio-economic parameters processing layer designed for explicit tactical active-surplus capital assignment.</p>
+            </div>
+
+            <form id="profilerForm" onsubmit="processRiskProfile(event)" class="space-y-8">
+                <!-- Parameters Row -->
+                <div>
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section I: Risk Parameter Matrices</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Demographic Lifecycle Cohort</label>
+                            <select id="stageAge" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
+                                <option value="W3" selected>18–30 Years (Aggressive Wealth Acceleration Cycle)</option>
+                                <option value="W2">31–45 Years (Strategic Growth / Capital Augmentation Track)</option>
+                                <option value="W1">46+ Years (Capital Preservation & Sovereign Yield Preference)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Investment Horizon Constraints</label>
+                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
+                                <option>Tactical Horizon: 12-Month Liquidity Window</option>
+                                <option selected>Strategic Horizon: 2-Year Fixed Allocation Framework (Jan 2026 - Dec 2027)</option>
+                                <option>Cyclical Horizon: 5+ Year Macro Asset Cycle</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Row -->
+                <div class="border-t border-slate-700 pt-6">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Section II: Cash Flow & Compliance Parameters</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Primary Capital Inflow Vertical</label>
+                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
+                                <option selected>Independent Enterprise / High-Growth Entrepreneurship</option>
+                                <option>Corporate Executive Remuneration / Salaried Track</option>
+                                <option>Professional Services / Global Advisory Operations</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Estimated Gross Monthly Inflow (PKR)</label>
+                            <select id="monthlyIncomeVal" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono" onchange="calculateSurplus()">
+                                <option value="100000">100,000</option>
+                                <option value="250000" selected>250,000</option>
+                                <option value="500000">500,000</option>
+                                <option value="1000000">1,000,000</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Operational Maintenance Outflows (PKR)</label>
+                            <input type="number" id="monthlyCommitments" value="90000" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-mono" oninput="calculateSurplus()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">Modeled Net Surplus Capital Velocity</label>
+                            <div class="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-mono rounded px-3 py-2 text-xs flex justify-between items-center">
+                                <span id="surplusDisplay">PKR 160,000</span>
+                                <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-sans uppercase font-bold tracking-wider">Dynamic Compute</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-2">FBR Active Taxpayer Status Validation</label>
+                            <select class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white font-medium">
+                                <option value="filer">Active Taxpayer List (ATL Filer - Baseline CGT Rules)</option>
+                                <option value="nonfiler">Non-Filer Category (Higher Penal WHT Regime Automatically Triggered)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded transition-colors shadow-lg cursor-pointer">
+                        Initialize Risk Architecture Execution
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- LIVE STRATEGIC MODEL RUNTIME ENGINE -->
+        <section id="appDashboard" class="hidden space-y-6">
+            
+            <!-- MODEL TARGET INDEX SWITCH LAYER -->
+            <div class="bg-slate-900/80 border border-slate-700 rounded-xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Active Allocation Blueprint Engine</div>
+                    <div class="text-lg font-bold text-white mt-0.5 flex items-center gap-2">
+                        <span id="activeModelTitle" class="text-emerald-400 font-mono">Processing...</span>
+                        <span class="text-xs font-normal text-slate-300 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">PKR 10,000,000 Reference Base</span>
+                    </div>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <button id="btnW1" onclick="switchActiveModel('W1')" class="flex-1 md:flex-none px-4 py-2 rounded text-xs font-bold font-mono border transition-all cursor-pointer">W1 Model</button>
+                    <button id="btnW2" onclick="switchActiveModel('W2')" class="flex-1 md:flex-none px-4 py-2 rounded text-xs font-bold font-mono border transition-all cursor-pointer">W2 Model</button>
+                    <button id="btnW3" onclick="switchActiveModel('W3')" class="flex-1 md:flex-none px-4 py-2 rounded text-xs font-bold font-mono border transition-all cursor-pointer">W3 Model</button>
+                </div>
+            </div>
+
+            <!-- ANCHOR FINANCIAL KPI METRICS MATRIX -->
+            <div class="grid grid-cols-2 lg:grid-cols-6 gap-4">
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Initial Base Capital</div>
+                    <div class="text-base font-bold text-white font-mono mt-1">PKR 10,000,000</div>
+                </div>
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Projected Portfolio Value</div>
+                    <div class="text-base font-bold text-blue-400 font-mono mt-1" id="kpi-projected">-</div>
+                </div>
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Net Realizable Capital Gain</div>
+                    <div class="text-base font-bold text-white font-mono mt-1" id="kpi-capgain">-</div>
+                </div>
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cumulative Yield (Dividends)</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-dividend">-</div>
+                </div>
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Absolute Performance</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-totalreturn">-</div>
+                </div>
+                <div class="bg-fintech-card rounded-xl p-4 shadow-md border border-slate-800">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">2-Year Implied CAGR</div>
+                    <div class="text-base font-bold text-emerald-400 font-mono mt-1" id="kpi-cagr">-</div>
+                </div>
+            </div>
+
+            <!-- GRAPHICAL METRICS FORECAST VISUALIZATION (SIDE-BY-SIDE) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Pipeline Growth Curve Chart -->
+                <div class="lg:col-span-2 bg-fintech-card rounded-xl p-5 flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            Simulated Capital Growth Vector Timeline (Jan 2026 - Dec 2027)
+                        </h3>
+                    </div>
+                    <div class="h-64 w-full relative">
+                        <canvas id="trajectoryChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Asset Weight Classification Donut Chart -->
+                <div class="bg-fintech-card rounded-xl p-5 flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Structural Asset Basket Allocations
+                        </h3>
+                    </div>
+                    <div class="h-64 w-full relative flex items-center justify-center">
+                        <canvas id="allocationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERFORMANCE COMPLIANCE VERIFICATION BANNER -->
+            <div id="trafficLightBanner" class="p-3 rounded-lg text-center font-mono font-bold text-xs border bg-slate-900 border-slate-700 tracking-wide">
+                Executing Predictive Quant Modeling Systems...
+            </div>
+
+            <!-- UNIVERSAL PSX STOCK REGISTRY DATA MATRIX -->
+            <div class="bg-fintech-card rounded-xl p-5 shadow-lg border border-slate-700">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-slate-700 pb-3 gap-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-white flex items-center gap-2">
+                        <span class="p-1 bg-amber-500/10 text-amber-400 rounded text-xs font-mono">M3</span>
+                        Equity Universe Analytics Matrix (28 Actively Maintained PSX Reference Assets)
+                    </h3>
+                    <div class="text-xs text-slate-400 font-mono tracking-wide" id="allocation-summary-text">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto max-h-96 border border-slate-800 rounded">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="sticky top-0 z-10 bg-slate-900 text-slate-400 text-[10px] font-bold uppercase tracking-wider border-b border-slate-700">
+                            <tr>
+                                <th class="p-3">Ticker Identification</th>
+                                <th class="p-3">Asset Legal Title</th>
+                                <th class="p-3">Strategic Allocation Classification</th>
+                                <th class="p-3">Sector Categorization</th>
+                                <th class="p-3">Financial Closing Anchor</th>
+                                <th class="p-3">Audited Earnings Metric (EPS)</th>
+                                <th class="p-3">Beta Co-efficient Volatility</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stocksTableBody" class="divide-y divide-slate-800">
+                            <!-- Populated Injectively via Logic Model -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REGULATORY ENVIRONMENT DATA MATRIX -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs">
+                <div>
+                    <h4 class="font-bold text-amber-500 mb-1 uppercase tracking-wider text-[10px]">NCCPL Capital Gains Framework (CGT)</h4>
+                    <p class="text-slate-400 leading-relaxed">System holds absolute processing rules aligned with asset tenure holding durations. Section 7E metrics are fully decoupled from live computations.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-emerald-500 mb-1 uppercase tracking-wider text-[10px]">Dividend Withholding Tax Regime (WHT)</h4>
+                    <p class="text-slate-400 leading-relaxed">A standard 15% statutory deduction is simulated at source boundary conditions for users possessing validated ATL Filer credentials.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-rose-500 mb-1 uppercase tracking-wider text-[10px]">Non-Filer Structural Penalty Protocols</h4>
+                    <p class="text-slate-400 leading-relaxed">If the Filer status verification changes, structural sub-layers automatically compute statutory differential tax penalties.</p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- INTELLECTUAL PROPERTY & COMPLIANCE FOOTER -->
+    <footer class="max-w-7xl w-full mx-auto text-center py-6 text-[10px] text-slate-500 font-medium border-t border-slate-800 mt-12 uppercase tracking-widest">
+        <p>Confidential Corporate Training Matrix. Strategic asset valuations involve inherent systemic risks and pricing variance parameters.</p>
+    </footer>
+
+    <!-- STRATEGIC ENGINE EXECUTABLE LAYER -->
+    <script>
+        // Allocation Mapping Matrix Datasets
+        const modelData = {
+            W1: {
+                name: "W1 - Conservative Capital Preservation Strategy",
+                principal: "PKR 10,000,000",
+                projectedValue: "PKR 15,166,579",
+                capgain: "PKR 4,391,592",
+                dividend: "PKR 592,340",
+                totalreturn: "49.8%",
+                cagr: "22.3%",
+                allocationText: "High Yield: 20% | High Growth: 75% | Trending Portfolio Alpha: 5%",
+                weights: [20, 75, 5],
+                trajectory: [10000000, 11150000, 12380000, 13750000, 15166579],
+                status: "🟡 BALANCED PROFILE MATCH (Portfolio Architecture Strategy v2.2 Outperforming Target Baseline Framework)"
+            },
+            W2: {
+                name: "W2 - Balanced Alpha Generation Strategy",
+                principal: "PKR 10,000,000",
+                projectedValue: "PKR 14,762,928",
+                capgain: "PKR 4,048,488",
+                dividend: "PKR 760,337",
+                totalreturn: "48.1%",
+                cagr: "21.6%",
+                allocationText: "High Yield: 50% | High Growth: 40% | Trending Portfolio Alpha: 10%",
+                weights: [50, 40, 10],
+                trajectory: [10000000, 11020000, 12150000, 13390000, 14762928],
+                status: "🟢 COMPLIANT STRATEGIC ALPHA (High Consistency Metrics vs Composite Institutional Benchmarks)"
+            },
+            W3: {
+                name: "W3 - Aggressive Velocity Volatility Strategy",
+                principal: "PKR 10,000,000",
+                projectedValue: "PKR 14,915,676",
+                capgain: "PKR 4,178,325",
+                dividend: "PKR 637,014",
+                totalreturn: "48.2%",
+                cagr: "21.7%",
+                allocationText: "High Yield: 30% | High Growth: 50% | Trending Portfolio Alpha: 20%",
+                weights: [30, 50, 20],
+                trajectory: [10000000, 11080000, 12220000, 13510000, 14915676],
+                status: "🔥 MAXIMUM MOMENTUM DEPLOYMENT (High-Velocity Multi-Asset Quant Engine Active)"
+            }
+        };
+
+        const stockUniverse = [
+            { ticker: "FFC", name: "Fauji Fertilizer Company", bucket: "High Yield", sector: "Fertilizer", fy: "31-Dec", eps: "Rs 45.89 (Aud)", beta: "0.98" },
+            { ticker: "MCB", name: "MCB Bank Limited", bucket: "High Yield", sector: "Banking", fy: "31-Dec", eps: "Rs 48.62 (Aud)", beta: "0.87" },
+            { ticker: "UBL", name: "United Bank Limited", bucket: "High Yield", sector: "Banking", fy: "31-Dec", eps: "Rs 66.00 (Aud)", beta: "0.92" },
+            { ticker: "MEBL", name: "Meezan Bank Limited", bucket: "High Yield", sector: "Islamic Banking", fy: "31-Dec", eps: "Rs 50.47 (Aud)", beta: "0.85" },
+            { ticker: "OGDC", name: "Oil & Gas Dev. Company", bucket: "High Yield", sector: "E&P", fy: "30-Jun", eps: "Rs 38.94 (Aud)", beta: "0.36" },
+            { ticker: "PPL", name: "Pakistan Petroleum Limited", bucket: "High Yield", sector: "E&P", fy: "30-Jun", eps: "Rs 32.97 (Unaud)", beta: "0.81" },
+            { ticker: "MARI", name: "Mari Petroleum Company", bucket: "High Yield", sector: "E&P", fy: "30-Jun", eps: "Rs 120.00 (Aud)", beta: "1.05" },
+            { ticker: "HINOON", name: "Hinopak Motors", bucket: "High Yield", sector: "Auto", fy: "31-Dec", eps: "Rs 195.00 (Aud)", beta: "0.55" },
+            { ticker: "SAZEW", name: "Sazgar Engineering", bucket: "High Yield", sector: "Auto", fy: "30-Jun", eps: "Rs 320.00 (Aud)", beta: "0.61" },
+            { ticker: "MTL", name: "Millat Tractors", bucket: "High Yield", sector: "Auto/Engineering", fy: "31-Dec", eps: "Rs 120.00 (Aud)", beta: "0.65" },
+            { ticker: "SRVI", name: "Service Industries", bucket: "High Yield", sector: "Consumer", fy: "31-Dec", eps: "As Per Audit", beta: "Moderate" },
+            { ticker: "ATLH", name: "Atlas Honda", bucket: "High Yield", sector: "Auto", fy: "31-Mar", eps: "Rs 285.00 (Aud)", beta: "0.68" },
+            { ticker: "AKBL", name: "Askari Bank Limited", bucket: "High Growth", sector: "Banking", fy: "31-Dec", eps: "Rs 12.00 (Aud)", beta: "1.30" },
+            { ticker: "FCCL", name: "Fauji Cement Co.", bucket: "High Growth", sector: "Cement", fy: "31-Dec", eps: "Rs 8.50 (Aud)", beta: "1.45" },
+            { ticker: "PTC", name: "Pakistan Telecom. Co.", bucket: "High Growth", sector: "Telecom", fy: "31-Dec", eps: "Dynamic Tier", beta: "High Growth" },
+            { ticker: "PSO", name: "Pakistan State Oil", bucket: "High Growth", sector: "OMC", fy: "30-Jun", eps: "Rs 50.00 (Aud)", beta: "Growth Cap" },
+            { ticker: "BOP", name: "Bank of Punjab", bucket: "High Growth", sector: "Banking", fy: "31-Dec", eps: "Rs 4.20 (Aud)", beta: "Growth" },
+            { ticker: "MLCF", name: "Maple Leaf Cement", bucket: "High Growth", sector: "Cement", fy: "30-Jun", eps: "Standard", beta: "Market Core" },
+            { ticker: "LCI", name: "Lucky Cement", bucket: "High Growth", sector: "Cement", fy: "30-Jun", eps: "Rs 42.00 (Aud)", beta: "1.08" },
+            { ticker: "ISL", name: "International Steels", bucket: "High Growth", sector: "Steel", fy: "30-Jun", eps: "Cyclical", beta: "High Beta" },
+            { ticker: "SGF", name: "Sitara Glass Factory", bucket: "High Growth", sector: "Glass", fy: "30-Jun", eps: "Standard", beta: "Growth Tier" },
+            { ticker: "ILP", name: "ICI Pakistan", bucket: "High Growth", sector: "Chemicals", fy: "30-Jun", eps: "Growth Set", beta: "Market Core" },
+            { ticker: "CNERGY", name: "Cnergyico PK", bucket: "Trending", sector: "Refinery", fy: "30-Jun", eps: "Event-Driven", beta: "High Momentum" },
+            { ticker: "PRL", name: "Pakistan Refinery", bucket: "Trending", sector: "Refinery", fy: "30-Jun", eps: "Event-Driven", beta: "High Momentum" },
+            { ticker: "NRL", name: "National Refinery", bucket: "Trending", sector: "Refinery", fy: "30-Jun", eps: "Tactical", beta: "High Beta" },
+            { ticker: "FFL", name: "Fauji Foods", bucket: "Trending", sector: "FMCG", fy: "31-Dec", eps: "Tactical", beta: "High Volatility" },
+            { ticker: "HASCOL", name: "Hascol Petroleum", bucket: "Trending", sector: "OMC", fy: "31-Dec", eps: "Speculative", beta: "High Volatility" },
+            { ticker: "LOTCHEM", name: "LotteChemical", bucket: "Trending", sector: "Chemicals", fy: "31-Dec", eps: "Tactical", beta: "Event Core" }
+        ];
+
+        let trajectoryChart = null;
+        let allocationChart = null;
+        let authMode = 'signup'; // Enforce registration as baseline entrance landing
+
+        window.onload = function() {
+            applySavedTheme();
+            startLiveClock();
+            calculateSurplus();
+            populateStocksTable();
+            setAuthMode('signup'); 
+        };
+
+        // ===== THEME ENGINE (DARK / LIGHT) =====
+        function applySavedTheme() {
+            const saved = localStorage.getItem('quant_theme') || 'dark';
+            setTheme(saved);
+        }
+
+        function setTheme(mode) {
+            const root = document.documentElement;
+            root.classList.remove('dark', 'light');
+            root.classList.add(mode);
+            localStorage.setItem('quant_theme', mode);
+
+            const showSun = (mode === 'dark'); // dark active -> offer sun (switch to light)
+            // Auth screen icons
+            const iMoon = document.getElementById('iconMoon');
+            const iSun = document.getElementById('iconSun');
+            if (iMoon && iSun) {
+                iMoon.classList.toggle('hidden', showSun);
+                iSun.classList.toggle('hidden', !showSun);
+            }
+            // Header icons (class based, may be multiple)
+            document.querySelectorAll('.theme-icon-moon').forEach(el => el.classList.toggle('hidden', showSun));
+            document.querySelectorAll('.theme-icon-sun').forEach(el => el.classList.toggle('hidden', !showSun));
+
+            // Re-skin charts if already drawn
+            refreshChartTheme();
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+            setTheme(current === 'light' ? 'dark' : 'light');
+        }
+
+        // ===== LIVE CLOCK ANIMATION =====
+        function startLiveClock() {
+            const tick = () => {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+                const ss = String(now.getSeconds()).padStart(2, '0');
+                const timeHTML = `${hh}<span class="clock-colon">:</span>${mm}<span class="clock-colon">:</span>${ss}`;
+                const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                const at = document.getElementById('authClockTime');
+                const ad = document.getElementById('authClockDate');
+                const hc = document.getElementById('headerClock');
+                if (at) at.innerHTML = timeHTML;
+                if (ad) ad.innerText = dateStr;
+                if (hc) hc.innerText = `${hh}:${mm}:${ss}`;
+            };
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        function refreshChartTheme() {
+            const light = document.documentElement.classList.contains('light');
+            const grid = light ? '#e2e8f0' : '#334155';
+            const ticks = light ? '#475569' : '#94a3b8';
+            const legend = light ? '#334155' : '#94a3b8';
+            if (trajectoryChart) {
+                trajectoryChart.options.scales.y.grid.color = grid;
+                trajectoryChart.options.scales.x.grid.color = grid;
+                trajectoryChart.options.scales.y.ticks.color = ticks;
+                trajectoryChart.options.scales.x.ticks.color = ticks;
+                trajectoryChart.data.datasets[0].pointBackgroundColor = light ? '#0f172a' : '#fff';
+                trajectoryChart.update();
+            }
+            if (allocationChart) {
+                allocationChart.options.plugins.legend.labels.color = legend;
+                allocationChart.data.datasets[0].borderColor = light ? '#ffffff' : '#1e293b';
+                allocationChart.update();
+            }
+        }
+
+        // VISUAL SYSTEM ACCESS MODE SWITCH
+        function setAuthMode(mode) {
+            authMode = mode;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabSignup = document.getElementById('tabSignup');
+            const fullNameGroup = document.getElementById('fullNameGroup');
+            const authSubmitBtn = document.getElementById('authSubmitBtn');
+
+            if (mode === 'login') {
+                tabLogin.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center";
+                tabSignup.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center";
+                fullNameGroup.classList.add('hidden');
+                authSubmitBtn.innerText = "Authorize & Enter Terminal";
+            } else {
+                tabSignup.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-emerald-400 border-emerald-500 cursor-pointer text-center";
+                tabLogin.className = "flex-1 pb-2 text-xs font-bold tracking-wider uppercase border-b-2 text-slate-400 border-transparent hover:text-white cursor-pointer text-center";
+                fullNameGroup.classList.remove('hidden');
+                authSubmitBtn.innerText = "Generate Fresh Quant Credentials";
+            }
+        }
+
+        // AUTH DATA PERSISTENCE LAYER (MANDATORY VERIFICATION)
+        function handleAuthSubmit(event) {
+            event.preventDefault();
+            const usernameInput = document.getElementById('authEmail').value.trim();
+            const passwordInput = document.getElementById('authPassword').value;
+
+            if (authMode === 'login') {
+                // Read exclusively from runtime localStorage engine
+                const storedRecord = localStorage.getItem('quant_user_db');
+                if (storedRecord) {
+                    const parsedCreds = JSON.parse(storedRecord);
+                    if (parsedCreds.username === usernameInput && parsedCreds.password === passwordInput) {
+                        enterAppWorkspace(parsedCreds.name);
+                        return;
+                    }
+                }
+                alert("Access Denied: Invalid Security Passphrase or Unrecognized Identifier Matrix.");
+            } else {
+                // Save user explicitly 
+                const nameInput = document.getElementById('authName').value.trim() || "Pro Analyst";
+                if (!usernameInput || !passwordInput) {
+                    alert("Validation Error: All tracking structures must be populated.");
+                    return;
+                }
+                localStorage.setItem('quant_user_db', JSON.stringify({ name: nameInput, username: usernameInput, password: passwordInput }));
+                alert("Security Credentials Encrypted & Registered successfully! Proceeding to Secure Portal Login.");
+                setAuthMode('login');
+            }
+        }
+
+        function enterAppWorkspace(verifiedName) {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('onboardingScreen').classList.remove('hidden');
+            document.getElementById('welcomeUser').innerText = "Account Holder: " + verifiedName;
+        }
+
+        function handleLogout() {
+            document.getElementById('mainHeader').classList.add('hidden');
+            document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('appDashboard').classList.add('hidden');
+            setAuthMode('signup');
+            document.getElementById('authScreen').classList.remove('hidden');
+            document.getElementById('authForm').reset();
+        }
+
+        // DEEPLY SYNCED NUMERICAL ENGINE DATA RUNS
+        function calculateSurplus() {
+            const gross = parseFloat(document.getElementById('monthlyIncomeVal').value) || 0;
+            const commitments = parseFloat(document.getElementById('monthlyCommitments').value) || 0;
+            const net = gross - commitments;
+            document.getElementById('surplusDisplay').innerText = "PKR " + (net > 0 ? net.toLocaleString() : 0);
+        }
+
+        function processRiskProfile(event) {
+            event.preventDefault();
+            document.getElementById('onboardingScreen').classList.add('hidden');
+            document.getElementById('appDashboard').classList.remove('hidden');
+            
+            initTrajectoryChart();
+            initAllocationChart();
+            refreshChartTheme();
+            
+            const suggestedTier = document.getElementById('stageAge').value;
+            switchActiveModel(suggestedTier); 
+        }
+
+        function switchActiveModel(modelCode) {
+            const data = modelData[modelCode];
+            if (!data) return;
+
+            document.getElementById('activeModelTitle').innerText = data.name;
+            document.getElementById('kpi-projected').innerText = data.projectedValue;
+            document.getElementById('kpi-capgain').innerText = data.capgain;
+            document.getElementById('kpi-dividend').innerText = data.dividend;
+            document.getElementById('kpi-totalreturn').innerText = data.totalreturn;
+            document.getElementById('kpi-cagr').innerText = data.cagr;
+            document.getElementById('allocation-summary-text').innerText = data.allocationText;
+            document.getElementById('trafficLightBanner').innerText = data.status;
+
+            ['W1', 'W2', 'W3'].forEach(m => {
+                const btn = document.getElementById('btn' + m);
+                if (m === modelCode) {
+                    btn.className = "px-4 py-2 rounded text-xs font-bold font-mono border-2 border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer shadow-lg";
+                } else {
+                    btn.className = "px-4 py-2 rounded text-xs font-bold font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer";
+                }
+            });
+
+            if (trajectoryChart) {
+                trajectoryChart.data.datasets[0].data = data.trajectory;
+                if(modelCode === 'W1') trajectoryChart.data.datasets[0].borderColor = '#3b82f6';
+                if(modelCode === 'W2') trajectoryChart.data.datasets[0].borderColor = '#10b981';
+                if(modelCode === 'W3') trajectoryChart.data.datasets[0].borderColor = '#f59e0b';
+                trajectoryChart.update();
+            }
+
+            if (allocationChart) {
+                allocationChart.data.datasets[0].data = data.weights;
+                allocationChart.update();
+            }
+        }
+
+        function initTrajectoryChart() {
+            if (trajectoryChart !== null) return;
+            const ctx = document.getElementById('trajectoryChart').getContext('2d');
+            trajectoryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan 2026 Base', 'Jun 2026 Matrix', 'Dec 2026 Cycle', 'Jun 2027 Run', 'Dec 2027 Terminus'],
+                    datasets: [{
+                        label: 'Asset Target Run-Rate (PKR)',
+                        data: modelData.W1.trajectory,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(30, 41, 59, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#fff',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        function initAllocationChart() {
+            if (allocationChart !== null) return;
+            const ctx = document.getElementById('allocationChart').getContext('2d');
+            allocationChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Yield Structure', 'High Growth Segment', 'Trending Macro Beta'],
+                    datasets: [{
+                        data: modelData.W1.weights,
+                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'],
+                        borderWidth: 1,
+                        borderColor: '#1e293b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', font: { size: 10 } }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function populateStocksTable() {
+            const tbody = document.getElementById('stocksTableBody');
+            tbody.innerHTML = "";
+            stockUniverse.forEach(s => {
+                let badgeStyle = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5";
+                if(s.bucket === "High Growth") badgeStyle = "border-blue-500/30 text-blue-400 bg-blue-500/5";
+                if(s.bucket === "Trending") badgeStyle = "border-amber-500/30 text-amber-400 bg-amber-500/5";
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-900/40 text-slate-300 transition-colors">
+                        <td class="p-3 font-bold text-white font-mono">${s.ticker}</td>
+                        <td class="p-3 font-medium">${s.name}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeStyle}">${s.bucket}</span>
+                        </td>
+                        <td class="p-3 text-slate-400">${s.sector}</td>
+                        <td class="p-3 text-slate-400 font-mono">${s.fy}</td>
+                        <td class="p-3 text-slate-200 font-mono">${s.eps}</td>
+                        <td class="p-3 font-mono text-slate-400">${s.beta}</td>
+                    </tr>`;
+            });
         }
     </script>
 </body>
