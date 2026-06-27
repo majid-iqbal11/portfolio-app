@@ -1,85 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WAM | Institutional Engine v3.0</title>
+    <title>WAM | Institutional Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --bg: #f8fafc; --card: rgba(255, 255, 255, 0.7); --text: #0f172a; }
-        @media (prefers-color-scheme: dark) {
-            :root { --bg: #0b0f19; --card: rgba(17, 24, 39, 0.7); --text: #f1f5f9; }
-        }
-        body { background-color: var(--bg); color: var(--text); transition: 0.5s; font-family: 'Inter', sans-serif; }
-        .glass { background: var(--card); backdrop-filter: blur(20px); border: 1px solid rgba(128, 128, 128, 0.1); }
-        .animate-fade { animation: fadeIn 0.8s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        :root[data-theme="dark"] { --bg: #0b0f19; --card: rgba(17, 24, 39, 0.8); --text: #f1f5f9; }
+        :root[data-theme="light"] { --bg: #f8fafc; --card: rgba(255, 255, 255, 0.9); --text: #1e293b; }
+        
+        body { background-color: var(--bg); color: var(--text); transition: 0.4s; font-family: 'Inter', sans-serif; }
+        .glass { background: var(--card); backdrop-filter: blur(15px); border: 1px solid rgba(128, 128, 128, 0.2); }
+        .fade-in { animation: fadeIn 0.7s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen flex flex-col items-center p-6">
 
-    <div id="loginScreen" class="max-w-md mx-auto mt-20 glass p-8 rounded-3xl animate-fade shadow-2xl">
-        <h2 class="text-2xl font-bold mb-6 uppercase tracking-widest">System Auth</h2>
-        <input id="userName" placeholder="Legal Entity Name" class="w-full bg-transparent border-b py-2 mb-4 outline-none">
-        <button onclick="auth()" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold hover:bg-emerald-700">Initialize Terminal</button>
-    </div>
-
-    <div id="dashboard" class="hidden max-w-6xl mx-auto animate-fade space-y-8">
-        <header class="flex justify-between items-center border-b pb-6">
-            <div>
-                <h1 class="text-3xl font-extrabold uppercase">Wealth Matrix</h1>
-                <p id="userTag" class="text-sm opacity-60"></p>
-            </div>
-            <div id="clock" class="font-mono text-xl"></div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass p-6 rounded-2xl">
-                <h3 class="text-xs uppercase opacity-50 mb-2">Tax Engine Status</h3>
-                <p id="taxStatus" class="text-xl font-bold text-emerald-500">Filer (Standard)</p>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <h3 class="text-xs uppercase opacity-50 mb-2">FIFO Net Gain</h3>
-                <p id="fifoGain" class="text-xl font-bold">PKR 0.00</p>
-            </div>
-            <div class="glass p-6 rounded-2xl">
-                <h3 class="text-xs uppercase opacity-50 mb-2">Strategy Guard</h3>
-                <p id="strategyGuard" class="text-xl font-bold text-blue-500">Balanced</p>
-            </div>
+    <header class="w-full max-w-6xl flex justify-between items-center mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-white">WAM</div>
+            <h1 class="text-xl font-bold tracking-tighter uppercase">Wealth Matrix</h1>
         </div>
+        <button onclick="toggleTheme()" class="px-4 py-2 bg-slate-800 rounded-full text-xs font-bold">MODE SWITCH</button>
+    </header>
 
-        <div class="glass p-8 rounded-3xl">
-            <h2 class="text-lg font-bold mb-4">Trade Ledger & Tax Compliance</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <input type="number" id="tradePrice" placeholder="Execution Price" class="bg-transparent border p-3 rounded-lg w-full">
-                <input type="number" id="tradeQty" placeholder="Quantity" class="bg-transparent border p-3 rounded-lg w-full">
-            </div>
-            <button onclick="processTrade()" class="mt-4 w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Commit Transaction</button>
-        </div>
+    <div id="loginCard" class="glass w-full max-w-md p-10 rounded-3xl shadow-2xl fade-in mt-20">
+        <h2 class="text-2xl font-bold mb-2">Secure Access</h2>
+        <p class="opacity-60 mb-8">Enter your institutional credentials</p>
+        <input type="text" placeholder="Quant ID" class="w-full bg-transparent border-b border-slate-500 py-3 mb-6 outline-none">
+        <button onclick="login()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-all">Authorize System</button>
     </div>
 
     <script>
-        function auth() {
-            const name = document.getElementById('userName').value;
-            if(!name) return alert("Enter Entity Name");
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('userTag').innerText = "Operator: " + name;
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
         }
 
-        function processTrade() {
-            const price = document.getElementById('tradePrice').value;
-            const qty = document.getElementById('tradeQty').value;
-            const tax = price * qty * 0.15; // Placeholder Tax Logic
-            document.getElementById('fifoGain').innerText = "PKR " + (price * qty * 0.05).toFixed(2);
-            alert("FIFO Transaction Logged. Statutory Tax (15%) Applied: PKR " + tax.toFixed(2));
+        // Login Animation Logic
+        function login() {
+            const card = document.getElementById('loginCard');
+            card.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+            setTimeout(() => {
+                card.style.display = 'none';
+                // Yahan aap apna dashboard show kar sakte hain
+            }, 500);
         }
-
-        function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
     </script>
 </body>
 </html>
