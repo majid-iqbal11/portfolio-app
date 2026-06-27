@@ -1400,7 +1400,7 @@
     </div>
 
     <!-- ACCESS GRANTED · 3D CINEMATIC OVERLAY -->
-    <div id="accessOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="perspective:1400px;">
+    <div id="accessOverlay" class="hidden fixed inset-0 flex items-center justify-center" style="perspective:1400px;z-index:90;">
         <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(15,23,42,.96), rgba(2,6,23,.99));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
         <!-- ambient orbiting particles -->
         <div class="ao-orbit-wrap">
@@ -2693,13 +2693,17 @@
         }
 
         function enterAppWorkspace(verifiedName) {
+            // 1) Close the full-page auth overlay first so accessOverlay isn't hidden behind it
+            closeAuth();
+
             const overlay = document.getElementById('accessOverlay');
             document.getElementById('agUserName').innerText = "Welcome, " + verifiedName;
             document.getElementById('welcomeUser').innerText = "Account Holder: " + verifiedName;
 
             // reset overlay state
             ['ovStep1','ovStep2','ovStep3'].forEach(id => document.getElementById(id).classList.remove('active','done'));
-            document.getElementById('ovCheck').classList.remove('show');
+            const ovCheck = document.getElementById('ovCheck');
+            if (ovCheck) ovCheck.classList.remove('show');
             overlay.classList.remove('hidden');
 
             // professional stepped sequence
@@ -2708,11 +2712,13 @@
             setTimeout(() => document.getElementById('ovStep1').classList.add('active'), t(150));
             setTimeout(() => { document.getElementById('ovStep1').classList.add('done'); document.getElementById('ovStep2').classList.add('active'); }, t(800));
             setTimeout(() => { document.getElementById('ovStep2').classList.add('done'); document.getElementById('ovStep3').classList.add('active'); }, t(1400));
-            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); document.getElementById('ovCheck').classList.add('show'); }, t(1900));
+            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); if (ovCheck) ovCheck.classList.add('show'); }, t(1900));
 
             setTimeout(() => {
                 overlay.classList.add('hidden');
-                hideAllAuth();
+
+                // Hide preview & show workspace
+                document.getElementById('previewScreen').classList.add('hidden');
 
                 const header = document.getElementById('mainHeader');
                 const onboarding = document.getElementById('onboardingScreen');
@@ -2723,6 +2729,9 @@
 
                 // Reveal the AETHER side-panel button only after login
                 document.getElementById('aiFab').classList.add('show');
+
+                // Scroll to top of workspace
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, t(2400));
         }
 
@@ -2736,6 +2745,9 @@
             document.getElementById('aiFab').classList.remove('show');
             toggleAdvisor(false);
             document.getElementById('loginForm').reset();
+            // Bring preview back so user can re-enter
+            document.getElementById('previewScreen').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             showLogin();
         }
 
@@ -2990,9 +3002,12 @@
         ];
 
         const aiKB = [
-            { keys: ["hello","hi","hey","salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain — strategies, taxes, ya 28 PSX stocks ke baare me. Bataiye, kya help kar sakta hoon? 🌟" },
-            { keys: ["thanks","thank you","shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
-            { keys: ["who are you","what are you","aether","tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga. Strategies, taxes, stocks, ya general finance — jo bhi poochna ho, pooch lijiye." },
+            { keys: ["hello","hi","hey"], a: "Hello! I'm <b>AETHER</b>, your AI advisor. Ask me anything about the app's strategies, taxes, the 28 PSX stocks, or general investing questions." },
+            { keys: ["salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain. Bataiye, kya help kar sakta hoon? 🌟" },
+            { keys: ["thanks","thank you"], a: "You're welcome! Anything else I can help with?" },
+            { keys: ["shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
+            { keys: ["who are you","what are you","aether"], a: "I'm <b>AETHER</b> — this app's built-in AI advisor. I can explain strategies, taxes, formulas, and the stocks in your universe, plus general investing or finance questions." },
+            { keys: ["tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga." },
             { keys: ["w1","conservative","preservation","mehfooz"], a: "**W1 — Capital Preservation** sab se conservative tier hai. Almost 20% High Yield, 75% High Growth, 5% Trending. Volatility kam, dividends steady. 46+ age ya jise calm performance chahiye, un ke liye behtar." },
             { keys: ["w2","balanced","sanjhi","mutawazin"], a: "**W2 — Balanced Growth** = 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation aur managed risk. 31–45 age group ke liye ideal." },
             { keys: ["w3","aggressive","velocity","momentum","tez"], a: "**W3 — Aggressive Growth** = 30% High Yield, 50% High Growth, 20% Trending. Bade swings, bara potential. Young investors (18–30) ke liye best — runway lambi hoti hai." },
@@ -3065,11 +3080,12 @@
 
         const aiSystemPrompt = `You are AETHER, a premium AI financial advisor inside a Pakistani investment app called Wealth Architecture. Your personality is warm, professional, encouraging, and concise — like a knowledgeable friend.
 
-LANGUAGE: Detect the user's language automatically and reply in the SAME language. Support fluently:
-- English (proper spelling, professional tone)
-- Roman Urdu (Urdu written in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"). Reply in natural Roman Urdu — friendly, simple, accurate. Don't translate to English unless asked.
-- Pure Urdu script if user writes in it.
-If user mixes languages, mirror their mix.
+LANGUAGE:
+- DEFAULT language is **English**. Always reply in English unless the user clearly writes in another language first.
+- If, and only if, the user writes their question in Roman Urdu (Urdu in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"), reply in natural Roman Urdu.
+- If the user writes in pure Urdu script, reply in Urdu script.
+- If the user mixes languages, mirror their dominant language.
+- A short greeting like "salam" or "hi" alone is not enough to switch language — wait until you see a real question in that language.
 
 KNOWLEDGE BASE (use when relevant):
 - 3 portfolio strategies on a PKR 1 Crore base over 2 years (2026–2027):
@@ -3191,7 +3207,7 @@ Always sound human, helpful, and a little bit excited about helping the user.`;
             back.classList.toggle('open', next);
             if (next && !_aiOpened) {
                 _aiOpened = true;
-                aiAppend("Salam! Main <b>AETHER</b> hoon — aap ka AI advisor. 🌟<br><br>Aap mujhse <b>English ya Roman Urdu</b>, jis bhi language me chahein, kuch bhi pooch sakte hain — strategies, taxes, 28 PSX stocks, ya general investing questions. Main ChatGPT ki tarah saaf seedha jawab dunga.", 'bot');
+                aiAppend("Hi! I'm <b>AETHER</b>, your AI advisor. 🌟<br><br>Ask me anything — strategies, taxes, any of the 28 PSX stocks, or general investing questions. I'll reply in English by default; if you write to me in Roman Urdu, I'll switch to that.", 'bot');
                 renderAiSuggestions();
             }
             if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
