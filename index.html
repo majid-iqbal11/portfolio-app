@@ -13,37 +13,49 @@
 
         /* ===== THEME TOKENS ===== */
         :root, html.dark {
-            --bg: #0b1220;
-            --bg-2: #0f1a2e;
-            --surface: #131f33;
-            --surface-2: #182942;
-            --surface-border: #233452;
-            --text-strong: #f1f5f9;
-            --accent: #14b8a6;
-            --accent-2: #0ea5e9;
-            --accent-warm: #f59e0b;
+            --bg: #07101f;
+            --bg-2: #0b1830;
+            --surface: #142442;
+            --surface-2: #1b3056;
+            --surface-3: #223a66;
+            --surface-border: #2a4576;
+            --text-strong: #f8fafc;
+            --text-muted: #cbd5e1;
+            --text-dim: #94a3b8;
+            --accent: #2dd4bf;
+            --accent-2: #38bdf8;
+            --accent-warm: #fbbf24;
+            --good: #34d399;
+            --bad: #fb7185;
         }
         html.light {
-            --bg: #f6f8fc;
-            --bg-2: #eef2f9;
+            --bg: #f4f7fb;
+            --bg-2: #e9eff7;
             --surface: #ffffff;
             --surface-2: #f1f5f9;
-            --surface-border: #dbe2ec;
+            --surface-3: #e2e8f0;
+            --surface-border: #d4dde9;
             --text-strong: #0b1220;
+            --text-muted: #334155;
+            --text-dim: #64748b;
             --accent: #0d9488;
             --accent-2: #0284c7;
             --accent-warm: #d97706;
+            --good: #0d9488;
+            --bad: #e11d48;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-strong);
             background:
-              radial-gradient(900px 600px at 80% -10%, rgba(20,184,166,.10), transparent 60%),
-              radial-gradient(900px 600px at -10% 110%, rgba(14,165,233,.08), transparent 60%),
+              radial-gradient(1000px 700px at 85% -5%, rgba(45,212,191,.16), transparent 55%),
+              radial-gradient(900px 600px at -5% 110%, rgba(56,189,248,.12), transparent 60%),
+              radial-gradient(700px 500px at 50% 50%, rgba(45,212,191,.04), transparent 70%),
               linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
             background-attachment: fixed;
             transition: color .35s ease;
+            min-height: 100vh;
         }
         .bg-fintech-card {
             background-color: var(--surface);
@@ -51,13 +63,19 @@
             transition: background-color .35s ease, border-color .35s ease;
         }
 
+        /* ===== DARK-MODE READABILITY (brighter than default Tailwind slate) ===== */
+        html.dark .text-slate-400 { color: #b6c2d3 !important; }
+        html.dark .text-slate-500 { color: #94a3b8 !important; }
+        html.dark .text-slate-300 { color: #dbe3f0 !important; }
+        html.dark .text-slate-200 { color: #eef2f8 !important; }
+
         /* ===== LIGHT-MODE UTILITY OVERRIDES ===== */
         html.light .bg-slate-900,
-        html.light .bg-slate-950        { background-color: #f1f5f9 !important; }
+        html.light .bg-slate-950        { background-color: #eef2f7 !important; }
         html.light .bg-slate-800        { background-color: #e2e8f0 !important; }
         html.light .bg-slate-900\/80    { background-color: rgba(241,245,249,.85) !important; }
         html.light .bg-slate-900\/60    { background-color: rgba(241,245,249,.6) !important; }
-        html.light tr.hover\:bg-slate-900\/40:hover { background-color: #f1f5f9 !important; }
+        html.light tr.hover\:bg-slate-900\/40:hover { background-color: #eef2f7 !important; }
 
         html.light .text-white          { color: #0b1220 !important; }
         html.light .text-slate-200      { color: #1e293b !important; }
@@ -68,10 +86,17 @@
         html.light .text-emerald-500    { color: #0d9488 !important; }
         html.light .border-emerald-500  { border-color: #0d9488 !important; }
         html.light .bg-emerald-600      { background-color: #0d9488 !important; }
+        html.light .text-blue-400       { color: #0369a1 !important; }
+        html.light .text-amber-400, html.light .text-amber-500 { color: #b45309 !important; }
+        html.light .text-rose-400       { color: #be123c !important; }
 
         html.light .border-slate-700    { border-color: #cbd5e1 !important; }
         html.light .border-slate-800    { border-color: #e2e8f0 !important; }
         html.light .divide-slate-800 > :not([hidden]) ~ :not([hidden]) { border-color: #e2e8f0 !important; }
+
+        html.light input,
+        html.light select               { color: #0b1220 !important; }
+        html.light input::placeholder   { color: #94a3b8; }
 
         /* ===== ULTRA 3D ONBOARDING SECTIONS ===== */
         .panel-3d {
@@ -279,6 +304,161 @@
             opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 65;
         }
         .ai-backdrop.open { opacity: 1; pointer-events: auto; }
+
+        /* ===== AETHER 3D LOGO ===== */
+        .aether-logo {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+        .aether-mark {
+            position: relative;
+            width: 44px; height: 44px;
+            transform-style: preserve-3d;
+            perspective: 600px;
+            animation: aetherFloat 4.5s ease-in-out infinite;
+        }
+        .aether-mark.lg { width: 76px; height: 76px; }
+        .aether-mark.xl { width: 96px; height: 96px; }
+        @keyframes aetherFloat {
+            0%,100% { transform: translateY(0) rotateY(0deg); }
+            50%     { transform: translateY(-4px) rotateY(8deg); }
+        }
+        .aether-core {
+            position: absolute; inset: 0; border-radius: 50%;
+            background: conic-gradient(from 0deg, #2dd4bf, #38bdf8, #818cf8, #2dd4bf);
+            animation: aetherSpin 8s linear infinite;
+            box-shadow: 0 8px 24px -6px rgba(45,212,191,.7), 0 0 30px rgba(56,189,248,.3);
+        }
+        @keyframes aetherSpin { to { transform: rotate(360deg); } }
+        .aether-inner {
+            position: absolute; inset: 14%; border-radius: 50%;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 2px 6px rgba(255,255,255,.1), inset 0 -3px 8px rgba(0,0,0,.4);
+        }
+        html.light .aether-inner { background: linear-gradient(135deg, #ffffff, #dbeafe); box-shadow: inset 0 2px 6px rgba(255,255,255,.8), inset 0 -3px 8px rgba(15,23,42,.1); }
+        .aether-glyph {
+            font-family: ui-monospace, 'Courier New', monospace;
+            font-weight: 900; font-size: 18px;
+            background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            letter-spacing: -.05em;
+        }
+        .aether-mark.lg .aether-glyph { font-size: 32px; }
+        .aether-mark.xl .aether-glyph { font-size: 42px; }
+        .aether-orbit {
+            position: absolute; inset: -8%; border: 1px dashed rgba(45,212,191,.4); border-radius: 50%;
+            animation: aetherSpin 12s linear infinite reverse;
+        }
+        .aether-orbit::after {
+            content: ""; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px;
+            border-radius: 50%; background: #2dd4bf; box-shadow: 0 0 10px #2dd4bf;
+            transform: translateX(-50%);
+        }
+        .aether-name {
+            font-weight: 800; letter-spacing: .25em; font-size: 13px;
+            background: linear-gradient(135deg, #5eead4, #7dd3fc);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .aether-tag { font-size: 9px; letter-spacing: .3em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+
+        /* ===== SUPER 3D LOGIN/SIGNUP CARDS ===== */
+        .auth-3d {
+            position: relative;
+            border-radius: 24px;
+            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+            border: 1px solid var(--surface-border);
+            box-shadow:
+              0 40px 80px -32px rgba(0,0,0,.6),
+              inset 0 1px 0 rgba(255,255,255,.06);
+            transform-style: preserve-3d;
+            animation: authIn3D .7s cubic-bezier(.16,1,.3,1);
+            overflow: hidden;
+        }
+        @keyframes authIn3D {
+            0%   { opacity: 0; transform: perspective(1200px) rotateX(20deg) translateY(40px) scale(.92); filter: blur(6px); }
+            100% { opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0) scale(1); filter: blur(0); }
+        }
+        .auth-3d::before {
+            content: ""; position: absolute; inset: -1px; border-radius: 25px; pointer-events: none; z-index: 1;
+            background: linear-gradient(135deg, rgba(45,212,191,.55), rgba(56,189,248,.35) 40%, transparent 65%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; padding: 1.5px;
+        }
+        .auth-3d::after {
+            content: ""; position: absolute; top: -50%; left: -20%; width: 70%; height: 200%;
+            background: linear-gradient(110deg, transparent 40%, rgba(45,212,191,.10) 50%, transparent 60%);
+            transform: translateX(-100%); animation: authSweep 5.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes authSweep { 0%{transform:translateX(-100%)} 65%,100%{transform:translateX(220%)} }
+
+        .auth-orb {
+            position: absolute; border-radius: 50%; filter: blur(45px); pointer-events: none; opacity: .5;
+        }
+        .auth-orb.o1 { width: 180px; height: 180px; background: #2dd4bf; top: -60px; right: -40px; animation: orbDrift 9s ease-in-out infinite; }
+        .auth-orb.o2 { width: 140px; height: 140px; background: #38bdf8; bottom: -50px; left: -30px; animation: orbDrift 11s ease-in-out infinite reverse; }
+
+        .auth-field {
+            position: relative;
+            background: var(--surface-3);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+        }
+        .auth-field:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -16px rgba(45,212,191,.5); }
+        .auth-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,212,191,.18); }
+        .auth-field input {
+            width: 100%; background: transparent !important; border: 0 !important; outline: none !important;
+            color: var(--text-strong); font-size: 13px; padding: 0;
+        }
+        .auth-field .af-label { display: block; font-size: 9px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+
+        .auth-cta {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+            color: #fff; font-weight: 800; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+            padding: 13px 20px; border-radius: 12px; cursor: pointer; border: 0;
+            box-shadow: 0 18px 34px -16px rgba(45,212,191,.7);
+            transition: transform .15s ease, filter .2s ease, box-shadow .3s ease;
+            overflow: hidden;
+        }
+        .auth-cta:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(45,212,191,.8); }
+        .auth-cta:active { transform: scale(.97); }
+        .auth-cta::after {
+            content: ""; position: absolute; inset: 0; border-radius: 12px;
+            background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.3) 50%, transparent 60%);
+            transform: translateX(-120%); animation: btnShine 3s ease-in-out infinite;
+        }
+
+        /* ===== AI CHAT — markdown rendering ===== */
+        .msg.bot p { margin: 0 0 8px; }
+        .msg.bot p:last-child { margin-bottom: 0; }
+        .msg.bot strong, .msg.bot b { color: var(--accent); font-weight: 700; }
+        html.light .msg.bot strong, html.light .msg.bot b { color: #0d9488; }
+        .msg.bot ul, .msg.bot ol { margin: 6px 0 6px 18px; padding: 0; }
+        .msg.bot li { margin-bottom: 3px; }
+        .msg.bot code {
+            font-family: ui-monospace, monospace; font-size: 11.5px;
+            background: var(--surface-3); padding: 2px 6px; border-radius: 5px;
+            border: 1px solid var(--surface-border); color: var(--accent);
+        }
+        .msg.bot pre {
+            background: var(--surface-3); border: 1px solid var(--surface-border);
+            border-radius: 8px; padding: 10px; overflow-x: auto;
+            font-size: 11.5px; margin: 8px 0;
+        }
+        .msg.bot h1, .msg.bot h2, .msg.bot h3 { font-weight: 700; margin: 8px 0 4px; color: var(--text-strong); }
+        .msg.bot h1 { font-size: 15px; }
+        .msg.bot h2 { font-size: 14px; }
+        .msg.bot h3 { font-size: 13px; }
+        .msg.bot a { color: var(--accent); text-decoration: underline; }
+
+        /* AETHER badge in chat header */
+        .ai-head { background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(56,189,248,.08)); }
 
         /* ===== LOGIN ENTRANCE + CLOCK ANIMATIONS ===== */
         #authScreen { animation: authIn .6s cubic-bezier(.16,1,.3,1) both; }
@@ -703,9 +883,42 @@
                     <p class="text-xs text-slate-400 leading-relaxed">FBR filer status, capital gains tax and 15% dividend withholding are built into every number.</p>
                 </div>
                 <div class="feature-3d float-in fi-8 bg-fintech-card rounded-xl p-4 border border-slate-700">
-                    <div class="inline-flex p-2 bg-blue-500/10 text-blue-400 rounded-lg mb-3 border border-blue-500/20 text-lg">✨</div>
-                    <h3 class="text-sm font-bold text-white mb-1">Designed for Comfort</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">A live clock, dark &amp; light themes, and a clean, fast institutional-grade interface.</p>
+                    <div class="inline-flex items-center justify-center w-8 h-8 mb-3">
+                        <div class="aether-mark" style="width:32px;height:32px;">
+                            <div class="aether-core"></div>
+                            <div class="aether-inner"><span class="aether-glyph" style="font-size:12px;">Æ</span></div>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-bold text-white mb-1">AETHER · AI Advisor</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Your personal AI guide — ask anything in plain English and get a clear answer instantly.</p>
+                </div>
+            </div>
+
+            <!-- ===== AETHER SHOWCASE ===== -->
+            <div class="mt-12 mb-2 panel-3d p-6 md:p-8 reveal-fade" style="animation-delay:.3s;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <div class="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-2">Meet AETHER</div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3">Your AI advisor,<br>always one tap away.</h2>
+                        <p class="text-sm text-slate-300 leading-relaxed mb-4">AETHER lives in the corner of your screen. Ask about strategies, taxes, any of the 28 PSX stocks, or how to read your dashboard — it answers like a knowledgeable friend who knows your portfolio inside out.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Live answers</span>
+                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30">Portfolio-aware</span>
+                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">Plain English</span>
+                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">24 / 7</span>
+                        </div>
+                        <button onclick="toggleAdvisor(true)" class="btn-press inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg text-white" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);box-shadow:0 14px 28px -12px rgba(45,212,191,.6);">
+                            Try AETHER now
+                            <span>→</span>
+                        </button>
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <div class="aether-mark xl">
+                            <div class="aether-orbit"></div>
+                            <div class="aether-core"></div>
+                            <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -797,84 +1010,95 @@
     </header>
 
     <!-- ===== SIGN IN SCREEN ===== -->
-    <section id="loginScreen" class="hidden relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
-        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+    <section id="loginScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
+        <div class="auth-orb o1"></div>
+        <div class="auth-orb o2"></div>
+        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
             <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
             <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
 
-        <div class="text-center mb-5">
-            <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+        <div class="relative z-10 text-center mb-6">
+            <div class="flex justify-center mb-3">
+                <div class="aether-mark lg">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                </div>
             </div>
-            <h2 class="text-xl font-bold text-white tracking-tight">Sign In</h2>
-            <p class="text-xs text-slate-400 mt-1">Welcome back — access your portfolio workspace</p>
+            <h2 class="text-2xl font-bold tracking-tight text-white">Welcome Back</h2>
+            <p class="text-xs text-slate-300 mt-1">Sign in to access your portfolio workspace</p>
         </div>
 
-        <div class="clock-panel bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
+        <div class="relative z-10 clock-panel bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 mb-5 flex items-center justify-between">
             <div>
                 <div class="flex items-center gap-2 mb-1"><span class="live-dot"></span><span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Current Local Time</span></div>
                 <div class="js-clock-time clock-readout text-emerald-400 font-mono text-xl font-semibold">--:-- --</div>
             </div>
             <div class="text-right">
-                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">Today's Date</div>
-                <div class="js-clock-date text-slate-300 font-mono text-xs">--- -- ----</div>
+                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Today's Date</div>
+                <div class="js-clock-date text-slate-200 font-mono text-xs">--- -- ----</div>
             </div>
         </div>
 
-        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Email or Username</label>
-                <input type="text" id="loginEmail" required placeholder="you@example.com" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+        <form id="loginForm" onsubmit="handleLogin(event)" class="relative z-10 space-y-3">
+            <div class="auth-field">
+                <span class="af-label">Email or Username</span>
+                <input type="text" id="loginEmail" required placeholder="you@example.com" autocomplete="username">
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
-                <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+            <div class="auth-field">
+                <span class="af-label">Password</span>
+                <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
             </div>
-            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-3 rounded transition-colors shadow-lg cursor-pointer mt-2">Sign In to Workspace</button>
+            <button type="submit" class="auth-cta btn-press mt-2">Sign In to Workspace</button>
         </form>
 
-        <div class="flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
+        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
             <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
-            <button onclick="showSignup()" class="text-[11px] text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">New here? Create account</button>
+            <button onclick="showSignup(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">New here? Create account</button>
         </div>
     </section>
 
-    <!-- ===== CREATE ACCOUNT SCREEN (with email OTP) ===== -->
     <!-- ===== GET STARTED SCREEN ===== -->
-    <section id="signupScreen" class="hidden relative max-w-md w-full mx-auto my-auto bg-fintech-card rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 transition-all">
-        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+    <section id="signupScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
+        <div class="auth-orb o1"></div>
+        <div class="auth-orb o2"></div>
+        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
             <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
             <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
 
-        <div class="text-center mb-6">
-            <div class="inline-flex p-3 bg-emerald-500/10 text-emerald-400 rounded-xl mb-3 border border-emerald-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <div class="relative z-10 text-center mb-6">
+            <div class="flex justify-center mb-3">
+                <div class="aether-mark lg">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                </div>
             </div>
-            <h2 class="text-xl font-bold text-white tracking-tight">Get Started</h2>
-            <p class="text-xs text-slate-400 mt-1">Set up your profile and open your portfolio workspace</p>
+            <h2 class="text-2xl font-bold tracking-tight text-white">Get Started</h2>
+            <p class="text-xs text-slate-300 mt-1">Open your workspace and meet AETHER, your AI advisor</p>
         </div>
 
-        <form id="signupForm" onsubmit="handleGetStarted(event)" class="space-y-4">
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Full Name</label>
-                <input type="text" id="suName" placeholder="e.g., Muhammad Majid" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+        <form id="signupForm" onsubmit="handleGetStarted(event)" class="relative z-10 space-y-3">
+            <div class="auth-field">
+                <span class="af-label">Full Name</span>
+                <input type="text" id="suName" placeholder="e.g., Muhammad Majid" autocomplete="name">
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Email or Username</label>
-                <input type="text" id="suEmail" required placeholder="you@example.com" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-medium">
+            <div class="auth-field">
+                <span class="af-label">Email or Username</span>
+                <input type="text" id="suEmail" required placeholder="you@example.com" autocomplete="username">
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
-                <input type="password" id="suPassword" required placeholder="Create a password" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+            <div class="auth-field">
+                <span class="af-label">Password</span>
+                <input type="password" id="suPassword" required placeholder="Create a password" autocomplete="new-password">
             </div>
-            <button type="submit" class="btn-press w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider py-3 rounded transition-colors shadow-lg cursor-pointer mt-2">Get Started →</button>
+            <button type="submit" class="auth-cta btn-press mt-2">Get Started →</button>
         </form>
 
-        <div class="flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
+        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
             <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
-            <button onclick="showLogin()" class="text-[11px] text-slate-300 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">Already have an account? Sign in</button>
+            <button onclick="showLogin(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">Already have an account? Sign in</button>
         </div>
     </section>
 
@@ -1195,13 +1419,13 @@
         <p>Wealth Architecture — for educational and demonstration purposes only. Equities involve market risk; past performance is not a guarantee of future results.</p>
     </footer>
 
-    <!-- ===== AI ROBO ADVISOR ===== -->
-    <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AI advisor">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
-            <rect x="4" y="7" width="16" height="11" rx="3"/>
-            <path stroke-linecap="round" d="M12 4v3M9 12h.01M15 12h.01M9 16h6"/>
-            <path stroke-linecap="round" d="M2 13v3M22 13v3"/>
-        </svg>
+    <!-- ===== AETHER AI ADVISOR ===== -->
+    <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AETHER AI">
+        <div class="aether-mark" style="width:36px;height:36px;">
+            <div class="aether-orbit"></div>
+            <div class="aether-core"></div>
+            <div class="aether-inner"><span class="aether-glyph" style="font-size:14px;">Æ</span></div>
+        </div>
         <span class="ai-dot"></span>
     </button>
 
@@ -1210,10 +1434,14 @@
     <aside id="aiPanel" class="ai-panel" role="dialog" aria-label="AI Advisor">
         <div class="ai-head">
             <div class="flex items-center gap-3">
-                <div class="ai-avatar">🤖</div>
+                <div class="aether-mark">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                </div>
                 <div>
-                    <div class="text-sm font-bold text-white">Robo Advisor</div>
-                    <div class="ai-status"><span class="live-dot"></span> Online · Ready to help</div>
+                    <div class="aether-name">AETHER</div>
+                    <div class="ai-status"><span class="live-dot"></span> Online · Powered by AI</div>
                 </div>
             </div>
             <button onclick="toggleAdvisor(false)" class="text-slate-400 hover:text-emerald-400 cursor-pointer p-1" aria-label="Close advisor">
@@ -1223,7 +1451,7 @@
         <div id="aiBody" class="ai-body"></div>
         <div id="aiSuggest" class="ai-suggest"></div>
         <form class="ai-input-wrap" onsubmit="aiSubmit(event)">
-            <input id="aiInput" type="text" placeholder="Ask anything about your portfolio…" autocomplete="off">
+            <input id="aiInput" type="text" placeholder="Ask AETHER anything…" autocomplete="off">
             <button type="submit" aria-label="Send">
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7"/></svg>
             </button>
@@ -1749,26 +1977,28 @@
                     </tr>`;
             });
         }
-        // ===== ROBO ADVISOR =====
+        // ===== ROBO ADVISOR (AETHER) — real LLM with KB fallback =====
         const aiSuggestions = [
             "What is the W1, W2, W3 strategy?",
             "How is my dividend tax calculated?",
             "Which stocks are in the High Yield bucket?",
-            "What's the difference between Filer and Non-Filer?",
+            "Filer vs Non-Filer — what's the difference?",
             "What return can I expect in 2 years?",
             "How does CGT work in Pakistan?",
             "What is beta? Should I worry about it?",
-            "Tell me about FFC",
-            "Tell me about MEBL",
+            "Tell me about FFC in detail",
+            "Tell me about MEBL in detail",
             "How do I switch between W1, W2, W3?",
             "Why is my surplus shown live?",
-            "Explain CAGR in simple words"
+            "Explain CAGR in simple words",
+            "Should I invest in cement stocks right now?",
+            "What's a good diversified portfolio for a 25-year-old?"
         ];
 
         const aiKB = [
-            { keys: ["hello","hi","hey","salam","assalam"], a: "Hello! I'm your Robo Advisor. Ask me anything about your portfolio, the strategies, taxes, or any of the 28 PSX stocks." },
+            { keys: ["hello","hi","hey","salam","assalam"], a: "Hello! I'm <b>AETHER</b>, your AI advisor. Ask me anything — strategies, taxes, the 28 PSX stocks, or general investing questions. I'll answer in plain English." },
             { keys: ["thanks","thank you","shukria"], a: "You're welcome! Anything else I can help with?" },
-            { keys: ["who are you","what are you","robo"], a: "I'm an in-app robo advisor. I can explain strategies, taxes, formulas, and the stocks in your universe. I don't give personalised buy/sell advice — I help you understand the app." },
+            { keys: ["who are you","what are you","aether"], a: "I'm <b>AETHER</b>, the AI advisor built into this app. I can explain strategies, taxes, formulas, and the stocks in your universe — and answer general investing or finance questions too." },
             { keys: ["w1","conservative","preservation"], a: "<b>W1 — Capital Preservation</b> is the conservative tier. Around 20% High Yield, 75% High Growth, 5% Trending. Lower volatility, steady dividends. Suited to investors 46+ or anyone wanting calmer performance." },
             { keys: ["w2","balanced"], a: "<b>W2 — Balanced Growth</b> mixes 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation with managed risk. Best for the 31–45 age group." },
             { keys: ["w3","aggressive","velocity","momentum"], a: "<b>W3 — Aggressive Growth</b> tilts to 30% High Yield, 50% High Growth, 20% Trending. Bigger swings, bigger potential — best for younger investors (18–30) with a long runway." },
@@ -1777,49 +2007,114 @@
             { keys: ["dividend","wht","withhold"], a: "Dividends are taxed at a flat <b>15% withholding tax</b> for Filers (deducted at source). The 'Cumulative Yield' KPI is already net of this — what you see is what you keep." },
             { keys: ["cgt","capital gain","capital gains"], a: "<b>Capital Gains Tax (CGT)</b> in Pakistan depends on how long you hold a stock. Shorter holds are taxed more heavily; longer holds are taxed gently. The 'Net Realizable Capital Gain' KPI already factors this in." },
             { keys: ["filer","non-filer","nonfiler","atl","taxpayer"], a: "<b>Filer</b> = your name is on FBR's Active Taxpayer List → lower withholding rates. <b>Non-filer</b> → higher rates on dividends and gains. Toggle filer status in Section II and numbers recalculate." },
-            { keys: ["surplus","monthly","income","expense","cash flow"], a: "Your <b>monthly investable surplus</b> = monthly income − monthly expenses. It updates live as you change the inputs in Section II. This is the cash you can keep adding to the portfolio." },
+            { keys: ["surplus","monthly","cash flow"], a: "Your <b>monthly investable surplus</b> = monthly income − monthly expenses. It updates live as you change the inputs in Section II. This is the cash you can keep adding to the portfolio." },
             { keys: ["cagr"], a: "<b>CAGR</b> (Compound Annual Growth Rate) is the smooth yearly rate that, compounded, takes you from today's value to the projected value. It lets you compare different time-spans on equal footing." },
             { keys: ["beta","volatility"], a: "<b>Beta</b> measures how much a stock moves vs the broader market. Beta < 1 = calmer than market; Beta > 1 = more volatile. The Trending bucket has the highest betas, the High Yield bucket the lowest." },
             { keys: ["eps","earnings"], a: "<b>EPS</b> (Earnings Per Share) is annual profit ÷ shares outstanding. Higher and rising EPS generally means a healthier company. Audited (Aud) values are confirmed; Unaud are interim." },
-            { keys: ["age","18","30","45","46","tier"], a: "Younger investors (18–30) usually pick W3, mid-career (31–45) W2, near-retirement (46+) W1. Open the age dropdown — the strategy tier syncs automatically." },
-            { keys: ["horizon","time","duration"], a: "Your <b>investment horizon</b> is how long you can stay invested. Short term (12 months), medium term (2 years — the app's default forecast), or long term (5+ years)." },
-            { keys: ["high yield","yield"], a: "The <b>High Yield</b> bucket is built around steady, dividend-paying companies — FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, MTL, ATLH and others. Lower volatility, consistent payouts." },
-            { keys: ["high growth","growth"], a: "The <b>High Growth</b> bucket leans on cyclicals and growth names — AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP. More upside, more swings." },
-            { keys: ["trending","alpha","tactical"], a: "The <b>Trending</b> bucket holds tactical / momentum picks — CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM. Highest volatility, but biggest tactical upside when their cycle hits." },
-            { keys: ["ffc"], a: "<b>FFC — Fauji Fertilizer Company.</b> Bucket: High Yield. Sector: Fertilizer. EPS ≈ Rs 45.89 (audited). Beta 0.98. A classic dividend-paying anchor." },
-            { keys: ["mcb"], a: "<b>MCB Bank Limited.</b> Bucket: High Yield. Banking sector. EPS ≈ Rs 48.62. Beta 0.87. One of Pakistan's largest commercial banks." },
-            { keys: ["ubl"], a: "<b>United Bank Limited.</b> Bucket: High Yield. Banking. EPS ≈ Rs 66.00. Beta 0.92. Strong dividend track record." },
-            { keys: ["mebl","meezan"], a: "<b>Meezan Bank.</b> Bucket: High Yield. Islamic banking leader. EPS ≈ Rs 50.47. Beta 0.85." },
+            { keys: ["high yield","yield bucket"], a: "The <b>High Yield</b> bucket is built around steady, dividend-paying companies — FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, MTL, ATLH and others. Lower volatility, consistent payouts." },
+            { keys: ["high growth","growth bucket"], a: "The <b>High Growth</b> bucket leans on cyclicals and growth names — AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP. More upside, more swings." },
+            { keys: ["trending","tactical"], a: "The <b>Trending</b> bucket holds tactical / momentum picks — CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM. Highest volatility, but biggest tactical upside when their cycle hits." },
+            { keys: ["ffc"], a: "<b>FFC — Fauji Fertilizer Company.</b> Bucket: High Yield. Sector: Fertilizer. EPS ≈ Rs 45.89 (audited). Beta 0.98. A classic dividend-paying anchor in Pakistan's market." },
+            { keys: ["mcb"], a: "<b>MCB Bank Limited.</b> Bucket: High Yield. Banking sector. EPS ≈ Rs 48.62. Beta 0.87. One of Pakistan's largest commercial banks with a strong dividend record." },
+            { keys: ["ubl"], a: "<b>United Bank Limited.</b> Bucket: High Yield. Banking. EPS ≈ Rs 66.00. Beta 0.92. Strong dividend track record and wide retail footprint." },
+            { keys: ["mebl","meezan"], a: "<b>Meezan Bank.</b> Bucket: High Yield. Islamic banking leader in Pakistan. EPS ≈ Rs 50.47. Beta 0.85. Consistent growth and profitability." },
             { keys: ["ogdc"], a: "<b>OGDC — Oil &amp; Gas Development Company.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 38.94. Beta 0.36 — very low volatility, big yields." },
             { keys: ["mari"], a: "<b>MARI — Mari Petroleum.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 120.00. Beta ~1.05. Strong cash generator." },
             { keys: ["lci","lucky cement"], a: "<b>Lucky Cement.</b> Bucket: High Growth. EPS ≈ Rs 42.00. Beta 1.08. Cement bellwether — cyclical but high quality." },
-            { keys: ["fccl","fauji cement"], a: "<b>Fauji Cement.</b> Bucket: High Growth. EPS ≈ Rs 8.50. Beta 1.45. Higher beta — moves sharply with the cement cycle." },
-            { keys: ["cnergy","prl","nrl","refinery"], a: "Refinery names like CNERGY, PRL and NRL sit in the Trending bucket. They're event-driven — energy-policy news, fuel margins, OGRA announcements all push them. High momentum, high risk." },
-            { keys: ["projected","forecast","return","2 year"], a: "Each model projects ~48–50% total return over 2 years, with CAGR around 21–22%. These are model projections (capital gains + dividends, net of taxes), not guarantees." },
-            { keys: ["crore","lakh","format","number"], a: "All PKR figures use Pakistani grouping (e.g. 1,51,66,579) with a Crore/Lakh equivalent shown below. PKR 1 Crore = 1,00,00,000. PKR 1 Lakh = 1,00,000." },
-            { keys: ["live","clock","time"], a: "The top bar shows a 12-hour live clock with the current local date. It updates every second and gives the app a 'live terminal' feel." },
-            { keys: ["dark","light","theme","mode"], a: "Use the sun/moon icon on any screen to switch between dark and light themes. Your choice is remembered next time." },
-            { keys: ["safe","risk","lose money","loss"], a: "Stocks always carry market risk — values can fall. The app reduces risk through diversification (28 stocks across 3 buckets) and tier-matched allocations, but it can't eliminate it. Stay diversified and long-term." }
+            { keys: ["fccl","fauji cement"], a: "<b>Fauji Cement.</b> Bucket: High Growth. EPS ≈ Rs 8.50. Beta 1.45. Higher beta — moves sharply with the cement cycle." }
         ];
 
-        function aiAnswer(q) {
+        function aiLocalAnswer(q) {
             const x = q.toLowerCase().trim();
-            if (!x) return "Type a question and I'll do my best to help!";
-            // best match by keyword hits
+            if (!x) return null;
             let best = null, bestScore = 0;
             aiKB.forEach(item => {
                 const score = item.keys.reduce((s, k) => s + (x.includes(k) ? k.length : 0), 0);
                 if (score > bestScore) { bestScore = score; best = item; }
             });
-            if (best && bestScore > 0) return best.a;
-            return "I don't have a direct answer to that yet, but I can explain the <b>strategies (W1/W2/W3)</b>, <b>taxes (CGT/WHT)</b>, the <b>28 stocks</b>, or any number you see on the dashboard. Try one of the suggestions below.";
+            return (best && bestScore >= 3) ? best.a : null;
         }
 
-        function aiAppend(text, who) {
+        // simple markdown -> html (headings, bold, italic, lists, code, line breaks)
+        function mdToHtml(md) {
+            if (!md) return '';
+            // escape HTML
+            let s = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // code blocks ```
+            s = s.replace(/```([\s\S]*?)```/g, (_, c) => '<pre>' + c.trim() + '</pre>');
+            // inline code
+            s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+            // headings
+            s = s.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+            s = s.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+            s = s.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+            // bold / italic
+            s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+            s = s.replace(/\*([^*]+)\*/g, '<i>$1</i>');
+            // unordered list (consecutive lines starting with - or *)
+            s = s.replace(/(^|\n)((?:[-*] .+\n?)+)/g, (m, p1, block) => {
+                const items = block.trim().split(/\n/).map(l => '<li>' + l.replace(/^[-*]\s+/, '') + '</li>').join('');
+                return p1 + '<ul>' + items + '</ul>';
+            });
+            // ordered list
+            s = s.replace(/(^|\n)((?:\d+\. .+\n?)+)/g, (m, p1, block) => {
+                const items = block.trim().split(/\n/).map(l => '<li>' + l.replace(/^\d+\.\s+/, '') + '</li>').join('');
+                return p1 + '<ol>' + items + '</ol>';
+            });
+            // paragraphs
+            s = s.split(/\n{2,}/).map(p => {
+                if (/^<(h\d|ul|ol|pre)/.test(p.trim())) return p;
+                return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+            }).join('\n');
+            return s;
+        }
+
+        const aiSystemPrompt = `You are AETHER, a friendly, professional AI financial advisor inside a Pakistani investment app called Wealth Architecture. You help users understand:
+- 3 portfolio strategies: W1 (Conservative, 20/75/5 Yield/Growth/Trending, ~22.3% CAGR), W2 (Balanced, 50/40/10, ~21.6% CAGR), W3 (Aggressive, 30/50/20, ~21.7% CAGR), all on a PKR 1 Crore base over 2 years (2026-2027).
+- 28 Pakistan Stock Exchange (PSX) stocks in 3 buckets: High Yield (FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, HINOON, SAZEW, MTL, SRVI, ATLH), High Growth (AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP), Trending (CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM).
+- Pakistani tax rules: 15% dividend WHT for Filers, CGT depends on holding period, Non-filers pay higher rates.
+- Numbers shown in Pakistani format (Lakh/Crore).
+
+Answer ANY question the user asks - investing, finance, math, general knowledge, anything - clearly and helpfully like ChatGPT does. When the question is about the app, use the context above. Keep responses concise but complete. Use markdown formatting (bold with **, lists with -, headings with ##) for readability. Never refuse to help.`;
+
+        async function aiRemoteAnswer(q, history) {
+            // Use Pollinations text API (free, no key needed)
+            const messages = [{ role: "system", content: aiSystemPrompt }];
+            history.forEach(h => messages.push({ role: h.role, content: h.content }));
+            messages.push({ role: "user", content: q });
+
+            try {
+                const ctrl = new AbortController();
+                const timeoutId = setTimeout(() => ctrl.abort(), 25000);
+                const resp = await fetch("https://text.pollinations.ai/openai", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: "openai",
+                        messages: messages,
+                        temperature: 0.7,
+                        max_tokens: 600
+                    }),
+                    signal: ctrl.signal
+                });
+                clearTimeout(timeoutId);
+                if (!resp.ok) throw new Error("HTTP " + resp.status);
+                const data = await resp.json();
+                const text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
+                return text.trim();
+            } catch (e) {
+                console.warn("AETHER remote failed:", e);
+                return null;
+            }
+        }
+
+        const aiHistory = []; // {role, content}
+
+        function aiAppend(html, who) {
             const body = document.getElementById('aiBody');
             const div = document.createElement('div');
             div.className = 'msg ' + who;
-            div.innerHTML = text;
+            div.innerHTML = html;
             body.appendChild(div);
             body.scrollTop = body.scrollHeight;
             return div;
@@ -1836,14 +2131,22 @@
             } else if (!on && t) { t.remove(); }
         }
 
-        function aiAsk(text) {
+        async function aiAsk(text) {
             if (!text) return;
-            aiAppend(text, 'user');
+            const q = text.trim();
+            aiAppend(q.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'), 'user');
+            aiHistory.push({ role: "user", content: q });
             aiTyping(true);
-            setTimeout(() => {
-                aiTyping(false);
-                aiAppend(aiAnswer(text), 'bot');
-            }, 600 + Math.random() * 500);
+
+            // Try remote LLM first; if it fails (offline / blocked), fall back to local KB.
+            let answer = await aiRemoteAnswer(q, aiHistory.slice(0, -1));
+            if (!answer) {
+                const local = aiLocalAnswer(q);
+                answer = local || "I'm having trouble reaching the AI service right now. I can still answer questions about the app's **strategies (W1/W2/W3)**, **taxes (CGT/WHT)**, and the **28 PSX stocks** from my built-in knowledge — try asking one of those.";
+            }
+            aiTyping(false);
+            aiAppend(mdToHtml(answer), 'bot');
+            aiHistory.push({ role: "assistant", content: answer });
         }
 
         function aiSubmit(e) {
@@ -1857,9 +2160,8 @@
 
         function renderAiSuggestions() {
             const wrap = document.getElementById('aiSuggest');
-            // pick 4 random suggestions
             const pool = [...aiSuggestions].sort(() => Math.random() - 0.5).slice(0, 4);
-            wrap.innerHTML = pool.map(s => `<button onclick="aiAsk('${s.replace(/'/g, "\\'")}'); renderAiSuggestions();">${s}</button>`).join('');
+            wrap.innerHTML = pool.map(s => `<button onclick="aiAsk(this.dataset.q); renderAiSuggestions();" data-q="${s.replace(/"/g, '&quot;')}">${s}</button>`).join('');
         }
 
         let _aiOpened = false;
@@ -1871,7 +2173,7 @@
             back.classList.toggle('open', next);
             if (next && !_aiOpened) {
                 _aiOpened = true;
-                aiAppend("Hi! I'm your <b>Robo Advisor</b>. Ask me anything about the strategies, taxes, or stocks — or pick a suggestion below.", 'bot');
+                aiAppend("Hi! I'm <b>AETHER</b>, your AI advisor. Ask me anything — about the strategies, taxes, any of the 28 PSX stocks, or general investing questions. I'll answer like ChatGPT, in plain English.", 'bot');
                 renderAiSuggestions();
             }
             if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
