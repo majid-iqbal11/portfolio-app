@@ -460,6 +460,211 @@
         /* AETHER badge in chat header */
         .ai-head { background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(56,189,248,.08)); }
 
+        /* ===== PREMIUM LOADING SCREEN ===== */
+        #bootLoader {
+            position: fixed; inset: 0; z-index: 100;
+            background: radial-gradient(ellipse at center, var(--bg-2) 0%, var(--bg) 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 22px; transition: opacity .7s ease, visibility .7s ease;
+        }
+        #bootLoader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+        .boot-tag { font-size: 10px; letter-spacing: .55em; text-transform: uppercase; color: var(--accent); opacity: .8; }
+        .boot-bar { width: 220px; height: 3px; background: rgba(148,163,184,.18); border-radius: 999px; overflow: hidden; }
+        .boot-bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2dd4bf, #38bdf8, #818cf8); animation: bootFill 1.6s ease-out forwards; box-shadow: 0 0 14px rgba(45,212,191,.6); }
+        @keyframes bootFill { from { width: 0; } to { width: 100%; } }
+
+        /* ===== SCROLL PROGRESS BAR ===== */
+        #scrollProgress {
+            position: fixed; top: 0; left: 0; height: 3px; width: 0;
+            background: linear-gradient(90deg, #2dd4bf, #38bdf8, #818cf8);
+            z-index: 90; transition: width .12s ease-out; box-shadow: 0 0 12px rgba(45,212,191,.7);
+        }
+
+        /* ===== BACK TO TOP ===== */
+        #backToTop {
+            position: fixed; bottom: 95px; right: 22px; z-index: 55;
+            width: 44px; height: 44px; border-radius: 9999px; cursor: pointer;
+            background: var(--surface-2); border: 1px solid var(--surface-border);
+            color: var(--accent); display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity .3s ease, transform .3s ease, background-color .2s ease;
+            box-shadow: 0 14px 28px -12px rgba(0,0,0,.5);
+            backdrop-filter: blur(12px);
+        }
+        #backToTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #backToTop:hover { background: var(--accent); color: #fff; }
+
+        /* ===== MOUSE-FOLLOW SPOTLIGHT ===== */
+        #spotlight {
+            position: fixed; pointer-events: none; z-index: 1;
+            width: 560px; height: 560px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(45,212,191,.10), transparent 60%);
+            transform: translate(-50%, -50%);
+            transition: opacity .3s ease;
+            opacity: 0;
+        }
+        body:hover #spotlight { opacity: 1; }
+
+        /* ===== PARTICLES BG ===== */
+        #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .particle {
+            position: absolute; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(45,212,191,.6), rgba(45,212,191,0) 70%);
+            animation: floatUp linear infinite;
+            opacity: .35;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(20px) translateX(0); opacity: 0; }
+            10%  { opacity: .35; }
+            90%  { opacity: .35; }
+            to   { transform: translateY(-120vh) translateX(40px); opacity: 0; }
+        }
+
+        /* keep app content above particles */
+        body > section, body > main, body > header, body > footer, body > .ai-fab, body > .ai-panel, body > .ai-backdrop, body > #accessOverlay, body > #launchCinematic, body > #backToTop, body > #themePicker, body > #scrollProgress { position: relative; z-index: 2; }
+
+        /* ===== GLASSMORPHISM HELPERS ===== */
+        .glass {
+            background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
+            border: 1px solid rgba(255,255,255,.08);
+            box-shadow: 0 30px 60px -32px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        html.light .glass {
+            background: linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.5));
+            border-color: rgba(15,23,42,.06);
+            box-shadow: 0 30px 60px -36px rgba(15,23,42,.25), inset 0 1px 0 rgba(255,255,255,.7);
+        }
+
+        /* ===== THEME PICKER ===== */
+        #themePicker {
+            position: fixed; bottom: 22px; left: 22px; z-index: 55;
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 12px; border-radius: 999px;
+            background: var(--surface-2); border: 1px solid var(--surface-border);
+            box-shadow: 0 14px 28px -12px rgba(0,0,0,.5);
+            backdrop-filter: blur(12px);
+        }
+        .tp-mode {
+            font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+            color: var(--text-dim); transition: background-color .2s ease, color .2s ease;
+        }
+        .tp-mode.active { background: var(--accent); color: #fff; }
+        .tp-divider { width: 1px; height: 16px; background: var(--surface-border); }
+        .tp-accent {
+            width: 22px; height: 22px; border-radius: 9999px; cursor: pointer; border: 2px solid transparent;
+            transition: transform .15s ease, border-color .2s ease;
+        }
+        .tp-accent:hover { transform: scale(1.1); }
+        .tp-accent.active { border-color: #fff; box-shadow: 0 0 0 2px var(--accent); }
+        html.light .tp-accent.active { border-color: #0b1220; }
+
+        /* ===== LAUNCH CINEMATIC ===== */
+        #launchCinematic {
+            position: fixed; inset: 0; z-index: 95;
+            background: radial-gradient(ellipse at center, #0b1830 0%, #07101f 100%);
+            display: none; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        #launchCinematic.show { display: flex; animation: cineFade .5s ease; }
+        @keyframes cineFade { from { opacity: 0; } to { opacity: 1; } }
+        .cine-rings { position: relative; width: 320px; height: 320px; }
+        .cine-rings .cr {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 1px solid rgba(45,212,191,.4);
+            animation: cineExpand 1.6s ease-out forwards;
+        }
+        .cine-rings .cr:nth-child(2) { animation-delay: .15s; }
+        .cine-rings .cr:nth-child(3) { animation-delay: .3s; }
+        .cine-rings .cr:nth-child(4) { animation-delay: .45s; }
+        @keyframes cineExpand {
+            0%   { transform: scale(.2); opacity: 0; }
+            30%  { opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        .cine-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); text-align: center; }
+        .cine-name {
+            font-size: 22px; font-weight: 800; letter-spacing: .35em;
+            background: linear-gradient(135deg, #2dd4bf, #38bdf8, #818cf8);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            animation: cineNameIn 1.2s cubic-bezier(.16,1,.3,1) .3s both;
+        }
+        @keyframes cineNameIn { from { opacity: 0; letter-spacing: 1em; } to { opacity: 1; letter-spacing: .35em; } }
+        .cine-sub { font-size: 10px; letter-spacing: .4em; color: var(--text-dim); text-transform: uppercase; margin-top: 8px; opacity: 0; animation: cineFadeUp .8s ease .9s forwards; }
+        @keyframes cineFadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .cine-progress { width: 260px; height: 2px; background: rgba(148,163,184,.2); border-radius: 999px; overflow: hidden; margin-top: 28px; opacity: 0; animation: cineFadeUp .6s ease 1.2s forwards; }
+        .cine-progress > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2dd4bf, #38bdf8); animation: bootFill 1.6s ease-out 1.2s forwards; }
+
+        /* ===== PHONE MOCKUP ===== */
+        .phone-frame {
+            width: 260px; height: 520px;
+            background: linear-gradient(180deg, #1e2a44, #0f172a);
+            border-radius: 38px;
+            padding: 14px;
+            box-shadow:
+              0 50px 100px -30px rgba(0,0,0,.7),
+              inset 0 1px 0 rgba(255,255,255,.1),
+              inset 0 -1px 0 rgba(0,0,0,.5),
+              0 0 0 1px rgba(255,255,255,.06);
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(-12deg) rotateX(8deg);
+            animation: phoneFloat 6s ease-in-out infinite;
+        }
+        @keyframes phoneFloat {
+            0%,100% { transform: rotateY(-12deg) rotateX(8deg) translateY(0); }
+            50%     { transform: rotateY(-8deg) rotateX(6deg) translateY(-12px); }
+        }
+        .phone-notch {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 22px; background: #0b1220; border-radius: 0 0 14px 14px;
+        }
+        .phone-screen {
+            width: 100%; height: 100%; border-radius: 26px; overflow: hidden;
+            background: linear-gradient(180deg, var(--bg-2), var(--bg));
+            position: relative;
+        }
+        .phone-slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding: 32px 14px 14px;
+            opacity: 0; transition: opacity .6s ease;
+        }
+        .phone-slide.active { opacity: 1; }
+        .phone-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
+        .phone-dots span { width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,.2); transition: background .3s ease, width .3s ease; }
+        .phone-dots span.active { background: #2dd4bf; width: 20px; }
+
+        /* ===== SCREENSHOT CAROUSEL ===== */
+        .carousel { perspective: 1400px; }
+        .carousel-track { display: flex; gap: 18px; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+        .carousel-slide {
+            min-width: 260px; height: 360px; border-radius: 18px;
+            background: linear-gradient(180deg, var(--surface), var(--surface-2));
+            border: 1px solid var(--surface-border);
+            box-shadow: 0 30px 60px -32px rgba(0,0,0,.6);
+            padding: 16px; flex-shrink: 0;
+            transform: rotateY(0deg); transition: transform .6s cubic-bezier(.16,1,.3,1);
+        }
+        .carousel-controls { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+        .car-btn {
+            width: 40px; height: 40px; border-radius: 9999px; cursor: pointer;
+            background: var(--surface-2); border: 1px solid var(--surface-border);
+            color: var(--accent); display: flex; align-items: center; justify-content: center;
+            transition: background-color .2s ease, transform .15s ease;
+        }
+        .car-btn:hover { background: var(--accent); color: #fff; }
+        .car-btn:active { transform: scale(.92); }
+        .car-dots { display: flex; align-items: center; gap: 6px; }
+        .car-dots span { width: 8px; height: 8px; border-radius: 999px; background: var(--surface-border); cursor: pointer; transition: background .2s, width .3s; }
+        .car-dots span.active { background: var(--accent); width: 22px; }
+
+        /* Scroll-reveal observer hook */
+        .scroll-reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+        .scroll-reveal.in { opacity: 1; transform: translateY(0); }
+
         /* ===== LOGIN ENTRANCE + CLOCK ANIMATIONS ===== */
         #authScreen { animation: authIn .6s cubic-bezier(.16,1,.3,1) both; }
         @keyframes authIn {
@@ -725,13 +930,69 @@
             .ov-rings span, .card-open, .btn-press.clicked,
             .kpi-flash, .val-pop, #chartSwitchFlash.go,
             .panel-3d::after, .cta-submit::after, .reveal-fade, .grid-stagger > *,
-            .ai-fab, .msg, .typing span { animation: none !important; opacity: 1 !important; }
+            .ai-fab, .msg, .typing span,
+            .boot-bar > span, #spotlight, .particle, .phone-frame,
+            .cine-rings .cr, .cine-name, .cine-sub, .cine-progress, .cine-progress > span,
+            .scroll-reveal { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
             .feature-3d:hover, .tilt-card:hover, .stock-row:hover { transform: none; }
             .chart-3d, .donut-3d, .shot { transform: none; }
         }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col justify-between">
+
+    <!-- ===== PREMIUM BOOT LOADER ===== -->
+    <div id="bootLoader">
+        <div class="aether-mark xl">
+            <div class="aether-orbit"></div>
+            <div class="aether-core"></div>
+            <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+        </div>
+        <div class="boot-tag">Wealth Architecture</div>
+        <div class="boot-bar"><span></span></div>
+    </div>
+
+    <!-- ===== SCROLL PROGRESS ===== -->
+    <div id="scrollProgress"></div>
+
+    <!-- ===== MOUSE SPOTLIGHT ===== -->
+    <div id="spotlight"></div>
+
+    <!-- ===== AMBIENT PARTICLES ===== -->
+    <div id="particles"></div>
+
+    <!-- ===== LAUNCH CINEMATIC ===== -->
+    <div id="launchCinematic">
+        <div class="cine-rings">
+            <div class="cr"></div><div class="cr"></div><div class="cr"></div><div class="cr"></div>
+            <div class="cine-center">
+                <div class="aether-mark xl" style="margin-bottom:18px;">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                </div>
+                <div class="cine-name">WEALTH ARCHITECTURE</div>
+                <div class="cine-sub">Launching your portfolio</div>
+                <div class="cine-progress"><span></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+    </button>
+
+    <!-- ===== THEME PICKER ===== -->
+    <div id="themePicker" role="group" aria-label="Theme picker">
+        <button class="tp-mode" data-mode="light" onclick="setTheme('light')">☀ Light</button>
+        <button class="tp-mode" data-mode="dark" onclick="setTheme('dark')">☾ Dark</button>
+        <span class="tp-divider"></span>
+        <button class="tp-accent" data-accent="teal"   onclick="setAccent('teal')"   style="background:linear-gradient(135deg,#2dd4bf,#38bdf8)" title="Teal · Sky"></button>
+        <button class="tp-accent" data-accent="violet" onclick="setAccent('violet')" style="background:linear-gradient(135deg,#a78bfa,#f472b6)" title="Violet · Pink"></button>
+        <button class="tp-accent" data-accent="amber"  onclick="setAccent('amber')"  style="background:linear-gradient(135deg,#fbbf24,#f97316)" title="Amber · Orange"></button>
+        <button class="tp-accent" data-accent="rose"   onclick="setAccent('rose')"   style="background:linear-gradient(135deg,#fb7185,#f43f5e)" title="Rose"></button>
+    </div>
 
     <!-- ACCESS GRANTED REVEAL OVERLAY -->
     <div id="accessOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center">
@@ -811,43 +1072,78 @@
                     </div>
                 </div>
 
-                <!-- SUPER-3D CENTERPIECE -->
-                <div class="scene3d relative flex justify-center items-center h-[360px] float-in fi-4">
-                    <div class="floor-grid"></div>
+                <!-- ===== 3D PHONE MOCKUP CENTERPIECE ===== -->
+                <div class="scene3d relative flex justify-center items-center h-[560px] float-in fi-4">
+                    <div class="floor-grid" style="bottom:20px;"></div>
                     <div id="stageRotor" class="stage-rotor">
-                        <div class="core-scene">
-                            <!-- floating ticker chips at varying depth -->
-                            <div class="chip3d" style="top:-14px;left:-46px;transform:translateZ(60px);animation-delay:-0.4s;">FFC ▲</div>
-                            <div class="chip3d" style="top:40px;right:-58px;transform:translateZ(40px);animation-delay:-1.6s;">OGDC ▲</div>
-                            <div class="chip3d" style="bottom:54px;left:-58px;transform:translateZ(30px);animation-delay:-2.4s;">MARI ▲</div>
-                            <div class="chip3d" style="bottom:-10px;right:-30px;transform:translateZ(70px);animation-delay:-3.1s;">MCB ▲</div>
+                        <!-- floating ticker chips around the phone -->
+                        <div class="chip3d" style="top:30px;left:-30px;transform:translateZ(80px);animation-delay:-0.4s;">FFC +2.4%</div>
+                        <div class="chip3d" style="top:140px;right:-40px;transform:translateZ(60px);animation-delay:-1.6s;">OGDC +1.8%</div>
+                        <div class="chip3d" style="bottom:120px;left:-50px;transform:translateZ(40px);animation-delay:-2.4s;">MARI +3.1%</div>
+                        <div class="chip3d" style="bottom:40px;right:-20px;transform:translateZ(90px);animation-delay:-3.1s;">MCB +0.9%</div>
 
-                            <div class="deck">
-                                <div class="deck-card d-back"></div>
-                                <div class="deck-card d-mid"></div>
-                                <div class="deck-card d-front p-5 flex flex-col justify-between" style="transform:translateZ(8px);">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-1">
-                                            <span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Projected Value · 2027</span>
-                                            <span class="live-dot"></span>
-                                        </div>
-                                        <div class="text-2xl font-bold text-white num">PKR 1.52 Cr</div>
-                                        <div class="text-[10px] text-emerald-400 font-semibold num">+49.8% over 2 years</div>
+                        <div class="phone-frame">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen" id="phoneScreen">
+                                <!-- Slide 1: Hero -->
+                                <div class="phone-slide active" data-slide="0">
+                                    <div class="text-[8px] font-bold tracking-widest text-emerald-400 uppercase mb-2">Portfolio · 2027</div>
+                                    <div class="text-2xl font-bold text-white num leading-tight">PKR 1.52<br>Crore</div>
+                                    <div class="text-[10px] text-emerald-400 font-semibold num mt-1">+49.8% · 2 years</div>
+                                    <svg viewBox="0 0 220 90" class="w-full h-20 mt-3">
+                                        <defs><linearGradient id="phg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".6"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></linearGradient></defs>
+                                        <polyline fill="url(#phg1)" stroke="none" points="2,78 35,68 70,56 105,60 140,40 175,28 218,8 218,90 2,90"/>
+                                        <polyline fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round" points="2,78 35,68 70,56 105,60 140,40 175,28 218,8"/>
+                                    </svg>
+                                    <div class="grid grid-cols-3 gap-1 mt-3 text-center">
+                                        <div><div class="text-[7px] text-slate-400 uppercase">Yield</div><div class="text-[10px] font-bold text-emerald-400 num">15%</div></div>
+                                        <div><div class="text-[7px] text-slate-400 uppercase">Growth</div><div class="text-[10px] font-bold text-sky-400 num">75%</div></div>
+                                        <div><div class="text-[7px] text-slate-400 uppercase">Alpha</div><div class="text-[10px] font-bold text-amber-400 num">5%</div></div>
                                     </div>
-                                    <!-- 3D animated bars -->
-                                    <div class="flex items-end justify-center gap-2 h-20" style="transform-style:preserve-3d;">
-                                        <div class="bar3d" style="height:38%;animation-delay:.2s;"></div>
-                                        <div class="bar3d" style="height:55%;animation-delay:.3s;"></div>
-                                        <div class="bar3d" style="height:48%;animation-delay:.4s;"></div>
-                                        <div class="bar3d" style="height:72%;animation-delay:.5s;"></div>
-                                        <div class="bar3d" style="height:64%;animation-delay:.6s;"></div>
-                                        <div class="bar3d" style="height:90%;animation-delay:.7s;background:linear-gradient(180deg,#6ee7b7,#10b981);"></div>
+                                </div>
+                                <!-- Slide 2: Allocation donut -->
+                                <div class="phone-slide" data-slide="1">
+                                    <div class="text-[8px] font-bold tracking-widest text-emerald-400 uppercase mb-2">Allocation Mix</div>
+                                    <div class="flex justify-center items-center flex-1">
+                                        <svg viewBox="0 0 140 140" class="w-32 h-32 -rotate-90">
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#1e293b" stroke-width="16"/>
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#2dd4bf" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#38bdf8" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#fbbf24" stroke-width="16" stroke-dasharray="50 277" stroke-dashoffset="-277"/>
+                                        </svg>
                                     </div>
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Yield</div><div class="text-[11px] font-bold text-emerald-400 num">15%</div></div>
-                                        <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Growth</div><div class="text-[11px] font-bold text-blue-400 num">75%</div></div>
-                                        <div class="text-center"><div class="text-[9px] text-slate-500 uppercase">Alpha</div><div class="text-[11px] font-bold text-amber-400 num">5%</div></div>
+                                    <div class="flex justify-around text-[9px] mt-2">
+                                        <div class="text-center"><div class="text-emerald-400 font-bold">45%</div><div class="text-slate-400">Yield</div></div>
+                                        <div class="text-center"><div class="text-sky-400 font-bold">40%</div><div class="text-slate-400">Growth</div></div>
+                                        <div class="text-center"><div class="text-amber-400 font-bold">15%</div><div class="text-slate-400">Alpha</div></div>
                                     </div>
+                                </div>
+                                <!-- Slide 3: Stocks -->
+                                <div class="phone-slide" data-slide="2">
+                                    <div class="text-[8px] font-bold tracking-widest text-emerald-400 uppercase mb-3">PSX Stocks · 28</div>
+                                    <div class="space-y-2.5 flex-1">
+                                        <div class="flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span class="font-mono font-bold text-white text-[11px]">FFC</span></div><span class="text-emerald-400 text-[10px] font-bold num">+2.4%</span></div>
+                                        <div class="flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span><span class="font-mono font-bold text-white text-[11px]">MEBL</span></div><span class="text-emerald-400 text-[10px] font-bold num">+1.6%</span></div>
+                                        <div class="flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span class="font-mono font-bold text-white text-[11px]">LCI</span></div><span class="text-emerald-400 text-[10px] font-bold num">+3.0%</span></div>
+                                        <div class="flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span><span class="font-mono font-bold text-white text-[11px]">FCCL</span></div><span class="text-emerald-400 text-[10px] font-bold num">+2.1%</span></div>
+                                        <div class="flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span class="font-mono font-bold text-white text-[11px]">PRL</span></div><span class="text-emerald-400 text-[10px] font-bold num">+5.4%</span></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 4: AETHER chat -->
+                                <div class="phone-slide" data-slide="3">
+                                    <div class="text-[8px] font-bold tracking-widest text-emerald-400 uppercase mb-3">AETHER · AI</div>
+                                    <div class="space-y-2 flex-1">
+                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">Explain CAGR briefly</div>
+                                        <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-6" style="background:#1e293b;border:1px solid #334155;">CAGR is the smooth yearly rate that takes you from today's value to a future value — a fair way to compare returns.</div>
+                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">FFC ke baare me batao</div>
+                                        <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-6" style="background:#1e293b;border:1px solid #334155;">FFC fertilizer sector ka dividend champion hai — beta 0.98, EPS Rs 45.89.</div>
+                                    </div>
+                                </div>
+                                <div class="phone-dots">
+                                    <span class="active" data-dot="0"></span>
+                                    <span data-dot="1"></span>
+                                    <span data-dot="2"></span>
+                                    <span data-dot="3"></span>
                                 </div>
                             </div>
                         </div>
@@ -975,10 +1271,111 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ===== SWIPEABLE SCREENSHOTS CAROUSEL ===== -->
+            <div class="mt-16 scroll-reveal">
+                <div class="text-center mb-6">
+                    <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 mb-1">Screenshots</div>
+                    <h2 class="text-lg md:text-xl font-bold text-white">Swipe through the app</h2>
+                </div>
+                <div class="carousel overflow-hidden">
+                    <div class="carousel-track" id="carTrack" style="transform:translateX(0)">
+                        <div class="carousel-slide">
+                            <div class="text-[9px] font-bold tracking-widest text-emerald-400 uppercase mb-2">01 · Hero KPIs</div>
+                            <div class="text-lg font-bold text-white mb-1">Six glance-worthy metrics</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Base capital, projected value, capital gain, dividends, total return and CAGR — all visible at once.</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="rounded-lg p-2 bg-slate-900/60 border border-slate-700"><div class="text-[8px] text-slate-400 uppercase">Value</div><div class="text-emerald-400 font-bold num text-sm">1.52 Cr</div></div>
+                                <div class="rounded-lg p-2 bg-slate-900/60 border border-slate-700"><div class="text-[8px] text-slate-400 uppercase">CAGR</div><div class="text-sky-400 font-bold num text-sm">22.3%</div></div>
+                                <div class="rounded-lg p-2 bg-slate-900/60 border border-slate-700"><div class="text-[8px] text-slate-400 uppercase">Gain</div><div class="text-white font-bold num text-sm">43.92 L</div></div>
+                                <div class="rounded-lg p-2 bg-slate-900/60 border border-slate-700"><div class="text-[8px] text-slate-400 uppercase">Yield</div><div class="text-emerald-400 font-bold num text-sm">5.92 L</div></div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="text-[9px] font-bold tracking-widest text-emerald-400 uppercase mb-2">02 · Growth Chart</div>
+                            <div class="text-lg font-bold text-white mb-1">2-year forecast curve</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Animated 3D line chart with tooltips in Crore — switch W1/W2/W3 and watch it morph.</p>
+                            <svg viewBox="0 0 260 130" class="w-full h-32">
+                                <defs><linearGradient id="cs1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".5"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></linearGradient></defs>
+                                <polyline fill="url(#cs1)" stroke="none" points="6,112 50,98 95,80 140,86 185,52 230,30 256,12 256,130 6,130"/>
+                                <polyline fill="none" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" points="6,112 50,98 95,80 140,86 185,52 230,30 256,12"/>
+                            </svg>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="text-[9px] font-bold tracking-widest text-emerald-400 uppercase mb-2">03 · Allocation</div>
+                            <div class="text-lg font-bold text-white mb-1">3-bucket donut split</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Yield, Growth and Alpha proportions update live as you switch strategies.</p>
+                            <div class="flex justify-center">
+                                <svg viewBox="0 0 140 140" class="w-32 h-32 -rotate-90">
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#1e293b" stroke-width="16"/>
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#2dd4bf" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#38bdf8" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#fbbf24" stroke-width="16" stroke-dasharray="50 277" stroke-dashoffset="-277"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="text-[9px] font-bold tracking-widest text-emerald-400 uppercase mb-2">04 · Stocks Table</div>
+                            <div class="text-lg font-bold text-white mb-1">28 PSX equities, filtered</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Filter by bucket. Hover a row for a soft 3D slide and emerald edge highlight.</p>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between p-1.5 rounded bg-slate-900/60 border border-slate-700"><span class="font-mono font-bold text-white text-[10px]">FFC</span><span class="text-emerald-400 text-[10px] font-bold">Yield</span></div>
+                                <div class="flex justify-between p-1.5 rounded bg-slate-900/60 border border-slate-700"><span class="font-mono font-bold text-white text-[10px]">LCI</span><span class="text-sky-400 text-[10px] font-bold">Growth</span></div>
+                                <div class="flex justify-between p-1.5 rounded bg-slate-900/60 border border-slate-700"><span class="font-mono font-bold text-white text-[10px]">PRL</span><span class="text-amber-400 text-[10px] font-bold">Trending</span></div>
+                            </div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="text-[9px] font-bold tracking-widest text-emerald-400 uppercase mb-2">05 · AETHER</div>
+                            <div class="text-lg font-bold text-white mb-1">Your AI advisor</div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Ask anything in English or Roman Urdu. Get a clear, instant answer.</p>
+                            <div class="space-y-1.5">
+                                <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-8" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">CAGR kya hai?</div>
+                                <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-8" style="background:#1e293b;border:1px solid #334155;">CAGR yearly compound growth rate hai — har saal average kitna grow hua…</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="car-btn" onclick="carPrev()" aria-label="Previous"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+                    <div class="car-dots" id="carDots"></div>
+                    <button class="car-btn" onclick="carNext()" aria-label="Next"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></button>
+                </div>
+            </div>
+
+            <!-- ===== STEP-BY-STEP WALKTHROUGH ===== -->
+            <div class="mt-16 scroll-reveal">
+                <div class="text-center mb-6">
+                    <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 mb-1">How it works</div>
+                    <h2 class="text-lg md:text-xl font-bold text-white">Three steps to a working portfolio</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="glass rounded-2xl p-5 scroll-reveal">
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">01</div>
+                        <h3 class="text-sm font-bold text-white mb-1">Set up your profile</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Pick your age, income and tax status — we'll suggest a strategy tier instantly.</p>
+                    </div>
+                    <div class="glass rounded-2xl p-5 scroll-reveal" style="transition-delay:.1s">
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">02</div>
+                        <h3 class="text-sm font-bold text-white mb-1">Choose your strategy</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Try W1, W2, W3 — watch projections, allocations and stocks recalculate in real time.</p>
+                    </div>
+                    <div class="glass rounded-2xl p-5 scroll-reveal" style="transition-delay:.2s">
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">03</div>
+                        <h3 class="text-sm font-bold text-white mb-1">Ask AETHER anything</h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">Stuck on a number, term or stock? AETHER explains in plain English or Roman Urdu.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== LAUNCH CTA ===== -->
+            <div class="mt-16 text-center scroll-reveal">
+                <button onclick="launchPortfolio()" class="btn-press inline-flex items-center gap-3 px-10 py-4 rounded-2xl text-sm font-bold uppercase tracking-[0.25em] text-white" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8,#818cf8);box-shadow:0 24px 50px -16px rgba(45,212,191,.7);">
+                    🚀 Launch Portfolio
+                </button>
+                <p class="text-[11px] text-slate-400 mt-3">Cinematic intro · Premium experience</p>
+            </div>
         </div>
     </section>
-
-    <!-- INSTITUTIONAL HEADER LAYER -->
     <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-col md:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-700 gap-4">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -1538,12 +1935,168 @@
         let allocationChart = null;
 
         window.onload = function() {
+            applySavedAccent();
             applySavedTheme();
             startLiveClock();
             populateAgeOptions();
             calculateSurplus();
             populateStocksTable();
+            initParticles();
+            initSpotlight();
+            initScrollProgress();
+            initScrollReveal();
+            initCarousel();
+            initPhoneAutoRotate();
+            initBootLoader();
         };
+
+        // ===== PREMIUM BOOT LOADER =====
+        function initBootLoader() {
+            const loader = document.getElementById('bootLoader');
+            setTimeout(() => loader.classList.add('hide'), 1800);
+            setTimeout(() => loader.remove(), 2600);
+        }
+
+        // ===== PARTICLES =====
+        function initParticles() {
+            if (_reduceMotion) return;
+            const wrap = document.getElementById('particles');
+            const COUNT = 22;
+            for (let i = 0; i < COUNT; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = 3 + Math.random() * 6;
+                p.style.width = size + 'px'; p.style.height = size + 'px';
+                p.style.left = (Math.random() * 100) + 'vw';
+                p.style.bottom = '-20px';
+                p.style.animationDuration = (12 + Math.random() * 18) + 's';
+                p.style.animationDelay = (-Math.random() * 20) + 's';
+                wrap.appendChild(p);
+            }
+        }
+
+        // ===== MOUSE SPOTLIGHT =====
+        function initSpotlight() {
+            if (_reduceMotion) return;
+            const sp = document.getElementById('spotlight');
+            document.addEventListener('mousemove', (e) => {
+                sp.style.left = e.clientX + 'px';
+                sp.style.top = e.clientY + 'px';
+            });
+        }
+
+        // ===== SCROLL PROGRESS + BACK TO TOP =====
+        function initScrollProgress() {
+            const bar = document.getElementById('scrollProgress');
+            const top = document.getElementById('backToTop');
+            const onScroll = () => {
+                const h = document.documentElement;
+                const max = (h.scrollHeight - h.clientHeight) || 1;
+                const pct = (h.scrollTop / max) * 100;
+                bar.style.width = pct + '%';
+                top.classList.toggle('show', h.scrollTop > 400);
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        }
+
+        // ===== SCROLL-REVEAL OBSERVER =====
+        function initScrollReveal() {
+            if (!('IntersectionObserver' in window)) {
+                document.querySelectorAll('.scroll-reveal').forEach(el => el.classList.add('in'));
+                return;
+            }
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { threshold: 0.12 });
+            document.querySelectorAll('.scroll-reveal').forEach(el => io.observe(el));
+            // Also re-scan periodically (for content revealed later)
+            window._rescanReveal = () => document.querySelectorAll('.scroll-reveal:not(.in)').forEach(el => io.observe(el));
+        }
+
+        // ===== SCREENSHOTS CAROUSEL =====
+        let carIndex = 0;
+        function initCarousel() {
+            const track = document.getElementById('carTrack');
+            if (!track) return;
+            const slides = track.children.length;
+            const dotsWrap = document.getElementById('carDots');
+            dotsWrap.innerHTML = '';
+            for (let i = 0; i < slides; i++) {
+                const d = document.createElement('span');
+                if (i === 0) d.className = 'active';
+                d.onclick = () => carGo(i);
+                dotsWrap.appendChild(d);
+            }
+            carGo(0);
+        }
+        function carGo(i) {
+            const track = document.getElementById('carTrack');
+            const slides = track.children.length;
+            carIndex = (i + slides) % slides;
+            // each slide is min-width 260 + 18 gap (px). Use computed width for accuracy.
+            const slideEl = track.children[0];
+            const step = slideEl.offsetWidth + 18;
+            track.style.transform = `translateX(${-carIndex * step}px)`;
+            const dots = document.getElementById('carDots').children;
+            for (let k = 0; k < dots.length; k++) dots[k].className = (k === carIndex) ? 'active' : '';
+        }
+        function carPrev() { carGo(carIndex - 1); }
+        function carNext() { carGo(carIndex + 1); }
+        // auto-advance carousel
+        setInterval(() => { const t = document.getElementById('carTrack'); if (t && !document.hidden) carGo(carIndex + 1); }, 5000);
+
+        // ===== PHONE AUTO-ROTATE =====
+        function initPhoneAutoRotate() {
+            const slides = document.querySelectorAll('#phoneScreen .phone-slide');
+            const dots = document.querySelectorAll('#phoneScreen .phone-dots span');
+            if (!slides.length) return;
+            let cur = 0;
+            setInterval(() => {
+                if (document.hidden) return;
+                slides[cur].classList.remove('active');
+                dots[cur].classList.remove('active');
+                cur = (cur + 1) % slides.length;
+                slides[cur].classList.add('active');
+                dots[cur].classList.add('active');
+            }, 3200);
+        }
+
+        // ===== THEME PICKER =====
+        const ACCENTS = {
+            teal:   { c1: '#2dd4bf', c2: '#38bdf8', c3: '#818cf8', solid: '#2dd4bf' },
+            violet: { c1: '#a78bfa', c2: '#f472b6', c3: '#e879f9', solid: '#a78bfa' },
+            amber:  { c1: '#fbbf24', c2: '#f97316', c3: '#ef4444', solid: '#f59e0b' },
+            rose:   { c1: '#fb7185', c2: '#f43f5e', c3: '#ec4899', solid: '#f43f5e' }
+        };
+        function applySavedAccent() { setAccent(localStorage.getItem('quant_accent') || 'teal'); }
+        function setAccent(name) {
+            const a = ACCENTS[name] || ACCENTS.teal;
+            const r = document.documentElement.style;
+            r.setProperty('--accent', a.solid);
+            r.setProperty('--accent-2', a.c2);
+            // Repaint gradients used in css via custom-prop fallback isn't possible for hardcoded gradients,
+            // but elements using var(--accent) will switch. Save the choice.
+            localStorage.setItem('quant_accent', name);
+            document.querySelectorAll('.tp-accent').forEach(b => b.classList.toggle('active', b.dataset.accent === name));
+        }
+
+        // Hook into existing setTheme to also flip picker mode buttons
+        const _origSetTheme = setTheme;
+        setTheme = function(mode) {
+            _origSetTheme(mode);
+            document.querySelectorAll('.tp-mode').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+        };
+
+        // ===== LAUNCH CINEMATIC =====
+        function launchPortfolio() {
+            const cine = document.getElementById('launchCinematic');
+            cine.classList.add('show');
+            setTimeout(() => {
+                cine.classList.remove('show');
+                showSignup();
+            }, 2200);
+        }
 
         // ===== PREVIEW -> SCREEN NAVIGATION (with click + open animation) =====
         function pressFx(btn) {
@@ -1980,48 +2533,48 @@
         // ===== ROBO ADVISOR (AETHER) — real LLM with KB fallback =====
         const aiSuggestions = [
             "What is the W1, W2, W3 strategy?",
-            "How is my dividend tax calculated?",
-            "Which stocks are in the High Yield bucket?",
             "Filer vs Non-Filer — what's the difference?",
-            "What return can I expect in 2 years?",
+            "W1 W2 W3 me kya farq hai?",
+            "CAGR kya hota hai?",
+            "FFC ke baare me batao",
+            "Mujhe MEBL ke baare me detail do",
             "How does CGT work in Pakistan?",
             "What is beta? Should I worry about it?",
             "Tell me about FFC in detail",
             "Tell me about MEBL in detail",
-            "How do I switch between W1, W2, W3?",
-            "Why is my surplus shown live?",
+            "Long term me kaunsa strategy best hai?",
+            "PSX stocks me se top 5 yield wali kaun si hain?",
             "Explain CAGR in simple words",
-            "Should I invest in cement stocks right now?",
-            "What's a good diversified portfolio for a 25-year-old?"
+            "Should I invest in cement stocks right now?"
         ];
 
         const aiKB = [
-            { keys: ["hello","hi","hey","salam","assalam"], a: "Hello! I'm <b>AETHER</b>, your AI advisor. Ask me anything — strategies, taxes, the 28 PSX stocks, or general investing questions. I'll answer in plain English." },
-            { keys: ["thanks","thank you","shukria"], a: "You're welcome! Anything else I can help with?" },
-            { keys: ["who are you","what are you","aether"], a: "I'm <b>AETHER</b>, the AI advisor built into this app. I can explain strategies, taxes, formulas, and the stocks in your universe — and answer general investing or finance questions too." },
-            { keys: ["w1","conservative","preservation"], a: "<b>W1 — Capital Preservation</b> is the conservative tier. Around 20% High Yield, 75% High Growth, 5% Trending. Lower volatility, steady dividends. Suited to investors 46+ or anyone wanting calmer performance." },
-            { keys: ["w2","balanced"], a: "<b>W2 — Balanced Growth</b> mixes 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation with managed risk. Best for the 31–45 age group." },
-            { keys: ["w3","aggressive","velocity","momentum"], a: "<b>W3 — Aggressive Growth</b> tilts to 30% High Yield, 50% High Growth, 20% Trending. Bigger swings, bigger potential — best for younger investors (18–30) with a long runway." },
-            { keys: ["difference between","compare","which is better","w1 vs","w2 vs","w3 vs"], a: "All three start with PKR 1 Crore base.<br>• <b>W1</b> ≈ 22.3% CAGR, calmest<br>• <b>W2</b> ≈ 21.6% CAGR, most balanced<br>• <b>W3</b> ≈ 21.7% CAGR, most volatile<br>Pick by your age and how much volatility you can stomach." },
-            { keys: ["switch","change model","change strategy","toggle"], a: "On the dashboard, click the <b>W1 / W2 / W3</b> chips at the top — KPIs, the growth chart and the allocation donut all animate to the new model instantly." },
-            { keys: ["dividend","wht","withhold"], a: "Dividends are taxed at a flat <b>15% withholding tax</b> for Filers (deducted at source). The 'Cumulative Yield' KPI is already net of this — what you see is what you keep." },
-            { keys: ["cgt","capital gain","capital gains"], a: "<b>Capital Gains Tax (CGT)</b> in Pakistan depends on how long you hold a stock. Shorter holds are taxed more heavily; longer holds are taxed gently. The 'Net Realizable Capital Gain' KPI already factors this in." },
-            { keys: ["filer","non-filer","nonfiler","atl","taxpayer"], a: "<b>Filer</b> = your name is on FBR's Active Taxpayer List → lower withholding rates. <b>Non-filer</b> → higher rates on dividends and gains. Toggle filer status in Section II and numbers recalculate." },
-            { keys: ["surplus","monthly","cash flow"], a: "Your <b>monthly investable surplus</b> = monthly income − monthly expenses. It updates live as you change the inputs in Section II. This is the cash you can keep adding to the portfolio." },
-            { keys: ["cagr"], a: "<b>CAGR</b> (Compound Annual Growth Rate) is the smooth yearly rate that, compounded, takes you from today's value to the projected value. It lets you compare different time-spans on equal footing." },
-            { keys: ["beta","volatility"], a: "<b>Beta</b> measures how much a stock moves vs the broader market. Beta < 1 = calmer than market; Beta > 1 = more volatile. The Trending bucket has the highest betas, the High Yield bucket the lowest." },
-            { keys: ["eps","earnings"], a: "<b>EPS</b> (Earnings Per Share) is annual profit ÷ shares outstanding. Higher and rising EPS generally means a healthier company. Audited (Aud) values are confirmed; Unaud are interim." },
-            { keys: ["high yield","yield bucket"], a: "The <b>High Yield</b> bucket is built around steady, dividend-paying companies — FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, MTL, ATLH and others. Lower volatility, consistent payouts." },
-            { keys: ["high growth","growth bucket"], a: "The <b>High Growth</b> bucket leans on cyclicals and growth names — AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP. More upside, more swings." },
-            { keys: ["trending","tactical"], a: "The <b>Trending</b> bucket holds tactical / momentum picks — CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM. Highest volatility, but biggest tactical upside when their cycle hits." },
-            { keys: ["ffc"], a: "<b>FFC — Fauji Fertilizer Company.</b> Bucket: High Yield. Sector: Fertilizer. EPS ≈ Rs 45.89 (audited). Beta 0.98. A classic dividend-paying anchor in Pakistan's market." },
-            { keys: ["mcb"], a: "<b>MCB Bank Limited.</b> Bucket: High Yield. Banking sector. EPS ≈ Rs 48.62. Beta 0.87. One of Pakistan's largest commercial banks with a strong dividend record." },
-            { keys: ["ubl"], a: "<b>United Bank Limited.</b> Bucket: High Yield. Banking. EPS ≈ Rs 66.00. Beta 0.92. Strong dividend track record and wide retail footprint." },
-            { keys: ["mebl","meezan"], a: "<b>Meezan Bank.</b> Bucket: High Yield. Islamic banking leader in Pakistan. EPS ≈ Rs 50.47. Beta 0.85. Consistent growth and profitability." },
-            { keys: ["ogdc"], a: "<b>OGDC — Oil &amp; Gas Development Company.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 38.94. Beta 0.36 — very low volatility, big yields." },
-            { keys: ["mari"], a: "<b>MARI — Mari Petroleum.</b> Bucket: High Yield. E&amp;P. EPS ≈ Rs 120.00. Beta ~1.05. Strong cash generator." },
-            { keys: ["lci","lucky cement"], a: "<b>Lucky Cement.</b> Bucket: High Growth. EPS ≈ Rs 42.00. Beta 1.08. Cement bellwether — cyclical but high quality." },
-            { keys: ["fccl","fauji cement"], a: "<b>Fauji Cement.</b> Bucket: High Growth. EPS ≈ Rs 8.50. Beta 1.45. Higher beta — moves sharply with the cement cycle." }
+            { keys: ["hello","hi","hey","salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain — strategies, taxes, ya 28 PSX stocks ke baare me. Bataiye, kya help kar sakta hoon? 🌟" },
+            { keys: ["thanks","thank you","shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
+            { keys: ["who are you","what are you","aether","tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga. Strategies, taxes, stocks, ya general finance — jo bhi poochna ho, pooch lijiye." },
+            { keys: ["w1","conservative","preservation","mehfooz"], a: "**W1 — Capital Preservation** sab se conservative tier hai. Almost 20% High Yield, 75% High Growth, 5% Trending. Volatility kam, dividends steady. 46+ age ya jise calm performance chahiye, un ke liye behtar." },
+            { keys: ["w2","balanced","sanjhi","mutawazin"], a: "**W2 — Balanced Growth** = 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation aur managed risk. 31–45 age group ke liye ideal." },
+            { keys: ["w3","aggressive","velocity","momentum","tez"], a: "**W3 — Aggressive Growth** = 30% High Yield, 50% High Growth, 20% Trending. Bade swings, bara potential. Young investors (18–30) ke liye best — runway lambi hoti hai." },
+            { keys: ["difference between","compare","which is better","w1 vs","w2 vs","w3 vs","kya farq","farq kya","konsa behtar","behtar konsa"], a: "Teeno PKR 1 Crore base se shuru hote hain.\n- **W1** ≈ 22.3% CAGR — sab se calm\n- **W2** ≈ 21.6% CAGR — sab se balanced\n- **W3** ≈ 21.7% CAGR — sab se volatile\nApni age aur volatility tolerance ke hisaab se choose karein." },
+            { keys: ["switch","change model","change strategy","toggle","badlo","badalna"], a: "Dashboard pe upar **W1 / W2 / W3** chips hain — click karte hi KPIs, growth chart aur allocation donut sab smoothly animate ho ke naye model par switch ho jaate hain." },
+            { keys: ["dividend","wht","withhold","munafa","hissa"], a: "Dividends pe flat **15% withholding tax** Filers ke liye (source pe deduct hota hai). 'Cumulative Yield' KPI me yeh deduction already lagi hoti hai — jo dikhta hai woh aap ko milta hai." },
+            { keys: ["cgt","capital gain","capital gains","tax"], a: "**Capital Gains Tax (CGT)** holding period par depend karta hai. Short hold = zyada tax. Long hold = kam tax. 'Net Realizable Capital Gain' KPI me yeh adjustment already ho chuki hai." },
+            { keys: ["filer","non-filer","nonfiler","atl","taxpayer"], a: "**Filer** = aap FBR ki Active Taxpayer List me hain → kam withholding rates. **Non-filer** → dividends aur gains pe zyada tax. Section II me toggle karein, numbers automatic recalculate ho jaate hain." },
+            { keys: ["surplus","monthly","cash flow","bachat","surplus kya"], a: "Aap ka **monthly investable surplus** = monthly income − monthly expenses. Section II me values change karte hi live update hota hai. Yeh wo paisa hai jo aap har mahine portfolio me daal sakte hain." },
+            { keys: ["cagr","compound","annual"], a: "**CAGR** (Compound Annual Growth Rate) — wo smooth yearly rate jo compound ho ke aaj ke value se future projected value tak le jaata hai. Different time periods ko equal footing par compare karne ka simple zariya hai." },
+            { keys: ["beta","volatility","utar chadhao"], a: "**Beta** batata hai stock market ke saath kitna move karta hai. Beta < 1 = market se calm. Beta > 1 = market se volatile. Trending bucket me beta highest hai, High Yield me lowest." },
+            { keys: ["eps","earnings","kamai"], a: "**EPS** (Earnings Per Share) = company ki annual profit ÷ outstanding shares. Higher aur rising EPS generally healthy company indicate karta hai. Audited (Aud) confirmed hai, Unaud interim." },
+            { keys: ["high yield","yield bucket"], a: "**High Yield** bucket steady dividend-paying companies par built hai — FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, MTL, ATLH waghaira. Low volatility, consistent payouts." },
+            { keys: ["high growth","growth bucket"], a: "**High Growth** bucket cyclicals aur growth names par — AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP. Zyada upside, zyada swings." },
+            { keys: ["trending","tactical","momentum","jaldi"], a: "**Trending** bucket tactical / momentum picks ke liye — CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM. Highest volatility, lekin sahi cycle me biggest tactical upside." },
+            { keys: ["ffc"], a: "**FFC — Fauji Fertilizer Company.** Bucket: High Yield. Sector: Fertilizer. EPS ≈ Rs 45.89 (audited). Beta 0.98. Pakistan ke market ka classic dividend-paying anchor." },
+            { keys: ["mcb"], a: "**MCB Bank Limited.** Bucket: High Yield. Banking sector. EPS ≈ Rs 48.62. Beta 0.87. Pakistan ke largest commercial banks me se ek, strong dividend record ke saath." },
+            { keys: ["ubl"], a: "**United Bank Limited.** Bucket: High Yield. Banking. EPS ≈ Rs 66.00. Beta 0.92. Mazboot dividend track record aur retail network." },
+            { keys: ["mebl","meezan"], a: "**Meezan Bank.** Bucket: High Yield. Pakistan ka Islamic banking leader. EPS ≈ Rs 50.47. Beta 0.85. Consistent growth aur profitability." },
+            { keys: ["ogdc"], a: "**OGDC — Oil &amp; Gas Development Company.** Bucket: High Yield. E&amp;P. EPS ≈ Rs 38.94. Beta 0.36 — bohot kam volatility, big yields." },
+            { keys: ["mari"], a: "**MARI — Mari Petroleum.** Bucket: High Yield. E&amp;P. EPS ≈ Rs 120.00. Beta ~1.05. Mazboot cash generator." },
+            { keys: ["lci","lucky cement"], a: "**Lucky Cement.** Bucket: High Growth. EPS ≈ Rs 42.00. Beta 1.08. Cement sector ka bellwether — cyclical par high quality." },
+            { keys: ["fccl","fauji cement"], a: "**Fauji Cement.** Bucket: High Growth. EPS ≈ Rs 8.50. Beta 1.45. Higher beta — cement cycle ke saath sharp moves." }
         ];
 
         function aiLocalAnswer(q) {
@@ -2069,13 +2622,37 @@
             return s;
         }
 
-        const aiSystemPrompt = `You are AETHER, a friendly, professional AI financial advisor inside a Pakistani investment app called Wealth Architecture. You help users understand:
-- 3 portfolio strategies: W1 (Conservative, 20/75/5 Yield/Growth/Trending, ~22.3% CAGR), W2 (Balanced, 50/40/10, ~21.6% CAGR), W3 (Aggressive, 30/50/20, ~21.7% CAGR), all on a PKR 1 Crore base over 2 years (2026-2027).
-- 28 Pakistan Stock Exchange (PSX) stocks in 3 buckets: High Yield (FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, HINOON, SAZEW, MTL, SRVI, ATLH), High Growth (AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP), Trending (CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM).
-- Pakistani tax rules: 15% dividend WHT for Filers, CGT depends on holding period, Non-filers pay higher rates.
-- Numbers shown in Pakistani format (Lakh/Crore).
+        const aiSystemPrompt = `You are AETHER, a premium AI financial advisor inside a Pakistani investment app called Wealth Architecture. Your personality is warm, professional, encouraging, and concise — like a knowledgeable friend.
 
-Answer ANY question the user asks - investing, finance, math, general knowledge, anything - clearly and helpfully like ChatGPT does. When the question is about the app, use the context above. Keep responses concise but complete. Use markdown formatting (bold with **, lists with -, headings with ##) for readability. Never refuse to help.`;
+LANGUAGE: Detect the user's language automatically and reply in the SAME language. Support fluently:
+- English (proper spelling, professional tone)
+- Roman Urdu (Urdu written in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"). Reply in natural Roman Urdu — friendly, simple, accurate. Don't translate to English unless asked.
+- Pure Urdu script if user writes in it.
+If user mixes languages, mirror their mix.
+
+KNOWLEDGE BASE (use when relevant):
+- 3 portfolio strategies on a PKR 1 Crore base over 2 years (2026–2027):
+  • W1 — Conservative (20% Yield / 75% Growth / 5% Trending) — ~22.3% CAGR
+  • W2 — Balanced (50/40/10) — ~21.6% CAGR
+  • W3 — Aggressive (30/50/20) — ~21.7% CAGR
+- 28 PSX stocks across 3 buckets:
+  • High Yield: FFC, MCB, UBL, MEBL, OGDC, PPL, MARI, HINOON, SAZEW, MTL, SRVI, ATLH
+  • High Growth: AKBL, FCCL, PTC, PSO, BOP, MLCF, LCI, ISL, SGF, ILP
+  • Trending: CNERGY, PRL, NRL, FFL, HASCOL, LOTCHEM
+- Pakistani tax rules: 15% dividend withholding tax for Filers; CGT depends on holding period; Non-filers pay higher rates.
+- Numbers shown in Pakistani format (1 Crore = 1,00,00,000; 1 Lakh = 1,00,000).
+- App features: live 12-hour clock, dark/light themes with accent picker (teal/violet/amber/rose), 3D dashboard, animated KPIs, W1/W2/W3 switch, 3D charts, filterable stock table.
+
+STYLE RULES:
+- Answer ANY question — investing, finance, math, definitions, general knowledge — like ChatGPT. Never refuse to help.
+- Be concise: 2–5 short paragraphs unless user asks for detail.
+- Use markdown: **bold** for key terms, - for lists, ## for sub-headings when useful.
+- For app-related questions, prefer app-specific facts above general ones.
+- Don't give personalised buy/sell advice; explain trade-offs and let the user decide. If user asks "should I buy X?", explain the considerations.
+- Don't pretend to have real-time prices.
+- If a question is unclear, ask one short clarifying question.
+
+Always sound human, helpful, and a little bit excited about helping the user.`;
 
         async function aiRemoteAnswer(q, history) {
             // Use Pollinations text API (free, no key needed)
@@ -2173,7 +2750,7 @@ Answer ANY question the user asks - investing, finance, math, general knowledge,
             back.classList.toggle('open', next);
             if (next && !_aiOpened) {
                 _aiOpened = true;
-                aiAppend("Hi! I'm <b>AETHER</b>, your AI advisor. Ask me anything — about the strategies, taxes, any of the 28 PSX stocks, or general investing questions. I'll answer like ChatGPT, in plain English.", 'bot');
+                aiAppend("Salam! Main <b>AETHER</b> hoon — aap ka AI advisor. 🌟<br><br>Aap mujhse <b>English ya Roman Urdu</b>, jis bhi language me chahein, kuch bhi pooch sakte hain — strategies, taxes, 28 PSX stocks, ya general investing questions. Main ChatGPT ki tarah saaf seedha jawab dunga.", 'bot');
                 renderAiSuggestions();
             }
             if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
