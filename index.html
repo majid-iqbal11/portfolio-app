@@ -13,24 +13,25 @@
 
         /* ===== THEME TOKENS ===== */
         :root, html.dark {
-            --bg: #07101f;
-            --bg-2: #0b1830;
-            --surface: #142442;
-            --surface-2: #1b3056;
-            --surface-3: #223a66;
-            --surface-border: #2a4576;
+            --bg: #050b1a;
+            --bg-2: #0a142a;
+            --surface: #111d38;
+            --surface-2: #18264a;
+            --surface-3: #20335f;
+            --surface-border: #2a4070;
             --text-strong: #f8fafc;
             --text-muted: #cbd5e1;
             --text-dim: #94a3b8;
-            --accent: #2dd4bf;
-            --accent-2: #38bdf8;
-            --accent-warm: #fbbf24;
-            --good: #34d399;
-            --bad: #fb7185;
+            --accent: #6366f1;        /* indigo-500 — professional, premium */
+            --accent-2: #3b82f6;      /* blue-500 */
+            --accent-3: #8b5cf6;      /* violet-500 */
+            --accent-warm: #f59e0b;
+            --good: #6366f1;
+            --bad: #f43f5e;
         }
         html.light {
-            --bg: #f4f7fb;
-            --bg-2: #e9eff7;
+            --bg: #f7f9fc;
+            --bg-2: #eef2f8;
             --surface: #ffffff;
             --surface-2: #f1f5f9;
             --surface-3: #e2e8f0;
@@ -38,10 +39,11 @@
             --text-strong: #0b1220;
             --text-muted: #334155;
             --text-dim: #64748b;
-            --accent: #0d9488;
-            --accent-2: #0284c7;
+            --accent: #4f46e5;
+            --accent-2: #2563eb;
+            --accent-3: #7c3aed;
             --accent-warm: #d97706;
-            --good: #0d9488;
+            --good: #059669;
             --bad: #e11d48;
         }
 
@@ -49,9 +51,9 @@
             font-family: 'Inter', sans-serif;
             color: var(--text-strong);
             background:
-              radial-gradient(1000px 700px at 85% -5%, rgba(45,212,191,.16), transparent 55%),
-              radial-gradient(900px 600px at -5% 110%, rgba(56,189,248,.12), transparent 60%),
-              radial-gradient(700px 500px at 50% 50%, rgba(45,212,191,.04), transparent 70%),
+              radial-gradient(1100px 700px at 85% -5%, rgba(99,102,241,.16), transparent 55%),
+              radial-gradient(900px 600px at -5% 110%, rgba(59,130,246,.12), transparent 60%),
+              radial-gradient(700px 500px at 50% 50%, rgba(139,92,246,.05), transparent 70%),
               linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
             background-attachment: fixed;
             transition: color .35s ease;
@@ -62,6 +64,15 @@
             border: 1px solid var(--surface-border);
             transition: background-color .35s ease, border-color .35s ease;
         }
+
+        /* Re-tint Tailwind emerald utilities into indigo so all existing markup follows the new scheme */
+        .text-emerald-400, .text-emerald-500, .text-emerald-300 { color: #8b5cf6 !important; }
+        html.light .text-emerald-400, html.light .text-emerald-500, html.light .text-emerald-300 { color: #4f46e5 !important; }
+        .border-emerald-500, .border-emerald-500\/20, .border-emerald-500\/30 { border-color: rgba(99,102,241,.45) !important; }
+        .bg-emerald-500\/10, .bg-emerald-500\/15, .bg-emerald-500\/5 { background-color: rgba(99,102,241,.12) !important; }
+        .bg-emerald-600 { background-color: #4f46e5 !important; }
+        .bg-emerald-600:hover, .hover\:bg-emerald-500:hover { background-color: #6366f1 !important; }
+        .bg-emerald-950\/60 { background-color: rgba(67,56,202,.45) !important; }
 
         /* ===== DARK-MODE READABILITY (brighter than default Tailwind slate) ===== */
         html.dark .text-slate-400 { color: #b6c2d3 !important; }
@@ -82,11 +93,11 @@
         html.light .text-slate-300      { color: #334155 !important; }
         html.light .text-slate-400      { color: #475569 !important; }
         html.light .text-slate-500      { color: #64748b !important; }
-        html.light .text-emerald-400    { color: #0d9488 !important; }
-        html.light .text-emerald-500    { color: #0d9488 !important; }
-        html.light .border-emerald-500  { border-color: #0d9488 !important; }
-        html.light .bg-emerald-600      { background-color: #0d9488 !important; }
-        html.light .text-blue-400       { color: #0369a1 !important; }
+        html.light .text-emerald-400    { color: #4f46e5 !important; }
+        html.light .text-emerald-500    { color: #4f46e5 !important; }
+        html.light .border-emerald-500  { border-color: #4f46e5 !important; }
+        html.light .bg-emerald-600      { background-color: #4f46e5 !important; }
+        html.light .text-blue-400       { color: #2563eb !important; }
         html.light .text-amber-400, html.light .text-amber-500 { color: #b45309 !important; }
         html.light .text-rose-400       { color: #be123c !important; }
 
@@ -103,7 +114,7 @@
             position: relative;
             border-radius: 18px;
             background:
-              linear-gradient(180deg, rgba(20,184,166,.04), transparent 40%),
+              linear-gradient(180deg, rgba(99,102,241,.04), transparent 40%),
               var(--surface);
             border: 1px solid var(--surface-border);
             box-shadow:
@@ -114,13 +125,13 @@
         }
         .panel-3d::before {
             content: ""; position: absolute; inset: -1px; border-radius: 19px; pointer-events: none;
-            background: linear-gradient(120deg, rgba(20,184,166,.35), rgba(14,165,233,.18) 35%, transparent 60%);
+            background: linear-gradient(120deg, rgba(99,102,241,.35), rgba(59,130,246,.18) 35%, transparent 60%);
             -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px; opacity: .55;
         }
         .panel-3d::after {
             content: ""; position: absolute; top: -40%; left: -10%; width: 60%; height: 180%;
-            background: linear-gradient(110deg, transparent 40%, rgba(20,184,166,.08) 50%, transparent 60%);
+            background: linear-gradient(110deg, transparent 40%, rgba(99,102,241,.08) 50%, transparent 60%);
             transform: translateX(-100%); animation: panelSweep 6s ease-in-out infinite;
             pointer-events: none;
         }
@@ -133,62 +144,83 @@
             display: inline-flex; align-items: center; justify-content: center;
             width: 32px; height: 32px; border-radius: 10px;
             font-family: ui-monospace, monospace; font-weight: 800; font-size: 12px;
-            color: #5eead4;
-            background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(14,165,233,.15));
-            border: 1px solid rgba(20,184,166,.35);
-            box-shadow: 0 6px 14px -8px rgba(20,184,166,.6);
+            color: #a5b4fc;
+            background: linear-gradient(135deg, rgba(99,102,241,.18), rgba(59,130,246,.15));
+            border: 1px solid rgba(99,102,241,.35);
+            box-shadow: 0 6px 14px -8px rgba(99,102,241,.6);
             transform: perspective(300px) rotateY(-12deg);
         }
-        html.light .sec-num { color: #0f766e; }
+        html.light .sec-num { color: #4338ca; }
 
         .field {
             position: relative;
             background: var(--surface-2);
             border: 1px solid var(--surface-border);
-            border-radius: 12px;
-            padding: 10px 12px 12px;
+            border-radius: 14px;
+            padding: 12px 14px 14px;
             transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease, background-color .25s ease;
         }
-        .field:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -18px rgba(20,184,166,.45); border-color: rgba(20,184,166,.45); }
-        .field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(20,184,166,.18), 0 14px 26px -18px rgba(20,184,166,.45); }
-        .field-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #94a3b8; margin-bottom: 6px; }
+        .field:hover { transform: translateY(-2px); background: var(--surface-3); border-color: rgba(99,102,241,.4); box-shadow: 0 14px 26px -18px rgba(99,102,241,.5); }
+        .field:focus-within { border-color: var(--accent); background: var(--surface-3); box-shadow: 0 0 0 3px rgba(99,102,241,.2), 0 14px 26px -18px rgba(99,102,241,.55); }
+        .field-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted); margin-bottom: 8px; }
         html.light .field-label { color: #475569; }
         .field-icon { width: 14px; height: 14px; color: var(--accent); }
         .field select, .field input {
             width: 100%; background: transparent !important; border: 0 !important; outline: none;
-            color: var(--text-strong); font-size: 12px; font-weight: 500;
-            padding: 0; appearance: none;
+            color: var(--text-strong) !important; font-size: 14px; font-weight: 600;
+            padding: 4px 0; appearance: none;
         }
-        .field select { padding-right: 18px; background-image: linear-gradient(45deg, transparent 50%, #94a3b8 50%), linear-gradient(135deg, #94a3b8 50%, transparent 50%) !important; background-position: calc(100% - 12px) 8px, calc(100% - 7px) 8px !important; background-size: 5px 5px, 5px 5px !important; background-repeat: no-repeat !important; }
-        .field .field-help { font-size: 10px; color: #64748b; margin-top: 6px; line-height: 1.5; }
+        .field input::placeholder { color: var(--text-dim); font-weight: 400; }
+        .field select option { background: var(--surface-2); color: var(--text-strong); }
+        .field select { padding-right: 22px; background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%), linear-gradient(135deg, var(--accent) 50%, transparent 50%) !important; background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px !important; background-size: 5px 5px, 5px 5px !important; background-repeat: no-repeat !important; }
+        .field .field-help { font-size: 11px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
+
+        /* Quick preset chips */
+        .quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .quick-chips button {
+            font-size: 10px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
+            background: rgba(99,102,241,.12); color: var(--accent);
+            border: 1px solid rgba(99,102,241,.3); cursor: pointer;
+            transition: background-color .2s ease, transform .12s ease, box-shadow .2s ease;
+        }
+        .quick-chips button:hover { background: rgba(99,102,241,.22); transform: translateY(-1px); box-shadow: 0 6px 14px -8px rgba(99,102,241,.5); }
+        .quick-chips button:active { transform: scale(.94); }
+        html.light .quick-chips button { color: #4338ca; }
+
+        /* Onboarding section reveal */
+        .onb-anim { opacity: 0; transform: perspective(900px) rotateX(-6deg) translateY(20px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+        .onb-anim.in { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0); }
+        .onb-anim.d1 { transition-delay: .05s; }
+        .onb-anim.d2 { transition-delay: .18s; }
+        .onb-anim.d3 { transition-delay: .31s; }
 
         .surplus-card {
-            background: linear-gradient(135deg, rgba(20,184,166,.12), rgba(14,165,233,.08));
-            border: 1px solid rgba(20,184,166,.35);
+            background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(59,130,246,.08));
+            border: 1px solid rgba(99,102,241,.35);
             border-radius: 12px; padding: 12px;
             display: flex; align-items: center; justify-content: space-between;
             position: relative; overflow: hidden;
         }
-        .surplus-card .surplus-val { font-family: ui-monospace, monospace; font-weight: 800; font-size: 18px; color: #5eead4; letter-spacing: -.01em; }
-        html.light .surplus-card .surplus-val { color: #0d9488; }
+        .surplus-card .surplus-val { font-family: ui-monospace, monospace; font-weight: 800; font-size: 18px; color: #a5b4fc; letter-spacing: -.01em; }
+        html.light .surplus-card .surplus-val { color: #4f46e5; }
         .surplus-card .live-pill {
             font-size: 9px; font-weight: 800; letter-spacing: .14em; padding: 3px 8px; border-radius: 999px;
-            background: rgba(20,184,166,.18); color: #5eead4; border: 1px solid rgba(20,184,166,.4);
+            background: rgba(99,102,241,.18); color: #a5b4fc; border: 1px solid rgba(99,102,241,.4);
             display: inline-flex; align-items: center; gap: 6px;
         }
-        html.light .surplus-card .live-pill { color: #0f766e; }
+        html.light .surplus-card .live-pill { color: #4338ca; }
 
         /* SUBMIT button (premium) */
         .cta-submit {
             position: relative;
-            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             color: #fff; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
             padding: 14px 28px; border-radius: 12px; cursor: pointer;
-            box-shadow: 0 18px 34px -16px rgba(20,184,166,.6);
+            box-shadow: 0 18px 34px -16px rgba(99,102,241,.6);
             transition: transform .15s ease, box-shadow .3s ease, filter .2s ease;
             overflow: hidden;
         }
-        .cta-submit:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(20,184,166,.7); }
+        .cta-submit:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(99,102,241,.7); }
         .cta-submit:active { transform: scale(.97); }
         .cta-submit::after {
             content: ""; position: absolute; inset: 0; border-radius: 12px;
@@ -205,26 +237,77 @@
 
         /* ===== AI ROBO ADVISOR (side panel) ===== */
         .ai-fab {
-            position: fixed; bottom: 22px; right: 22px; z-index: 60;
-            width: 58px; height: 58px; border-radius: 9999px;
-            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            border: 1px solid rgba(255,255,255,.25);
-            box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,.4);
-            animation: aiPulse 2.6s ease-out infinite;
-            transition: transform .2s ease;
+            width: 64px; height: 64px; border-radius: 9999px;
+            display: none;
+            align-items: center; justify-content: center; cursor: pointer;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #8b5cf6 100%);
+            border: 2px solid rgba(255,255,255,.18);
+            box-shadow:
+              0 24px 50px -12px rgba(99,102,241,.6),
+              0 0 0 0 rgba(99,102,241,.45),
+              inset 0 1px 0 rgba(255,255,255,.25);
+            transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease;
+            color: #fff;
+            position: relative;
         }
-        .ai-fab:hover { transform: scale(1.07); }
-        .ai-fab:active { transform: scale(.95); }
-        @keyframes aiPulse {
-            0% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,.5); }
-            70% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 18px rgba(20,184,166,0); }
-            100% { box-shadow: 0 16px 32px -12px rgba(20,184,166,.7), 0 0 0 0 rgba(20,184,166,0); }
+        /* Outer wrapper handles the fixed positioning; inner button handles the animations */
+        .ai-fab-wrap {
+            position: fixed;
+            right: 22px; top: 50%;
+            transform: translateY(-50%);
+            z-index: 60;
+            display: none;
         }
+        .ai-fab-wrap.show { display: block; }
+        .ai-fab-wrap.show .ai-fab { display: flex; animation: aiFabIn .6s cubic-bezier(.16,1,.3,1), aiFabFloat 4.5s ease-in-out 0.6s infinite, aiFabHalo 2.8s ease-out 0.6s infinite; }
+        @keyframes aiFabIn   { from { opacity: 0; transform: translateX(40px) scale(.7); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        @keyframes aiFabFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes aiFabHalo {
+            0%   { box-shadow: 0 24px 50px -12px rgba(99,102,241,.6), 0 0 0 0 rgba(99,102,241,.55), inset 0 1px 0 rgba(255,255,255,.25); }
+            70%  { box-shadow: 0 24px 50px -12px rgba(99,102,241,.6), 0 0 0 18px rgba(99,102,241,0),  inset 0 1px 0 rgba(255,255,255,.25); }
+            100% { box-shadow: 0 24px 50px -12px rgba(99,102,241,.6), 0 0 0 0 rgba(99,102,241,0),    inset 0 1px 0 rgba(255,255,255,.25); }
+        }
+        .ai-fab:hover {
+            transform: scale(1.1) !important;
+            animation-play-state: paused !important;
+            box-shadow: 0 30px 60px -12px rgba(99,102,241,.8), 0 0 0 6px rgba(99,102,241,.3), inset 0 1px 0 rgba(255,255,255,.3) !important;
+        }
+        .ai-fab:active { transform: scale(.94) !important; }
+        .ai-fab::before {
+            content: ""; position: absolute; inset: -8px; border-radius: 9999px;
+            border: 1px dashed rgba(99,102,241,.45);
+            animation: aiFabOrbit 8s linear infinite;
+        }
+        @keyframes aiFabOrbit { to { transform: rotate(360deg); } }
+        .ai-fab::after {
+            content: ""; position: absolute; top: -3px; left: 50%;
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #fff; box-shadow: 0 0 8px rgba(255,255,255,.9);
+            transform: translateX(-50%);
+            animation: aiFabSat 8s linear infinite;
+            transform-origin: 50% 38px;
+        }
+        @keyframes aiFabSat { to { transform: translateX(-50%) rotate(360deg); } }
+
+        /* "AETHER" tag on hover */
+        .ai-fab .ai-fab-tag {
+            position: absolute; right: calc(100% + 12px); top: 50%; transform: translateY(-50%);
+            background: var(--surface); color: var(--text-strong);
+            font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+            padding: 6px 12px; border-radius: 999px;
+            border: 1px solid var(--surface-border);
+            opacity: 0; pointer-events: none;
+            transition: opacity .25s ease, transform .25s ease;
+            white-space: nowrap;
+        }
+        .ai-fab:hover .ai-fab-tag { opacity: 1; transform: translateY(-50%) translateX(-4px); }
         .ai-fab .ai-dot {
-            position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 9999px;
-            background: #f59e0b; border: 2px solid var(--surface);
+            position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; border-radius: 9999px;
+            background: #fbbf24; border: 2px solid var(--surface);
+            box-shadow: 0 0 10px #fbbf24;
+            animation: aiDotPulse 1.6s ease-in-out infinite;
         }
+        @keyframes aiDotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
 
         .ai-panel {
             position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
@@ -239,19 +322,19 @@
         .ai-head {
             padding: 14px 16px; border-bottom: 1px solid var(--surface-border);
             display: flex; align-items: center; justify-content: space-between; gap: 8px;
-            background: linear-gradient(135deg, rgba(20,184,166,.08), rgba(14,165,233,.06));
+            background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(59,130,246,.06));
         }
         .ai-avatar {
             width: 38px; height: 38px; border-radius: 12px;
-            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             display: flex; align-items: center; justify-content: center; color: #fff;
-            font-size: 18px; box-shadow: 0 10px 18px -8px rgba(20,184,166,.7);
+            font-size: 18px; box-shadow: 0 10px 18px -8px rgba(99,102,241,.7);
         }
-        .ai-status { font-size: 10px; color: #5eead4; display: flex; align-items: center; gap: 6px; }
-        html.light .ai-status { color: #0d9488; }
+        .ai-status { font-size: 10px; color: #a5b4fc; display: flex; align-items: center; gap: 6px; }
+        html.light .ai-status { color: #4f46e5; }
         .ai-body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
         .ai-body::-webkit-scrollbar { width: 6px; }
-        .ai-body::-webkit-scrollbar-thumb { background: rgba(20,184,166,.35); border-radius: 999px; }
+        .ai-body::-webkit-scrollbar-thumb { background: rgba(99,102,241,.35); border-radius: 999px; }
 
         .msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 13px; line-height: 1.55; animation: msgIn .35s cubic-bezier(.16,1,.3,1); }
         @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -265,9 +348,9 @@
         }
         .msg.user {
             align-self: flex-end;
-            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             color: #fff; border-bottom-right-radius: 4px;
-            box-shadow: 0 10px 18px -10px rgba(20,184,166,.7);
+            box-shadow: 0 10px 18px -10px rgba(99,102,241,.7);
         }
         .typing { display: inline-flex; gap: 4px; align-items: center; }
         .typing span { width: 6px; height: 6px; background: #94a3b8; border-radius: 999px; animation: typeDot 1.2s infinite ease-in-out; }
@@ -278,11 +361,11 @@
         .ai-suggest { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 8px; }
         .ai-suggest button {
             font-size: 11px; padding: 6px 10px; border-radius: 999px; cursor: pointer;
-            background: rgba(20,184,166,.10); color: #5eead4; border: 1px solid rgba(20,184,166,.3);
+            background: rgba(99,102,241,.10); color: #a5b4fc; border: 1px solid rgba(99,102,241,.3);
             transition: background-color .2s ease, transform .15s ease;
         }
-        html.light .ai-suggest button { color: #0d9488; }
-        .ai-suggest button:hover { background: rgba(20,184,166,.18); }
+        html.light .ai-suggest button { color: #4f46e5; }
+        .ai-suggest button:hover { background: rgba(99,102,241,.18); }
         .ai-suggest button:active { transform: scale(.96); }
 
         .ai-input-wrap { padding: 12px 14px; border-top: 1px solid var(--surface-border); display: flex; gap: 8px; background: var(--surface); }
@@ -291,9 +374,9 @@
             border-radius: 10px; padding: 10px 12px; font-size: 13px; color: var(--text-strong);
             outline: none; transition: border-color .2s ease, box-shadow .2s ease;
         }
-        .ai-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(20,184,166,.18); }
+        .ai-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.18); }
         .ai-input-wrap button {
-            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             color: #fff; border: 0; border-radius: 10px; padding: 0 14px; font-weight: 700; cursor: pointer;
             transition: transform .15s ease;
         }
@@ -326,9 +409,9 @@
         }
         .aether-core {
             position: absolute; inset: 0; border-radius: 50%;
-            background: conic-gradient(from 0deg, #2dd4bf, #38bdf8, #818cf8, #2dd4bf);
+            background: conic-gradient(from 0deg, #6366f1, #3b82f6, #8b5cf6, #6366f1);
             animation: aetherSpin 8s linear infinite;
-            box-shadow: 0 8px 24px -6px rgba(45,212,191,.7), 0 0 30px rgba(56,189,248,.3);
+            box-shadow: 0 8px 24px -6px rgba(99,102,241,.7), 0 0 30px rgba(59,130,246,.3);
         }
         @keyframes aetherSpin { to { transform: rotate(360deg); } }
         .aether-inner {
@@ -341,92 +424,204 @@
         .aether-glyph {
             font-family: ui-monospace, 'Courier New', monospace;
             font-weight: 900; font-size: 18px;
-            background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             -webkit-background-clip: text; background-clip: text; color: transparent;
             letter-spacing: -.05em;
         }
         .aether-mark.lg .aether-glyph { font-size: 32px; }
         .aether-mark.xl .aether-glyph { font-size: 42px; }
         .aether-orbit {
-            position: absolute; inset: -8%; border: 1px dashed rgba(45,212,191,.4); border-radius: 50%;
+            position: absolute; inset: -8%; border: 1px dashed rgba(99,102,241,.4); border-radius: 50%;
             animation: aetherSpin 12s linear infinite reverse;
         }
         .aether-orbit::after {
             content: ""; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px;
-            border-radius: 50%; background: #2dd4bf; box-shadow: 0 0 10px #2dd4bf;
+            border-radius: 50%; background: #6366f1; box-shadow: 0 0 10px #6366f1;
             transform: translateX(-50%);
         }
         .aether-name {
             font-weight: 800; letter-spacing: .25em; font-size: 13px;
-            background: linear-gradient(135deg, #5eead4, #7dd3fc);
+            background: linear-gradient(135deg, #a5b4fc, #93c5fd);
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .aether-tag { font-size: 9px; letter-spacing: .3em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
 
-        /* ===== SUPER 3D LOGIN/SIGNUP CARDS ===== */
-        .auth-3d {
+        /* ===== FULL-PAGE AUTH LAYOUT ===== */
+        .auth-fullpage {
+            position: fixed; inset: 0; z-index: 80;
+            display: none;
+            overflow-y: auto;
+            background:
+              radial-gradient(1200px 800px at 80% 10%, rgba(99,102,241,.22), transparent 55%),
+              radial-gradient(1000px 700px at 10% 90%, rgba(59,130,246,.16), transparent 60%),
+              radial-gradient(700px 500px at 50% 50%, rgba(139,92,246,.08), transparent 70%),
+              linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        }
+        .auth-fullpage.show { display: flex; align-items: center; justify-content: center; padding: 24px; }
+
+        .auth-split {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow:
+              0 60px 120px -32px rgba(0,0,0,.7),
+              0 0 0 1px rgba(99,102,241,.18),
+              inset 0 1px 0 rgba(255,255,255,.07);
+            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+            animation: authIn3D .85s cubic-bezier(.16,1,.3,1);
+        }
+        @media (max-width: 900px) { .auth-split { grid-template-columns: 1fr; min-height: auto; } .auth-aside { display: none; } }
+
+        /* Decorative left panel */
+        .auth-aside {
+            position: relative;
+            padding: 44px 36px;
+            background:
+              radial-gradient(circle at 80% 10%, rgba(99,102,241,.35), transparent 55%),
+              radial-gradient(circle at 10% 90%, rgba(59,130,246,.25), transparent 60%),
+              linear-gradient(180deg, #0a142a 0%, #050b1a 100%);
+            color: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .auth-aside::before {
+            content: "";
+            position: absolute; inset: 0;
+            background-image:
+              linear-gradient(rgba(99,102,241,.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(99,102,241,.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 70%);
+            animation: gridFlow 12s linear infinite;
+            pointer-events: none;
+        }
+        .auth-aside-orb {
+            position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
+        }
+        .auth-aside-orb.a1 { width: 240px; height: 240px; background: #6366f1; top: -80px; right: -80px; opacity: .6; animation: orbDrift 11s ease-in-out infinite; }
+        .auth-aside-orb.a2 { width: 200px; height: 200px; background: #3b82f6; bottom: -80px; left: -80px; opacity: .5; animation: orbDrift 13s ease-in-out infinite reverse; }
+        .auth-aside-orb.a3 { width: 160px; height: 160px; background: #8b5cf6; top: 40%; right: 20%; opacity: .35; animation: orbDrift 9s ease-in-out infinite; }
+
+        .auth-form-panel {
+            position: relative;
+            padding: 48px 44px;
+            display: flex; flex-direction: column; justify-content: center;
+            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+        }
+
+        /* Floating preview card on aside */
+        .aside-float-card {
+            position: relative; padding: 18px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(99,102,241,.16), rgba(59,130,246,.08));
+            border: 1px solid rgba(99,102,241,.32);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 30px 60px -28px rgba(99,102,241,.6);
+            transform: perspective(900px) rotateY(-6deg) rotateX(4deg);
+            animation: cardHover 5s ease-in-out infinite;
+        }
+        @keyframes cardHover {
+            0%,100% { transform: perspective(900px) rotateY(-6deg) rotateX(4deg) translateY(0); }
+            50%     { transform: perspective(900px) rotateY(-4deg) rotateX(3deg) translateY(-8px); }
+        }
+
+        /* Strong premium CTA used on full-page auth */
+        .premium-cta {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #8b5cf6 100%);
+            color: #fff; font-weight: 800; font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+            padding: 16px 22px; border-radius: 14px; cursor: pointer; border: 0;
+            box-shadow: 0 24px 50px -18px rgba(99,102,241,.75), inset 0 1px 0 rgba(255,255,255,.2);
+            transition: transform .15s ease, filter .2s ease, box-shadow .3s ease;
+            overflow: hidden;
+        }
+        .premium-cta:hover { transform: translateY(-2px); filter: brightness(1.10); box-shadow: 0 30px 60px -18px rgba(99,102,241,.85), inset 0 1px 0 rgba(255,255,255,.2); }
+        .premium-cta:active { transform: scale(.97); }
+        .premium-cta::after {
+            content: ""; position: absolute; inset: 0; border-radius: 14px;
+            background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.32) 50%, transparent 60%);
+            transform: translateX(-120%); animation: btnShine 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
             position: relative;
             border-radius: 24px;
             background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
             border: 1px solid var(--surface-border);
             box-shadow:
-              0 40px 80px -32px rgba(0,0,0,.6),
-              inset 0 1px 0 rgba(255,255,255,.06);
+              0 50px 100px -32px rgba(0,0,0,.65),
+              0 0 0 1px rgba(99,102,241,.12),
+              inset 0 1px 0 rgba(255,255,255,.07);
             transform-style: preserve-3d;
-            animation: authIn3D .7s cubic-bezier(.16,1,.3,1);
+            animation: authIn3D .8s cubic-bezier(.16,1,.3,1);
             overflow: hidden;
+            isolation: isolate;
         }
         @keyframes authIn3D {
-            0%   { opacity: 0; transform: perspective(1200px) rotateX(20deg) translateY(40px) scale(.92); filter: blur(6px); }
-            100% { opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0) scale(1); filter: blur(0); }
+            0%   { opacity: 0; transform: perspective(1400px) rotateX(22deg) rotateY(-6deg) translateY(50px) scale(.9); filter: blur(8px); }
+            60%  { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: perspective(1400px) rotateX(0) rotateY(0) translateY(0) scale(1); filter: blur(0); }
         }
+        /* Decorative gradient border layer — pointer-events:none so it never blocks clicks */
         .auth-3d::before {
-            content: ""; position: absolute; inset: -1px; border-radius: 25px; pointer-events: none; z-index: 1;
-            background: linear-gradient(135deg, rgba(45,212,191,.55), rgba(56,189,248,.35) 40%, transparent 65%);
+            content: ""; position: absolute; inset: 0; border-radius: 24px; pointer-events: none; z-index: 0;
+            padding: 1.5px;
+            background: linear-gradient(135deg, rgba(99,102,241,.6), rgba(59,130,246,.4) 40%, rgba(139,92,246,.3) 70%, transparent);
             -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude; padding: 1.5px;
+            -webkit-mask-composite: xor; mask-composite: exclude;
         }
         .auth-3d::after {
             content: ""; position: absolute; top: -50%; left: -20%; width: 70%; height: 200%;
-            background: linear-gradient(110deg, transparent 40%, rgba(45,212,191,.10) 50%, transparent 60%);
+            background: linear-gradient(110deg, transparent 40%, rgba(99,102,241,.14) 50%, transparent 60%);
             transform: translateX(-100%); animation: authSweep 5.5s ease-in-out infinite;
-            pointer-events: none;
+            pointer-events: none; z-index: 0;
         }
         @keyframes authSweep { 0%{transform:translateX(-100%)} 65%,100%{transform:translateX(220%)} }
 
         .auth-orb {
-            position: absolute; border-radius: 50%; filter: blur(45px); pointer-events: none; opacity: .5;
+            position: absolute; border-radius: 50%; filter: blur(50px); pointer-events: none; opacity: .55; z-index: 0;
         }
-        .auth-orb.o1 { width: 180px; height: 180px; background: #2dd4bf; top: -60px; right: -40px; animation: orbDrift 9s ease-in-out infinite; }
-        .auth-orb.o2 { width: 140px; height: 140px; background: #38bdf8; bottom: -50px; left: -30px; animation: orbDrift 11s ease-in-out infinite reverse; }
+        .auth-orb.o1 { width: 200px; height: 200px; background: #6366f1; top: -70px; right: -50px; animation: orbDrift 9s ease-in-out infinite; }
+        .auth-orb.o2 { width: 160px; height: 160px; background: #3b82f6; bottom: -60px; left: -40px; animation: orbDrift 11s ease-in-out infinite reverse; }
+        .auth-orb.o3 { width: 120px; height: 120px; background: #8b5cf6; top: 50%; left: -30px; animation: orbDrift 13s ease-in-out infinite; opacity: .35; }
 
         .auth-field {
             position: relative;
             background: var(--surface-3);
             border: 1px solid var(--surface-border);
-            border-radius: 12px;
-            padding: 10px 14px;
-            transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+            border-radius: 14px;
+            padding: 12px 16px;
+            transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease, background-color .25s ease;
         }
-        .auth-field:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -16px rgba(45,212,191,.5); }
-        .auth-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,212,191,.18); }
+        .auth-field:hover { transform: translateY(-2px); background: rgba(99,102,241,.06); border-color: rgba(99,102,241,.35); box-shadow: 0 12px 24px -16px rgba(99,102,241,.5); }
+        .auth-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.22), 0 14px 28px -16px rgba(99,102,241,.5); background: rgba(99,102,241,.04); }
         .auth-field input {
             width: 100%; background: transparent !important; border: 0 !important; outline: none !important;
-            color: var(--text-strong); font-size: 13px; padding: 0;
+            color: var(--text-strong); font-size: 14px; font-weight: 500; padding: 0;
+            font-family: 'Inter', sans-serif;
         }
-        .auth-field .af-label { display: block; font-size: 9px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+        .auth-field .af-label { display: block; font-size: 9px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+        .auth-field input::placeholder { color: #64748b; font-weight: 400; }
 
         .auth-cta {
             position: relative;
             width: 100%;
-            background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
             color: #fff; font-weight: 800; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
             padding: 13px 20px; border-radius: 12px; cursor: pointer; border: 0;
-            box-shadow: 0 18px 34px -16px rgba(45,212,191,.7);
+            box-shadow: 0 18px 34px -16px rgba(99,102,241,.7);
             transition: transform .15s ease, filter .2s ease, box-shadow .3s ease;
             overflow: hidden;
         }
-        .auth-cta:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(45,212,191,.8); }
+        .auth-cta:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 24px 44px -16px rgba(99,102,241,.8); }
         .auth-cta:active { transform: scale(.97); }
         .auth-cta::after {
             content: ""; position: absolute; inset: 0; border-radius: 12px;
@@ -438,7 +633,7 @@
         .msg.bot p { margin: 0 0 8px; }
         .msg.bot p:last-child { margin-bottom: 0; }
         .msg.bot strong, .msg.bot b { color: var(--accent); font-weight: 700; }
-        html.light .msg.bot strong, html.light .msg.bot b { color: #0d9488; }
+        html.light .msg.bot strong, html.light .msg.bot b { color: #4f46e5; }
         .msg.bot ul, .msg.bot ol { margin: 6px 0 6px 18px; padding: 0; }
         .msg.bot li { margin-bottom: 3px; }
         .msg.bot code {
@@ -458,7 +653,7 @@
         .msg.bot a { color: var(--accent); text-decoration: underline; }
 
         /* AETHER badge in chat header */
-        .ai-head { background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(56,189,248,.08)); }
+        .ai-head { background: linear-gradient(135deg, rgba(99,102,241,.10), rgba(59,130,246,.08)); }
 
         /* ===== PREMIUM LOADING SCREEN ===== */
         #bootLoader {
@@ -470,14 +665,14 @@
         #bootLoader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
         .boot-tag { font-size: 10px; letter-spacing: .55em; text-transform: uppercase; color: var(--accent); opacity: .8; }
         .boot-bar { width: 220px; height: 3px; background: rgba(148,163,184,.18); border-radius: 999px; overflow: hidden; }
-        .boot-bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2dd4bf, #38bdf8, #818cf8); animation: bootFill 1.6s ease-out forwards; box-shadow: 0 0 14px rgba(45,212,191,.6); }
+        .boot-bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #6366f1, #3b82f6, #8b5cf6); animation: bootFill 1.6s ease-out forwards; box-shadow: 0 0 14px rgba(99,102,241,.6); }
         @keyframes bootFill { from { width: 0; } to { width: 100%; } }
 
         /* ===== SCROLL PROGRESS BAR ===== */
         #scrollProgress {
             position: fixed; top: 0; left: 0; height: 3px; width: 0;
-            background: linear-gradient(90deg, #2dd4bf, #38bdf8, #818cf8);
-            z-index: 90; transition: width .12s ease-out; box-shadow: 0 0 12px rgba(45,212,191,.7);
+            background: linear-gradient(90deg, #6366f1, #3b82f6, #8b5cf6);
+            z-index: 90; transition: width .12s ease-out; box-shadow: 0 0 12px rgba(99,102,241,.7);
         }
 
         /* ===== BACK TO TOP ===== */
@@ -499,7 +694,7 @@
         #spotlight {
             position: fixed; pointer-events: none; z-index: 1;
             width: 560px; height: 560px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(45,212,191,.10), transparent 60%);
+            background: radial-gradient(circle, rgba(99,102,241,.10), transparent 60%);
             transform: translate(-50%, -50%);
             transition: opacity .3s ease;
             opacity: 0;
@@ -510,7 +705,7 @@
         #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
         .particle {
             position: absolute; border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(45,212,191,.6), rgba(45,212,191,0) 70%);
+            background: radial-gradient(circle at 30% 30%, rgba(99,102,241,.6), rgba(99,102,241,0) 70%);
             animation: floatUp linear infinite;
             opacity: .35;
         }
@@ -522,7 +717,19 @@
         }
 
         /* keep app content above particles */
-        body > section, body > main, body > header, body > footer, body > .ai-fab, body > .ai-panel, body > .ai-backdrop, body > #accessOverlay, body > #launchCinematic, body > #backToTop, body > #themePicker, body > #scrollProgress { position: relative; z-index: 2; }
+        /* keep content above particles — only z-index, never override fixed positioning */
+        body > section, body > main, body > header, body > footer { position: relative; z-index: 2; }
+        body > .ai-fab, body > .ai-panel, body > .ai-backdrop, body > #accessOverlay,
+        body > #launchCinematic, body > #backToTop, body > #themePicker,
+        body > #scrollProgress, body > #authOverlay, body > #spotlight, body > #particles,
+        body > #bootLoader { z-index: 60; }
+        body > #scrollProgress { z-index: 90; }
+        body > #backToTop { z-index: 55; }
+        body > #themePicker { z-index: 55; }
+        body > #authOverlay { z-index: 80; }
+        body > #accessOverlay { z-index: 90; }
+        body > #launchCinematic { z-index: 95; }
+        body > #bootLoader { z-index: 100; }
 
         /* ===== GLASSMORPHISM HELPERS ===== */
         .glass {
@@ -573,7 +780,7 @@
         .cine-rings { position: relative; width: 320px; height: 320px; }
         .cine-rings .cr {
             position: absolute; inset: 0; border-radius: 50%;
-            border: 1px solid rgba(45,212,191,.4);
+            border: 1px solid rgba(99,102,241,.4);
             animation: cineExpand 1.6s ease-out forwards;
         }
         .cine-rings .cr:nth-child(2) { animation-delay: .15s; }
@@ -587,7 +794,7 @@
         .cine-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); text-align: center; }
         .cine-name {
             font-size: 22px; font-weight: 800; letter-spacing: .35em;
-            background: linear-gradient(135deg, #2dd4bf, #38bdf8, #818cf8);
+            background: linear-gradient(135deg, #6366f1, #3b82f6, #8b5cf6);
             -webkit-background-clip: text; background-clip: text; color: transparent;
             animation: cineNameIn 1.2s cubic-bezier(.16,1,.3,1) .3s both;
         }
@@ -595,7 +802,7 @@
         .cine-sub { font-size: 10px; letter-spacing: .4em; color: var(--text-dim); text-transform: uppercase; margin-top: 8px; opacity: 0; animation: cineFadeUp .8s ease .9s forwards; }
         @keyframes cineFadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .cine-progress { width: 260px; height: 2px; background: rgba(148,163,184,.2); border-radius: 999px; overflow: hidden; margin-top: 28px; opacity: 0; animation: cineFadeUp .6s ease 1.2s forwards; }
-        .cine-progress > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #2dd4bf, #38bdf8); animation: bootFill 1.6s ease-out 1.2s forwards; }
+        .cine-progress > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #6366f1, #3b82f6); animation: bootFill 1.6s ease-out 1.2s forwards; }
 
         /* ===== PHONE MOCKUP ===== */
         .phone-frame {
@@ -635,7 +842,54 @@
         .phone-slide.active { opacity: 1; }
         .phone-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; }
         .phone-dots span { width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,.2); transition: background .3s ease, width .3s ease; }
-        .phone-dots span.active { background: #2dd4bf; width: 20px; }
+        .phone-dots span.active { background: #6366f1; width: 20px; }
+
+        /* Live Demo badge floating above phone */
+        .live-badge {
+            position: absolute; top: -8px; right: -8px; z-index: 10;
+            background: linear-gradient(135deg, #f43f5e, #ef4444);
+            color: #fff; font-size: 9px; font-weight: 800;
+            letter-spacing: .15em; text-transform: uppercase;
+            padding: 5px 9px; border-radius: 999px;
+            display: inline-flex; align-items: center; gap: 5px;
+            box-shadow: 0 8px 20px -6px rgba(244,63,94,.6);
+            animation: liveBlink 1.6s ease-in-out infinite;
+        }
+        @keyframes liveBlink { 0%,100% { opacity: 1; } 50% { opacity: .7; } }
+        .live-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #fff; }
+
+        /* Demo cursor */
+        .demo-cursor {
+            position: absolute; width: 18px; height: 18px; border-radius: 50%;
+            background: rgba(99,102,241,.4); border: 2px solid #fff;
+            box-shadow: 0 0 16px rgba(99,102,241,.8), 0 4px 10px rgba(0,0,0,.4);
+            pointer-events: none; z-index: 15;
+            animation: cursorMove 12s ease-in-out infinite;
+            top: 100px; left: 50%;
+        }
+        @keyframes cursorMove {
+            0%   { top: 60px; left: 50%; transform: translate(-50%,0) scale(1); }
+            12%  { top: 60px; left: 50%; transform: translate(-50%,0) scale(.6); }
+            18%  { top: 60px; left: 50%; transform: translate(-50%,0) scale(1); }
+            25%  { top: 200px; left: 30%; transform: translate(-50%,0) scale(1); }
+            38%  { top: 200px; left: 30%; transform: translate(-50%,0) scale(.6); }
+            44%  { top: 200px; left: 30%; transform: translate(-50%,0) scale(1); }
+            55%  { top: 280px; left: 70%; transform: translate(-50%,0) scale(1); }
+            65%  { top: 280px; left: 70%; transform: translate(-50%,0) scale(.6); }
+            72%  { top: 280px; left: 70%; transform: translate(-50%,0) scale(1); }
+            85%  { top: 420px; left: 50%; transform: translate(-50%,0) scale(1); }
+            92%  { top: 420px; left: 50%; transform: translate(-50%,0) scale(.6); }
+            100% { top: 60px; left: 50%; transform: translate(-50%,0) scale(1); }
+        }
+        .demo-cursor::after {
+            content: ""; position: absolute; inset: -8px; border-radius: 50%;
+            background: rgba(99,102,241,.18); animation: cursorRipple 12s ease-in-out infinite;
+        }
+        @keyframes cursorRipple {
+            0%,18%,25%,44%,55%,72%,85%,100% { transform: scale(1); opacity: 0; }
+            12%,38%,65%,92% { transform: scale(2.6); opacity: 0; }
+            10%,36%,63%,90% { transform: scale(1); opacity: .9; }
+        }
 
         /* ===== SCREENSHOT CAROUSEL ===== */
         .carousel { perspective: 1400px; }
@@ -678,20 +932,20 @@
 
         .live-dot {
             width: 7px; height: 7px; border-radius: 9999px;
-            background: #10b981; box-shadow: 0 0 0 0 rgba(16,185,129,.6);
+            background: #6366f1; box-shadow: 0 0 0 0 rgba(99,102,241,.6);
             animation: livePulse 1.6s ease-out infinite;
         }
         @keyframes livePulse {
-            0%   { box-shadow: 0 0 0 0 rgba(16,185,129,.55); }
-            70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
-            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+            0%   { box-shadow: 0 0 0 0 rgba(99,102,241,.55); }
+            70%  { box-shadow: 0 0 0 8px rgba(99,102,241,0); }
+            100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
         }
 
         /* sweeping highlight line on the clock panel */
         .clock-panel { position: relative; overflow: hidden; }
         .clock-panel::after {
             content: ""; position: absolute; inset: 0;
-            background: linear-gradient(110deg, transparent 35%, rgba(16,185,129,.10) 50%, transparent 65%);
+            background: linear-gradient(110deg, transparent 35%, rgba(99,102,241,.10) 50%, transparent 65%);
             transform: translateX(-100%);
             animation: sweep 3.5s ease-in-out infinite;
         }
@@ -701,16 +955,16 @@
         .ag-ring {
             width: 84px; height: 84px; border-radius: 9999px;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(16,185,129,.08);
-            border: 2px solid rgba(16,185,129,.45);
-            box-shadow: 0 0 0 0 rgba(16,185,129,.5);
+            background: rgba(99,102,241,.08);
+            border: 2px solid rgba(99,102,241,.45);
+            box-shadow: 0 0 0 0 rgba(99,102,241,.5);
             animation: agRing .9s cubic-bezier(.16,1,.3,1) both, agGlow 1.8s ease-out .3s infinite;
         }
         @keyframes agRing { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes agGlow {
-            0% { box-shadow: 0 0 0 0 rgba(16,185,129,.45); }
-            70% { box-shadow: 0 0 0 22px rgba(16,185,129,0); }
-            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+            0% { box-shadow: 0 0 0 0 rgba(99,102,241,.45); }
+            70% { box-shadow: 0 0 0 22px rgba(99,102,241,0); }
+            100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
         }
         .ag-check { stroke-dasharray: 30; stroke-dashoffset: 30; animation: agCheck .5s ease-out .35s forwards; }
         @keyframes agCheck { to { stroke-dashoffset: 0; } }
@@ -721,7 +975,7 @@
         @keyframes agFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .ag-bar { width: 200px; height: 4px; border-radius: 9999px; background: rgba(148,163,184,.2); overflow: hidden; }
         .ag-bar > span { display: block; height: 100%; width: 0; border-radius: 9999px;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
+            background: linear-gradient(90deg, #6366f1, #3b82f6);
             animation: agBar 1.5s ease-in-out .4s forwards; }
         @keyframes agBar { from { width: 0; } to { width: 100%; } }
 
@@ -753,7 +1007,7 @@
         }
         .glass-panel {
             position: absolute; inset: 0; border-radius: 20px;
-            border: 1px solid rgba(16,185,129,.28);
+            border: 1px solid rgba(99,102,241,.28);
             background: linear-gradient(160deg, rgba(30,41,59,.92), rgba(15,23,42,.55));
             box-shadow: 0 34px 70px -24px rgba(0,0,0,.65);
         }
@@ -765,7 +1019,7 @@
         @keyframes sparkDraw { to { stroke-dashoffset: 0; } }
 
         .feature-3d { transform-style: preserve-3d; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; will-change: transform; }
-        .feature-3d:hover { transform: translateY(-7px) rotateX(7deg) rotateY(-7deg); border-color: rgba(16,185,129,.55); box-shadow: 0 26px 44px -24px rgba(16,185,129,.5); }
+        .feature-3d:hover { transform: translateY(-7px) rotateX(7deg) rotateY(-7deg); border-color: rgba(99,102,241,.55); box-shadow: 0 26px 44px -24px rgba(99,102,241,.5); }
 
         .float-in { opacity: 0; animation: floatIn .7s cubic-bezier(.16,1,.3,1) forwards; }
         @keyframes floatIn { from { opacity: 0; transform: translateY(28px) rotateX(-8deg); } to { opacity: 1; transform: translateY(0) rotateX(0); } }
@@ -775,9 +1029,9 @@
 
         .cta-pulse { animation: ctaPulse 2.4s ease-out infinite; }
         @keyframes ctaPulse {
-            0% { box-shadow: 0 0 0 0 rgba(16,185,129,.5); }
-            70% { box-shadow: 0 0 0 14px rgba(16,185,129,0); }
-            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+            0% { box-shadow: 0 0 0 0 rgba(99,102,241,.5); }
+            70% { box-shadow: 0 0 0 14px rgba(99,102,241,0); }
+            100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
         }
 
         /* ===== SUPER-3D PREVIEW SCENE ===== */
@@ -786,8 +1040,8 @@
             position: absolute; left: 50%; bottom: -40px; width: 1200px; height: 520px;
             transform: translateX(-50%) rotateX(72deg); transform-origin: center;
             background-image:
-                linear-gradient(rgba(16,185,129,.22) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(16,185,129,.22) 1px, transparent 1px);
+                linear-gradient(rgba(99,102,241,.22) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99,102,241,.22) 1px, transparent 1px);
             background-size: 44px 44px;
             mask-image: radial-gradient(ellipse at center, #000 5%, transparent 62%);
             -webkit-mask-image: radial-gradient(ellipse at center, #000 5%, transparent 62%);
@@ -805,7 +1059,7 @@
         .deck { position: absolute; inset: 0; border-radius: 22px; transform-style: preserve-3d; }
         .deck-card {
             position: absolute; inset: 0; border-radius: 22px;
-            border: 1px solid rgba(16,185,129,.30);
+            border: 1px solid rgba(99,102,241,.30);
             background: linear-gradient(160deg, rgba(30,41,59,.94), rgba(15,23,42,.55));
             box-shadow: 0 40px 80px -26px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
         }
@@ -817,14 +1071,14 @@
         .chip3d {
             position: absolute; padding: 5px 10px; border-radius: 10px; font-size: 10px; font-weight: 700;
             font-family: ui-monospace, monospace; letter-spacing: .03em;
-            background: rgba(15,23,42,.85); border: 1px solid rgba(16,185,129,.35); color: #34d399;
+            background: rgba(15,23,42,.85); border: 1px solid rgba(99,102,241,.35); color: #8b5cf6;
             box-shadow: 0 14px 30px -12px rgba(0,0,0,.6); backdrop-filter: blur(3px);
             animation: chipBob 5s ease-in-out infinite; will-change: transform;
         }
         html.light .chip3d { background: rgba(255,255,255,.92); color: #059669; box-shadow: 0 14px 30px -16px rgba(15,23,42,.3); }
         @keyframes chipBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-        .bar3d { width: 18px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg,#34d399,#10b981); transform-origin: bottom; animation: barGrow 1s cubic-bezier(.16,1,.3,1) both; box-shadow: 0 0 14px rgba(16,185,129,.4); }
+        .bar3d { width: 18px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg,#8b5cf6,#6366f1); transform-origin: bottom; animation: barGrow 1s cubic-bezier(.16,1,.3,1) both; box-shadow: 0 0 14px rgba(99,102,241,.4); }
         @keyframes barGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 
         /* ===== 3D APP CARDS & CHARTS ===== */
@@ -836,7 +1090,7 @@
         .chart-stage:hover .chart-3d { transform: rotateX(6deg); }
         .chart-3d::after { /* depth shadow platform */
             content: ""; position: absolute; left: 6%; right: 6%; bottom: -14px; height: 26px;
-            background: radial-gradient(ellipse at center, rgba(16,185,129,.28), transparent 70%);
+            background: radial-gradient(ellipse at center, rgba(99,102,241,.28), transparent 70%);
             filter: blur(10px); transform: translateZ(-30px); pointer-events: none;
         }
         .donut-3d { filter: drop-shadow(0 18px 22px rgba(0,0,0,.45)); transform: rotateX(20deg); transition: transform .4s ease; }
@@ -850,23 +1104,229 @@
             transition: border-color .2s ease, box-shadow .2s ease, transform .1s ease;
         }
         html.light .otp-box { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
-        .otp-box:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,.18); transform: translateY(-2px); }
-        .otp-box.filled { border-color: #10b981; }
+        .otp-box:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.18); transform: translateY(-2px); }
+        .otp-box.filled { border-color: #6366f1; }
         .otp-box.err { border-color: #f43f5e; animation: shake .3s; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 
-        /* ===== PROFESSIONAL LOGIN OVERLAY (upgraded) ===== */
+        /* ===== 3D CINEMATIC ACCESS OVERLAY ===== */
+        .ao-floor {
+            position: absolute; left: 50%; bottom: 8%; width: 140%; height: 60%;
+            transform: translateX(-50%) rotateX(70deg);
+            background-image:
+              linear-gradient(rgba(99,102,241,.18) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(99,102,241,.18) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse at center, #000 5%, transparent 60%);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 5%, transparent 60%);
+            animation: aoFloorFlow 6s linear infinite;
+            opacity: .7; pointer-events: none;
+        }
+        @keyframes aoFloorFlow { from { background-position: 0 0; } to { background-position: 0 48px; } }
+
+        .ao-orbit-wrap { position: absolute; left: 50%; top: 38%; width: 0; height: 0; transform: translate(-50%,-50%); }
+        .ao-orbit {
+            position: absolute; border-radius: 50%; border: 1px solid rgba(99,102,241,.22);
+            transform-origin: center;
+        }
+        .ao-orbit.ao1 { width: 280px; height: 280px; margin: -140px 0 0 -140px; animation: aoSpin 18s linear infinite; }
+        .ao-orbit.ao2 { width: 420px; height: 420px; margin: -210px 0 0 -210px; animation: aoSpin 26s linear infinite reverse; border-style: dashed; }
+        .ao-orbit.ao3 { width: 560px; height: 560px; margin: -280px 0 0 -280px; animation: aoSpin 34s linear infinite; }
+        @keyframes aoSpin { to { transform: rotate(360deg); } }
+        .ao-orbit::before {
+            content: ""; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%;
+            background: #6366f1; transform: translateX(-50%);
+            box-shadow: 0 0 12px #6366f1, 0 0 24px rgba(99,102,241,.4);
+        }
+        .ao-orbit.ao2::before { background: #3b82f6; box-shadow: 0 0 12px #3b82f6, 0 0 24px rgba(59,130,246,.4); }
+        .ao-orbit.ao3::before { background: #8b5cf6; box-shadow: 0 0 12px #8b5cf6, 0 0 24px rgba(139,92,246,.4); }
+
+        .ao-cube-stage {
+            position: relative;
+            width: 140px; height: 140px;
+            margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ao-cube {
+            position: relative; width: 100px; height: 100px;
+            transform-style: preserve-3d;
+            animation: aoCubeSpin 6s cubic-bezier(.16,1,.3,1) forwards;
+        }
+        @keyframes aoCubeSpin {
+            0%   { transform: rotateX(-30deg) rotateY(-45deg) scale(.4); opacity: 0; }
+            40%  { transform: rotateX(15deg) rotateY(270deg) scale(1.08); opacity: 1; }
+            70%  { transform: rotateX(0deg) rotateY(360deg) scale(1); }
+            100% { transform: rotateX(0deg) rotateY(360deg) scale(1); }
+        }
+        .ao-face {
+            position: absolute; inset: 0;
+            border: 1px solid rgba(99,102,241,.35);
+            background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(59,130,246,.04));
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .ao-front  { transform: translateZ(50px); }
+        .ao-back   { transform: rotateY(180deg) translateZ(50px); }
+        .ao-right  { transform: rotateY(90deg) translateZ(50px); }
+        .ao-left   { transform: rotateY(-90deg) translateZ(50px); }
+        .ao-top    { transform: rotateX(90deg) translateZ(50px); }
+        .ao-bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+        .ao-check {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(.4);
+            background: radial-gradient(circle at center, rgba(165,180,252,.18), transparent 70%);
+            border-radius: 50%;
+        }
+        .ao-check.show { animation: aoCheckPop .7s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes aoCheckPop {
+            0%   { opacity: 0; transform: scale(.4); }
+            60%  { opacity: 1; transform: scale(1.12); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .ao-steps { text-align: left; max-width: 240px; margin: 0 auto 22px; display: flex; flex-direction: column; gap: 8px; }
+        .ao-step {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px; border-radius: 10px;
+            background: rgba(15,23,42,.55); border: 1px solid rgba(99,102,241,.18);
+            opacity: .35; transform: translateX(-12px);
+            transition: opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1), background .3s ease, border-color .3s ease;
+        }
+        .ao-step.active { opacity: 1; transform: translateX(0); border-color: rgba(99,102,241,.5); background: rgba(99,102,241,.10); }
+        .ao-step.done   { opacity: 1; transform: translateX(0); border-color: rgba(99,102,241,.35); }
+        .ao-step .ao-step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(148,163,184,.4); flex-shrink: 0; transition: background .3s ease, box-shadow .3s ease; }
+        .ao-step.active .ao-step-dot { background: #6366f1; box-shadow: 0 0 12px #6366f1; animation: aoDotPulse 1s ease-in-out infinite; }
+        .ao-step.done   .ao-step-dot { background: #818cf8; }
+        @keyframes aoDotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+        .ao-step .ao-step-label { flex: 1; font-size: 12px; font-weight: 600; color: #cbd5e1; }
+        .ao-step .ao-step-tick { font-size: 14px; font-weight: 800; color: #818cf8; opacity: 0; transition: opacity .3s ease; }
+        .ao-step.done .ao-step-tick { opacity: 1; }
+
+        .ao-bar {
+            width: 240px; height: 4px; margin: 0 auto;
+            background: rgba(99,102,241,.15); border-radius: 9999px; overflow: hidden;
+        }
+        .ao-bar > span {
+            display: block; height: 100%; width: 0;
+            background: linear-gradient(90deg, #6366f1, #3b82f6, #8b5cf6);
+            border-radius: 9999px;
+            animation: aoBarFill 2.4s cubic-bezier(.16,1,.3,1) forwards;
+            box-shadow: 0 0 12px rgba(99,102,241,.6);
+        }
+        @keyframes aoBarFill { from { width: 0; } to { width: 100%; } }
+
+        /* ===== ULTRA 3D GLOBAL ENHANCEMENTS ===== */
+        /* (NOTE: body perspective removed - it broke fixed positioning by making body the containing block for fixed children) */
+
+        /* Every card & panel gets soft 3D parallax on hover */
+        .bg-fintech-card, .panel-3d, .tilt-card, .shot, .glass, .auth-3d {
+            transform-style: preserve-3d;
+            transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease, border-color .25s ease;
+        }
+        .bg-fintech-card:hover, .panel-3d:hover, .glass:hover {
+            transform: translateZ(8px) translateY(-3px);
+            box-shadow:
+              0 32px 64px -28px rgba(0,0,0,.6),
+              0 0 0 1px rgba(99,102,241,.18),
+              inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        html.light .bg-fintech-card:hover, html.light .panel-3d:hover, html.light .glass:hover {
+            box-shadow:
+              0 28px 50px -28px rgba(15,23,42,.28),
+              0 0 0 1px rgba(99,102,241,.18);
+        }
+
+        /* KPI cards: stronger 3D rim + reflection */
+        .tilt-card.bg-fintech-card {
+            background:
+              linear-gradient(180deg, rgba(255,255,255,.04), transparent 30%),
+              var(--surface);
+            border: 1px solid var(--surface-border);
+            box-shadow:
+              0 24px 50px -30px rgba(0,0,0,.55),
+              inset 0 1px 0 rgba(255,255,255,.07),
+              inset 0 -1px 0 rgba(0,0,0,.25);
+        }
+        html.light .tilt-card.bg-fintech-card {
+            box-shadow:
+              0 20px 36px -28px rgba(15,23,42,.22),
+              inset 0 1px 0 rgba(255,255,255,.8);
+        }
+
+        /* Buttons get deeper press feel */
+        button { transform-style: preserve-3d; }
+        .btn-press { transition: transform .12s ease, box-shadow .25s ease, background-color .2s ease, filter .2s ease; }
+        .btn-press:hover { transform: translateZ(4px) translateY(-1px); }
+        .btn-press:active { transform: translateZ(0) scale(.96); }
+
+        /* Headings get a faint indigo halo for depth */
+        h1, h2, h3 { text-shadow: 0 1px 0 rgba(255,255,255,.04); }
+        html.dark h2, html.dark h3 { text-shadow: 0 2px 16px rgba(99,102,241,.12); }
+
+        /* Section dividers — subtle 3D glow line */
+        hr, .border-t { border-image: linear-gradient(90deg, transparent, rgba(99,102,241,.45), transparent) 1; }
+
+        /* Inputs/selects subtle inner depth */
+        .auth-field, .field {
+            box-shadow:
+              inset 0 1px 0 rgba(255,255,255,.04),
+              inset 0 -1px 0 rgba(0,0,0,.18);
+        }
+        html.light .auth-field, html.light .field {
+            box-shadow:
+              inset 0 1px 0 rgba(255,255,255,.8),
+              inset 0 -1px 0 rgba(15,23,42,.04);
+        }
+
+        /* W1/W2/W3 model switcher row gets a glass-panel feel */
+        #appDashboard > div:first-child {
+            background:
+              linear-gradient(180deg, rgba(99,102,241,.05), transparent 40%),
+              var(--surface);
+            border: 1px solid var(--surface-border);
+            box-shadow:
+              0 24px 50px -30px rgba(0,0,0,.5),
+              inset 0 1px 0 rgba(255,255,255,.06);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Stock table rows: hover 3D pop */
+        .stock-row { transition: transform .22s cubic-bezier(.16,1,.3,1), background-color .2s ease, box-shadow .25s ease; }
+        .stock-row:hover { transform: translateX(4px) translateZ(3px); box-shadow: -3px 0 0 0 var(--accent) inset, 0 14px 22px -18px rgba(99,102,241,.5); background: rgba(99,102,241,.05); }
+
+        /* Header: floating glass bar */
+        #mainHeader {
+            background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--surface-border);
+            box-shadow: 0 18px 36px -24px rgba(0,0,0,.5);
+        }
+
+        /* Footer subtle glass */
+        footer { background: linear-gradient(180deg, transparent, rgba(99,102,241,.04)); border-top: 1px solid var(--surface-border); border-radius: 12px 12px 0 0; }
+
+        /* Soft ambient inner glow on every important section */
+        main, #onboardingScreen, #appDashboard { position: relative; }
+        main::before, #appDashboard::before {
+            content: ""; position: absolute; inset: -30px; pointer-events: none; z-index: -1;
+            background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,.06), transparent 60%);
+        }
+
         .ov-rings { position: relative; width: 96px; height: 96px; margin: 0 auto; }
-        .ov-rings span { position: absolute; inset: 0; border-radius: 9999px; border: 2px solid rgba(16,185,129,.25); }
-        .ov-rings span:nth-child(1) { animation: ovSpin 2.4s linear infinite; border-top-color: #10b981; }
+        .ov-rings span { position: absolute; inset: 0; border-radius: 9999px; border: 2px solid rgba(99,102,241,.25); }
+        .ov-rings span:nth-child(1) { animation: ovSpin 2.4s linear infinite; border-top-color: #6366f1; }
         .ov-rings span:nth-child(2) { inset: 12px; animation: ovSpin 1.8s linear infinite reverse; border-right-color: #3b82f6; }
-        .ov-rings span:nth-child(3) { inset: 24px; animation: ovSpin 1.4s linear infinite; border-bottom-color: #34d399; }
+        .ov-rings span:nth-child(3) { inset: 24px; animation: ovSpin 1.4s linear infinite; border-bottom-color: #8b5cf6; }
         @keyframes ovSpin { to { transform: rotate(360deg); } }
         .ov-check { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(.5); }
         .ov-check.show { animation: ovPop .5s cubic-bezier(.16,1,.3,1) forwards; }
         @keyframes ovPop { to { opacity: 1; transform: scale(1); } }
         .ov-step { display: flex; align-items: center; gap: 8px; opacity: .35; transition: opacity .3s ease, color .3s ease; }
-        .ov-step.active { opacity: 1; color: #34d399; }
+        .ov-step.active { opacity: 1; color: #8b5cf6; }
         .ov-step.done { opacity: 1; }
 
         /* ===== CLICK / OPEN ANIMATIONS ===== */
@@ -884,15 +1344,15 @@
         /* ===== MODEL SWITCH (W1/W2/W3) ===== */
         .kpi-flash { animation: kpiFlash .6s ease; }
         @keyframes kpiFlash {
-            0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
-            30%  { box-shadow: 0 0 0 2px rgba(16,185,129,.55), 0 14px 30px -18px rgba(16,185,129,.6); transform: translateY(-3px); }
-            100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); transform: translateY(0); }
+            0%   { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+            30%  { box-shadow: 0 0 0 2px rgba(99,102,241,.55), 0 14px 30px -18px rgba(99,102,241,.6); transform: translateY(-3px); }
+            100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); transform: translateY(0); }
         }
         .val-pop { animation: valPop .45s ease; display: inline-block; }
         @keyframes valPop { 0%{transform:translateY(6px);opacity:.4} 100%{transform:translateY(0);opacity:1} }
         #chartSwitchFlash {
             position: absolute; inset: 0; border-radius: 12px; pointer-events: none; opacity: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(16,185,129,.18), transparent 70%);
+            background: radial-gradient(circle at 50% 50%, rgba(99,102,241,.18), transparent 70%);
         }
         #chartSwitchFlash.go { animation: switchFlash .6s ease; }
         @keyframes switchFlash { 0%{opacity:0} 35%{opacity:1} 100%{opacity:0} }
@@ -910,14 +1370,14 @@
         .shot.s-right { transform: rotateY(-20deg) rotateX(6deg) translateZ(-10px); }
         .shot.s-mid   { transform: rotateY(0deg) rotateX(4deg) translateZ(20px) scale(1.04); z-index: 2; }
         .shot-stage:hover .shot { transform: rotateY(0) rotateX(0) translateZ(0) scale(1); }
-        .shot-badge { position:absolute; top:10px; left:10px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; padding:3px 8px; border-radius:999px; background:rgba(16,185,129,.16); color:#34d399; border:1px solid rgba(16,185,129,.3); }
-        .mini-bar { width: 12px; border-radius: 3px 3px 0 0; background: linear-gradient(180deg,#34d399,#10b981); }
+        .shot-badge { position:absolute; top:10px; left:10px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; padding:3px 8px; border-radius:999px; background:rgba(99,102,241,.16); color:#8b5cf6; border:1px solid rgba(99,102,241,.3); }
+        .mini-bar { width: 12px; border-radius: 3px 3px 0 0; background: linear-gradient(180deg,#8b5cf6,#6366f1); }
 
         /* ===== 3D STOCKS TABLE ===== */
         .stock-row { transition: transform .25s ease, background-color .2s ease, box-shadow .25s ease; }
-        .stock-row:hover { transform: translateX(4px) scale(1.004); box-shadow: -4px 0 0 0 #10b981 inset; }
+        .stock-row:hover { transform: translateX(4px) scale(1.004); box-shadow: -4px 0 0 0 #6366f1 inset; }
         .stock-table-stage { perspective: 1500px; }
-        .bk-yield  { color:#34d399; }
+        .bk-yield  { color:#8b5cf6; }
         .bk-growth { color:#60a5fa; }
         .bk-trend  { color:#fbbf24; }
 
@@ -939,7 +1399,14 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex flex-col justify-between">
+<body class="px-4 py-3 md:px-6 md:py-4 min-h-screen">
+
+    <style>
+        /* CRITICAL FIX: Tailwind v4 .hidden was being overridden by .flex etc — force it to work */
+        .hidden { display: none !important; }
+        /* Ensure reveal-fade auto-plays even without scroll observer (was leaving content invisible) */
+        .reveal-fade { animation: revealUp .6s cubic-bezier(.16,1,.3,1) both; opacity: 1 !important; }
+    </style>
 
     <!-- ===== PREMIUM BOOT LOADER ===== -->
     <div id="bootLoader">
@@ -988,48 +1455,64 @@
         <button class="tp-mode" data-mode="light" onclick="setTheme('light')">☀ Light</button>
         <button class="tp-mode" data-mode="dark" onclick="setTheme('dark')">☾ Dark</button>
         <span class="tp-divider"></span>
-        <button class="tp-accent" data-accent="teal"   onclick="setAccent('teal')"   style="background:linear-gradient(135deg,#2dd4bf,#38bdf8)" title="Teal · Sky"></button>
+        <button class="tp-accent" data-accent="teal"   onclick="setAccent('teal')"   style="background:linear-gradient(135deg,#6366f1,#3b82f6)" title="Teal · Sky"></button>
         <button class="tp-accent" data-accent="violet" onclick="setAccent('violet')" style="background:linear-gradient(135deg,#a78bfa,#f472b6)" title="Violet · Pink"></button>
         <button class="tp-accent" data-accent="amber"  onclick="setAccent('amber')"  style="background:linear-gradient(135deg,#fbbf24,#f97316)" title="Amber · Orange"></button>
         <button class="tp-accent" data-accent="rose"   onclick="setAccent('rose')"   style="background:linear-gradient(135deg,#fb7185,#f43f5e)" title="Rose"></button>
     </div>
 
-    <!-- ACCESS GRANTED REVEAL OVERLAY -->
-    <div id="accessOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-        <div class="absolute inset-0 bg-slate-950/96 backdrop-blur-md"></div>
-        <div class="relative text-center px-6 w-full max-w-xs">
-            <div class="ov-rings mb-6">
-                <span></span><span></span><span></span>
-                <div id="ovCheck" class="ov-check">
-                    <svg class="h-9 w-9 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                </div>
-            </div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400 mb-2">Authentication</div>
-            <div id="agUserName" class="text-lg font-semibold text-white mb-6">Welcome back</div>
+    <!-- ACCESS GRANTED · 3D CINEMATIC OVERLAY -->
+    <div id="accessOverlay" class="hidden fixed inset-0 flex items-center justify-center" style="perspective:1400px;z-index:90;">
+        <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(15,23,42,.96), rgba(2,6,23,.99));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+        <!-- ambient orbiting particles -->
+        <div class="ao-orbit-wrap">
+            <div class="ao-orbit ao1"></div>
+            <div class="ao-orbit ao2"></div>
+            <div class="ao-orbit ao3"></div>
+        </div>
+        <!-- depth grid floor -->
+        <div class="ao-floor"></div>
 
-            <div class="text-left space-y-2 mb-6 max-w-[220px] mx-auto">
-                <div id="ovStep1" class="ov-step text-xs font-medium text-slate-300">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Verifying credentials
+        <div class="relative text-center px-6 w-full max-w-sm" style="transform-style:preserve-3d;">
+            <!-- 3D rotating cube wrapping the AETHER mark -->
+            <div class="ao-cube-stage" style="perspective:900px;">
+                <div class="ao-cube">
+                    <div class="ao-face ao-front">
+                        <div class="aether-mark lg">
+                            <div class="aether-orbit"></div>
+                            <div class="aether-core"></div>
+                            <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                        </div>
+                    </div>
+                    <div class="ao-face ao-back"></div>
+                    <div class="ao-face ao-right"></div>
+                    <div class="ao-face ao-left"></div>
+                    <div class="ao-face ao-top"></div>
+                    <div class="ao-face ao-bottom"></div>
                 </div>
-                <div id="ovStep2" class="ov-step text-xs font-medium text-slate-300">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Loading portfolio engine
-                </div>
-                <div id="ovStep3" class="ov-step text-xs font-medium text-slate-300">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Preparing workspace
+                <div id="ovCheck" class="ao-check">
+                    <svg style="width:36px;height:36px;color:#a5b4fc;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                 </div>
             </div>
-            <div class="ag-bar mx-auto"><span></span></div>
+
+            <div class="ao-title" style="font-size:11px;font-weight:800;letter-spacing:.5em;text-transform:uppercase;background:linear-gradient(135deg,#a5b4fc,#93c5fd,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent;margin:24px 0 6px;">Access Granted</div>
+            <div id="agUserName" style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">Welcome back</div>
+
+            <div class="ao-steps">
+                <div id="ovStep1" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Verifying credentials</span><span class="ao-step-tick">✓</span></div>
+                <div id="ovStep2" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Loading portfolio engine</span><span class="ao-step-tick">✓</span></div>
+                <div id="ovStep3" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Preparing workspace</span><span class="ao-step-tick">✓</span></div>
+            </div>
+
+            <div class="ao-bar"><span></span></div>
         </div>
     </div>
 
     <!-- ===== APP PREVIEW / INTRO SCREEN (shown first) ===== -->
-    <section id="previewScreen" class="preview-stage relative max-w-6xl w-full mx-auto my-auto overflow-hidden" onmousemove="tiltHero(event)" onmouseleave="resetHero()">
+    <section id="previewScreen" class="preview-stage relative max-w-6xl w-full mx-auto overflow-hidden" onmousemove="tiltHero(event)" onmouseleave="resetHero()">
 
         <!-- ambient 3D orbs -->
-        <div class="orb" style="width:280px;height:280px;background:#10b981;top:-60px;left:-40px;"></div>
+        <div class="orb" style="width:280px;height:280px;background:#6366f1;top:-60px;left:-40px;"></div>
         <div class="orb" style="width:240px;height:240px;background:#3b82f6;bottom:-50px;right:-30px;animation-delay:-6s;"></div>
 
         <!-- theme toggle -->
@@ -1083,6 +1566,8 @@
                         <div class="chip3d" style="bottom:40px;right:-20px;transform:translateZ(90px);animation-delay:-3.1s;">MCB +0.9%</div>
 
                         <div class="phone-frame">
+                            <span class="live-badge">Live demo</span>
+                            <span class="demo-cursor"></span>
                             <div class="phone-notch"></div>
                             <div class="phone-screen" id="phoneScreen">
                                 <!-- Slide 1: Hero -->
@@ -1091,9 +1576,9 @@
                                     <div class="text-2xl font-bold text-white num leading-tight">PKR 1.52<br>Crore</div>
                                     <div class="text-[10px] text-emerald-400 font-semibold num mt-1">+49.8% · 2 years</div>
                                     <svg viewBox="0 0 220 90" class="w-full h-20 mt-3">
-                                        <defs><linearGradient id="phg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".6"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></linearGradient></defs>
+                                        <defs><linearGradient id="phg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6366f1" stop-opacity=".6"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
                                         <polyline fill="url(#phg1)" stroke="none" points="2,78 35,68 70,56 105,60 140,40 175,28 218,8 218,90 2,90"/>
-                                        <polyline fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-linecap="round" points="2,78 35,68 70,56 105,60 140,40 175,28 218,8"/>
+                                        <polyline fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" points="2,78 35,68 70,56 105,60 140,40 175,28 218,8"/>
                                     </svg>
                                     <div class="grid grid-cols-3 gap-1 mt-3 text-center">
                                         <div><div class="text-[7px] text-slate-400 uppercase">Yield</div><div class="text-[10px] font-bold text-emerald-400 num">15%</div></div>
@@ -1107,8 +1592,8 @@
                                     <div class="flex justify-center items-center flex-1">
                                         <svg viewBox="0 0 140 140" class="w-32 h-32 -rotate-90">
                                             <circle cx="70" cy="70" r="52" fill="none" stroke="#1e293b" stroke-width="16"/>
-                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#2dd4bf" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
-                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#38bdf8" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#6366f1" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
+                                            <circle cx="70" cy="70" r="52" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
                                             <circle cx="70" cy="70" r="52" fill="none" stroke="#fbbf24" stroke-width="16" stroke-dasharray="50 277" stroke-dashoffset="-277"/>
                                         </svg>
                                     </div>
@@ -1133,9 +1618,9 @@
                                 <div class="phone-slide" data-slide="3">
                                     <div class="text-[8px] font-bold tracking-widest text-emerald-400 uppercase mb-3">AETHER · AI</div>
                                     <div class="space-y-2 flex-1">
-                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">Explain CAGR briefly</div>
+                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#6366f1,#3b82f6);">Explain CAGR briefly</div>
                                         <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-6" style="background:#1e293b;border:1px solid #334155;">CAGR is the smooth yearly rate that takes you from today's value to a future value — a fair way to compare returns.</div>
-                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">FFC ke baare me batao</div>
+                                        <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-6" style="background:linear-gradient(135deg,#6366f1,#3b82f6);">FFC ke baare me batao</div>
                                         <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-6" style="background:#1e293b;border:1px solid #334155;">FFC fertilizer sector ka dividend champion hai — beta 0.98, EPS Rs 45.89.</div>
                                     </div>
                                 </div>
@@ -1190,34 +1675,6 @@
                 </div>
             </div>
 
-            <!-- ===== AETHER SHOWCASE ===== -->
-            <div class="mt-12 mb-2 panel-3d p-6 md:p-8 reveal-fade" style="animation-delay:.3s;">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <div>
-                        <div class="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-2">Meet AETHER</div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight mb-3">Your AI advisor,<br>always one tap away.</h2>
-                        <p class="text-sm text-slate-300 leading-relaxed mb-4">AETHER lives in the corner of your screen. Ask about strategies, taxes, any of the 28 PSX stocks, or how to read your dashboard — it answers like a knowledgeable friend who knows your portfolio inside out.</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Live answers</span>
-                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30">Portfolio-aware</span>
-                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">Plain English</span>
-                            <span class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">24 / 7</span>
-                        </div>
-                        <button onclick="toggleAdvisor(true)" class="btn-press inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg text-white" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);box-shadow:0 14px 28px -12px rgba(45,212,191,.6);">
-                            Try AETHER now
-                            <span>→</span>
-                        </button>
-                    </div>
-                    <div class="flex justify-center items-center">
-                        <div class="aether-mark xl">
-                            <div class="aether-orbit"></div>
-                            <div class="aether-core"></div>
-                            <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- APP-STORE STYLE 3D SHOWCASE -->
             <div class="mt-12 text-center float-in fi-6">
                 <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400 mb-1">Take a look inside</div>
@@ -1231,9 +1688,9 @@
                         <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Projected value</div>
                         <div class="text-lg font-bold text-emerald-400 num mb-3">PKR 1.52 Cr</div>
                         <svg viewBox="0 0 200 80" class="w-full h-24">
-                            <defs><linearGradient id="sg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#10b981" stop-opacity=".5"/><stop offset="1" stop-color="#10b981" stop-opacity="0"/></linearGradient></defs>
+                            <defs><linearGradient id="sg1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6366f1" stop-opacity=".5"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
                             <polyline fill="url(#sg1)" stroke="none" points="2,70 40,58 78,46 116,50 154,26 198,10 198,80 2,80"/>
-                            <polyline fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="2,70 40,58 78,46 116,50 154,26 198,10"/>
+                            <polyline fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="2,70 40,58 78,46 116,50 154,26 198,10"/>
                         </svg>
                         <div class="text-[10px] text-emerald-400 font-semibold num mt-2">+49.8% over 2 years</div>
                     </div>
@@ -1244,7 +1701,7 @@
                     <div class="mt-7 flex flex-col items-center">
                         <svg viewBox="0 0 120 120" class="w-28 h-28 -rotate-90">
                             <circle cx="60" cy="60" r="46" fill="none" stroke="#1f2937" stroke-width="16"/>
-                            <circle cx="60" cy="60" r="46" fill="none" stroke="#10b981" stroke-width="16" stroke-dasharray="130 159" stroke-linecap="round"/>
+                            <circle cx="60" cy="60" r="46" fill="none" stroke="#6366f1" stroke-width="16" stroke-dasharray="130 159" stroke-linecap="round"/>
                             <circle cx="60" cy="60" r="46" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="115 174" stroke-dashoffset="-130"/>
                             <circle cx="60" cy="60" r="46" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="44 245" stroke-dashoffset="-245"/>
                         </svg>
@@ -1296,9 +1753,9 @@
                             <div class="text-lg font-bold text-white mb-1">2-year forecast curve</div>
                             <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Animated 3D line chart with tooltips in Crore — switch W1/W2/W3 and watch it morph.</p>
                             <svg viewBox="0 0 260 130" class="w-full h-32">
-                                <defs><linearGradient id="cs1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf" stop-opacity=".5"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></linearGradient></defs>
+                                <defs><linearGradient id="cs1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6366f1" stop-opacity=".5"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
                                 <polyline fill="url(#cs1)" stroke="none" points="6,112 50,98 95,80 140,86 185,52 230,30 256,12 256,130 6,130"/>
-                                <polyline fill="none" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round" points="6,112 50,98 95,80 140,86 185,52 230,30 256,12"/>
+                                <polyline fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" points="6,112 50,98 95,80 140,86 185,52 230,30 256,12"/>
                             </svg>
                         </div>
                         <div class="carousel-slide">
@@ -1308,8 +1765,8 @@
                             <div class="flex justify-center">
                                 <svg viewBox="0 0 140 140" class="w-32 h-32 -rotate-90">
                                     <circle cx="70" cy="70" r="52" fill="none" stroke="#1e293b" stroke-width="16"/>
-                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#2dd4bf" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
-                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#38bdf8" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#6366f1" stroke-width="16" stroke-dasharray="147 180" stroke-linecap="round"/>
+                                    <circle cx="70" cy="70" r="52" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="130 197" stroke-dashoffset="-147"/>
                                     <circle cx="70" cy="70" r="52" fill="none" stroke="#fbbf24" stroke-width="16" stroke-dasharray="50 277" stroke-dashoffset="-277"/>
                                 </svg>
                             </div>
@@ -1329,7 +1786,7 @@
                             <div class="text-lg font-bold text-white mb-1">Your AI advisor</div>
                             <p class="text-[11px] text-slate-300 leading-relaxed mb-3">Ask anything in English or Roman Urdu. Get a clear, instant answer.</p>
                             <div class="space-y-1.5">
-                                <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-8" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);">CAGR kya hai?</div>
+                                <div class="rounded-lg rounded-br-sm px-2.5 py-1.5 text-[10px] text-white ml-8" style="background:linear-gradient(135deg,#6366f1,#3b82f6);">CAGR kya hai?</div>
                                 <div class="rounded-lg rounded-bl-sm px-2.5 py-1.5 text-[10px] text-slate-200 mr-8" style="background:#1e293b;border:1px solid #334155;">CAGR yearly compound growth rate hai — har saal average kitna grow hua…</div>
                             </div>
                         </div>
@@ -1350,17 +1807,17 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <div class="glass rounded-2xl p-5 scroll-reveal">
-                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">01</div>
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#6366f1,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent;">01</div>
                         <h3 class="text-sm font-bold text-white mb-1">Set up your profile</h3>
                         <p class="text-[11px] text-slate-300 leading-relaxed">Pick your age, income and tax status — we'll suggest a strategy tier instantly.</p>
                     </div>
                     <div class="glass rounded-2xl p-5 scroll-reveal" style="transition-delay:.1s">
-                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">02</div>
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#6366f1,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent;">02</div>
                         <h3 class="text-sm font-bold text-white mb-1">Choose your strategy</h3>
                         <p class="text-[11px] text-slate-300 leading-relaxed">Try W1, W2, W3 — watch projections, allocations and stocks recalculate in real time.</p>
                     </div>
                     <div class="glass rounded-2xl p-5 scroll-reveal" style="transition-delay:.2s">
-                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8);-webkit-background-clip:text;background-clip:text;color:transparent;">03</div>
+                        <div class="text-3xl font-black mb-2" style="background:linear-gradient(135deg,#6366f1,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent;">03</div>
                         <h3 class="text-sm font-bold text-white mb-1">Ask AETHER anything</h3>
                         <p class="text-[11px] text-slate-300 leading-relaxed">Stuck on a number, term or stock? AETHER explains in plain English or Roman Urdu.</p>
                     </div>
@@ -1369,30 +1826,25 @@
 
             <!-- ===== LAUNCH CTA ===== -->
             <div class="mt-16 text-center scroll-reveal">
-                <button onclick="launchPortfolio()" class="btn-press inline-flex items-center gap-3 px-10 py-4 rounded-2xl text-sm font-bold uppercase tracking-[0.25em] text-white" style="background:linear-gradient(135deg,#2dd4bf,#38bdf8,#818cf8);box-shadow:0 24px 50px -16px rgba(45,212,191,.7);">
+                <button onclick="launchPortfolio()" class="btn-press inline-flex items-center gap-3 px-10 py-4 rounded-2xl text-sm font-bold uppercase tracking-[0.25em] text-white" style="background:linear-gradient(135deg,#6366f1,#3b82f6,#8b5cf6);box-shadow:0 24px 50px -16px rgba(99,102,241,.7);">
                     🚀 Launch Portfolio
                 </button>
                 <p class="text-[11px] text-slate-400 mt-3">Cinematic intro · Premium experience</p>
             </div>
         </div>
     </section>
-    <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-col md:flex-row justify-between items-center mb-8 pb-4 border-b border-slate-700 gap-4">
-        <div>
-            <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                <span>WEALTH ARCHITECTURE</span> 
-                <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">v3.0 Quant Live</span>
+    <header id="mainHeader" class="hidden max-w-7xl w-full mx-auto flex flex-row justify-between items-center mb-6 pb-3 border-b border-slate-700 gap-3 flex-wrap">
+        <div class="min-w-0">
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2 flex-wrap">
+                <span>WEALTH ARCHITECTURE</span>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap">v3.0 Live</span>
             </h1>
-            <p class="text-xs text-slate-400">Proprietary Asset Valuation & Risk Modeling Environment | Technical Framework</p>
+            <p class="text-[10px] sm:text-xs text-slate-400 mt-0.5"><span id="welcomeUser" class="text-emerald-400 font-semibold">Welcome</span> · <span id="headerClock" class="font-mono text-slate-300">--:-- --</span></p>
         </div>
-        
-        <div class="flex items-center gap-4">
-            <div class="text-xs text-slate-400 text-right">
-                <div id="welcomeUser" class="text-emerald-400 font-semibold mb-1">Authenticated Terminal</div>
-                <div><strong>Current Time:</strong> <span id="headerClock" class="font-mono text-slate-300">--:-- --</span></div>
-                <div><strong>System Execution:</strong> June 2026</div>
-            </div>
+
+        <div class="flex items-center gap-2">
             <button onclick="toggleTheme()" aria-label="Toggle theme" title="Switch theme"
-                class="p-2 rounded bg-slate-800 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+                class="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
                 <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                 </svg>
@@ -1400,114 +1852,126 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </button>
-            <button onclick="handleLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-xs px-3 py-1.5 rounded border border-rose-500/20 transition-colors cursor-pointer font-medium tracking-wide">
-                Terminate Session
+            <button onclick="handleLogout()" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-[11px] px-3 py-1.5 rounded-lg border border-rose-500/20 transition-colors cursor-pointer font-semibold">
+                Logout
             </button>
         </div>
     </header>
 
     <!-- ===== SIGN IN SCREEN ===== -->
-    <section id="loginScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
-        <div class="auth-orb o1"></div>
-        <div class="auth-orb o2"></div>
-        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
-            <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-            <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        </button>
+    <!-- ===== FULL-PAGE AUTH OVERLAY ===== -->
+    <div id="authOverlay" class="auth-fullpage">
+      <div class="auth-split">
+        <!-- Decorative left aside -->
+        <aside class="auth-aside">
+            <div class="auth-aside-orb a1"></div>
+            <div class="auth-aside-orb a2"></div>
+            <div class="auth-aside-orb a3"></div>
 
-        <div class="relative z-10 text-center mb-6">
-            <div class="flex justify-center mb-3">
-                <div class="aether-mark lg">
-                    <div class="aether-orbit"></div>
-                    <div class="aether-core"></div>
-                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+            <div style="position:relative;z-index:2;">
+                <div class="aether-logo mb-4">
+                    <div class="aether-mark"><div class="aether-core"></div><div class="aether-inner"><span class="aether-glyph">Æ</span></div></div>
+                    <div>
+                        <div class="aether-name">AETHER</div>
+                        <div class="aether-tag">Wealth Architecture</div>
+                    </div>
                 </div>
+                <h2 style="font-size:32px;line-height:1.1;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:14px;">A premium<br><span style="background:linear-gradient(135deg,#a5b4fc,#93c5fd,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent;">AI-powered</span><br>portfolio engine.</h2>
+                <p style="font-size:13px;color:#cbd5e1;line-height:1.6;max-width:340px;">Build, simulate and master your PSX portfolio with an institutional-grade workspace and an AI advisor that speaks your language.</p>
             </div>
-            <h2 class="text-2xl font-bold tracking-tight text-white">Welcome Back</h2>
-            <p class="text-xs text-slate-300 mt-1">Sign in to access your portfolio workspace</p>
-        </div>
 
-        <div class="relative z-10 clock-panel bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 mb-5 flex items-center justify-between">
-            <div>
-                <div class="flex items-center gap-2 mb-1"><span class="live-dot"></span><span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Current Local Time</span></div>
-                <div class="js-clock-time clock-readout text-emerald-400 font-mono text-xl font-semibold">--:-- --</div>
-            </div>
-            <div class="text-right">
-                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Today's Date</div>
-                <div class="js-clock-date text-slate-200 font-mono text-xs">--- -- ----</div>
-            </div>
-        </div>
-
-        <form id="loginForm" onsubmit="handleLogin(event)" class="relative z-10 space-y-3">
-            <div class="auth-field">
-                <span class="af-label">Email or Username</span>
-                <input type="text" id="loginEmail" required placeholder="you@example.com" autocomplete="username">
-            </div>
-            <div class="auth-field">
-                <span class="af-label">Password</span>
-                <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
-            </div>
-            <button type="submit" class="auth-cta btn-press mt-2">Sign In to Workspace</button>
-        </form>
-
-        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
-            <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
-            <button onclick="showSignup(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">New here? Create account</button>
-        </div>
-    </section>
-
-    <!-- ===== GET STARTED SCREEN ===== -->
-    <section id="signupScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
-        <div class="auth-orb o1"></div>
-        <div class="auth-orb o2"></div>
-        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
-            <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-            <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        </button>
-
-        <div class="relative z-10 text-center mb-6">
-            <div class="flex justify-center mb-3">
-                <div class="aether-mark lg">
-                    <div class="aether-orbit"></div>
-                    <div class="aether-core"></div>
-                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+            <!-- floating 3D preview card -->
+            <div class="aside-float-card" style="position:relative;z-index:2;margin-top:24px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                    <span style="font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#a5b4fc;">Projected · 2027</span>
+                    <span class="live-dot"></span>
                 </div>
+                <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-.01em;">PKR 1.52 Cr</div>
+                <div style="font-size:11px;color:#818cf8;font-weight:700;">+49.8% over 2 years</div>
+                <svg viewBox="0 0 220 56" style="width:100%;height:56px;margin-top:8px;">
+                    <defs><linearGradient id="agra" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#818cf8" stop-opacity=".5"/><stop offset="1" stop-color="#818cf8" stop-opacity="0"/></linearGradient></defs>
+                    <polyline fill="url(#agra)" stroke="none" points="2,50 40,44 78,36 116,40 154,22 196,12 218,4 218,56 2,56"/>
+                    <polyline fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round" points="2,50 40,44 78,36 116,40 154,22 196,12 218,4"/>
+                </svg>
             </div>
-            <h2 class="text-2xl font-bold tracking-tight text-white">Get Started</h2>
-            <p class="text-xs text-slate-300 mt-1">Open your workspace and meet AETHER, your AI advisor</p>
-        </div>
 
-        <form id="signupForm" onsubmit="handleGetStarted(event)" class="relative z-10 space-y-3">
-            <div class="auth-field">
-                <span class="af-label">Full Name</span>
-                <input type="text" id="suName" placeholder="e.g., Muhammad Majid" autocomplete="name">
+            <div style="position:relative;z-index:2;display:flex;gap:18px;font-size:10px;color:#94a3b8;">
+                <div><div style="color:#fff;font-weight:800;font-size:18px;">28</div>PSX Stocks</div>
+                <div><div style="color:#fff;font-weight:800;font-size:18px;">3</div>Models</div>
+                <div><div style="color:#fff;font-weight:800;font-size:18px;">AI</div>Advisor</div>
             </div>
-            <div class="auth-field">
-                <span class="af-label">Email or Username</span>
-                <input type="text" id="suEmail" required placeholder="you@example.com" autocomplete="username">
-            </div>
-            <div class="auth-field">
-                <span class="af-label">Password</span>
-                <input type="password" id="suPassword" required placeholder="Create a password" autocomplete="new-password">
-            </div>
-            <button type="submit" class="auth-cta btn-press mt-2">Get Started →</button>
-        </form>
+        </aside>
 
-        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
-            <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
-            <button onclick="showLogin(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">Already have an account? Sign in</button>
+        <!-- Right form panel -->
+        <div class="auth-form-panel">
+            <button onclick="toggleTheme()" aria-label="Toggle theme" style="position:absolute;top:18px;right:18px;z-index:5;padding:8px;border-radius:10px;background:var(--surface-3);border:1px solid var(--surface-border);color:var(--text-dim);cursor:pointer;">
+                <svg class="theme-icon-moon" style="width:14px;height:14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                <svg class="theme-icon-sun hidden" style="width:14px;height:14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </button>
+
+            <!-- LOGIN -->
+            <section id="loginScreen" class="hidden">
+                <h1 style="font-size:26px;font-weight:800;color:var(--text-strong);letter-spacing:-.02em;margin-bottom:6px;">Welcome back</h1>
+                <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;">Sign in to access your portfolio workspace.</p>
+
+                <form id="loginForm" onsubmit="handleLogin(event)" style="display:flex;flex-direction:column;gap:14px;">
+                    <div class="auth-field">
+                        <span class="af-label">Email or Username</span>
+                        <input type="text" id="loginEmail" required placeholder="you@example.com" autocomplete="username">
+                    </div>
+                    <div class="auth-field">
+                        <span class="af-label">Password</span>
+                        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="premium-cta" style="margin-top:8px;">Sign in to workspace</button>
+                </form>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--surface-border);">
+                    <button onclick="closeAuth()" style="font-size:11px;color:var(--text-dim);background:none;border:0;cursor:pointer;">← Back to overview</button>
+                    <button onclick="switchAuth('signup')" style="font-size:11px;color:var(--accent);font-weight:700;background:none;border:0;cursor:pointer;">Create account →</button>
+                </div>
+            </section>
+
+            <!-- SIGNUP / GET STARTED -->
+            <section id="signupScreen" class="hidden">
+                <h1 style="font-size:26px;font-weight:800;color:var(--text-strong);letter-spacing:-.02em;margin-bottom:6px;">Create your account</h1>
+                <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;">A few details and your workspace is ready.</p>
+
+                <form id="signupForm" onsubmit="handleGetStarted(event)" style="display:flex;flex-direction:column;gap:14px;">
+                    <div class="auth-field">
+                        <span class="af-label">Full Name</span>
+                        <input type="text" id="suName" placeholder="e.g., Muhammad Majid" autocomplete="name">
+                    </div>
+                    <div class="auth-field">
+                        <span class="af-label">Email or Username</span>
+                        <input type="text" id="suEmail" required placeholder="you@example.com" autocomplete="username">
+                    </div>
+                    <div class="auth-field">
+                        <span class="af-label">Password</span>
+                        <input type="password" id="suPassword" required placeholder="Create a password" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="premium-cta" style="margin-top:8px;">Get started →</button>
+                </form>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--surface-border);">
+                    <button onclick="closeAuth()" style="font-size:11px;color:var(--text-dim);background:none;border:0;cursor:pointer;">← Back to overview</button>
+                    <button onclick="switchAuth('login')" style="font-size:11px;color:var(--accent);font-weight:700;background:none;border:0;cursor:pointer;">Sign in →</button>
+                </div>
+            </section>
         </div>
-    </section>
+      </div>
+    </div>
+
 
     <!-- CAPITAL QUANT INTERACTIVE WORKSPACE -->
     <main class="max-w-7xl w-full mx-auto">
         
         <!-- RISK DISCLOSURE & SOCIO-ECONOMIC CAPACITY ENGINE -->
         <section id="onboardingScreen" class="hidden mb-8">
-            <div class="text-center mb-6 reveal-fade">
-                <div class="text-[10px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-1">Step 1 of 2 · Profile setup</div>
-                <h2 class="text-2xl font-bold text-white">Tell us about you</h2>
-                <p class="text-sm text-slate-400 mt-1">A short questionnaire — we'll match you to the right strategy in seconds.</p>
+            <div class="text-center mb-4 reveal-fade">
+                <div class="text-[9px] font-bold uppercase tracking-[0.35em] text-emerald-400 mb-1">Step 1 of 2 · Profile setup</div>
+                <h2 class="text-xl font-bold text-white">Tell us about you</h2>
+                <p class="text-xs text-slate-400 mt-1">A short questionnaire — we'll match you to the right strategy.</p>
             </div>
 
             <form id="profilerForm" onsubmit="processRiskProfile(event)" class="space-y-6">
@@ -1585,21 +2049,28 @@
                                 <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Monthly income (PKR)
                             </div>
-                            <select id="monthlyIncomeVal" onchange="calculateSurplus()">
-                                <option value="100000">1,00,000</option>
-                                <option value="250000" selected>2,50,000</option>
-                                <option value="500000">5,00,000</option>
-                                <option value="1000000">10,00,000</option>
-                            </select>
-                            <p class="field-help">Approximate gross monthly income.</p>
+                            <input type="number" id="monthlyIncomeVal" value="250000" min="0" step="5000" oninput="calculateSurplus()" placeholder="e.g., 2,50,000">
+                            <div class="quick-chips">
+                                <button type="button" onclick="setIncome(100000)">1 Lakh</button>
+                                <button type="button" onclick="setIncome(250000)">2.5 Lakh</button>
+                                <button type="button" onclick="setIncome(500000)">5 Lakh</button>
+                                <button type="button" onclick="setIncome(1000000)">10 Lakh</button>
+                            </div>
+                            <p class="field-help">Type any amount or pick a quick preset.</p>
                         </div>
                         <div class="field">
                             <div class="field-label">
                                 <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                                 Monthly expenses (PKR)
                             </div>
-                            <input type="number" id="monthlyCommitments" value="90000" oninput="calculateSurplus()">
-                            <p class="field-help">Rent, bills, EMIs, household — your fixed monthly outflow.</p>
+                            <input type="number" id="monthlyCommitments" value="90000" min="0" step="5000" oninput="calculateSurplus()" placeholder="e.g., 90,000">
+                            <div class="quick-chips">
+                                <button type="button" onclick="setExpense(50000)">50 K</button>
+                                <button type="button" onclick="setExpense(90000)">90 K</button>
+                                <button type="button" onclick="setExpense(150000)">1.5 Lakh</button>
+                                <button type="button" onclick="setExpense(300000)">3 Lakh</button>
+                            </div>
+                            <p class="field-help">Rent, bills, EMIs, household — your fixed outflow.</p>
                         </div>
 
                         <div class="field md:col-span-2">
@@ -1777,7 +2248,7 @@
                         <span class="shot-badge" style="background:rgba(245,158,11,.16);color:#fbbf24;border-color:rgba(245,158,11,.3);">CGT</span>
                         <div class="mt-7 flex items-end justify-center gap-3 h-20">
                             <div class="text-center"><div class="mini-bar mx-auto" style="height:64px;width:26px;background:linear-gradient(180deg,#fbbf24,#d97706);"></div><div class="text-[9px] text-slate-400 mt-1">Short hold</div></div>
-                            <div class="text-center"><div class="mini-bar mx-auto" style="height:34px;width:26px;background:linear-gradient(180deg,#34d399,#10b981);"></div><div class="text-[9px] text-slate-400 mt-1">Long hold</div></div>
+                            <div class="text-center"><div class="mini-bar mx-auto" style="height:34px;width:26px;background:linear-gradient(180deg,#8b5cf6,#6366f1);"></div><div class="text-[9px] text-slate-400 mt-1">Long hold</div></div>
                         </div>
                         <h4 class="text-sm font-bold text-white mt-4 mb-1">Capital Gains Tax</h4>
                         <p class="text-[11px] text-slate-400 leading-relaxed">Tax depends on how long you hold a stock. Longer holding periods are taxed more gently, so the app rewards patience.</p>
@@ -1788,7 +2259,7 @@
                         <div class="mt-7 flex flex-col items-center">
                             <svg viewBox="0 0 120 120" class="w-24 h-24 -rotate-90">
                                 <circle cx="60" cy="60" r="46" fill="none" stroke="#1f2937" stroke-width="14"/>
-                                <circle cx="60" cy="60" r="46" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="245 44" stroke-linecap="round"/>
+                                <circle cx="60" cy="60" r="46" fill="none" stroke="#6366f1" stroke-width="14" stroke-dasharray="245 44" stroke-linecap="round"/>
                             </svg>
                             <div class="-mt-16 text-center"><div class="text-lg font-bold text-emerald-400 num">85%</div><div class="text-[9px] text-slate-400">you keep</div></div>
                         </div>
@@ -1816,15 +2287,17 @@
         <p>Wealth Architecture — for educational and demonstration purposes only. Equities involve market risk; past performance is not a guarantee of future results.</p>
     </footer>
 
-    <!-- ===== AETHER AI ADVISOR ===== -->
-    <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AETHER AI">
-        <div class="aether-mark" style="width:36px;height:36px;">
-            <div class="aether-orbit"></div>
+    <!-- ===== AETHER AI ADVISOR (side floating circle) ===== -->
+    <div id="aiFabWrap" class="ai-fab-wrap">
+      <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AETHER AI">
+        <span class="ai-fab-tag">AETHER</span>
+        <div class="aether-mark" style="width:40px;height:40px;">
             <div class="aether-core"></div>
-            <div class="aether-inner"><span class="aether-glyph" style="font-size:14px;">Æ</span></div>
+            <div class="aether-inner"><span class="aether-glyph" style="font-size:16px;">Æ</span></div>
         </div>
         <span class="ai-dot"></span>
-    </button>
+      </button>
+    </div>
 
     <div id="aiBackdrop" class="ai-backdrop" onclick="toggleAdvisor(false)"></div>
 
@@ -2064,7 +2537,7 @@
 
         // ===== THEME PICKER =====
         const ACCENTS = {
-            teal:   { c1: '#2dd4bf', c2: '#38bdf8', c3: '#818cf8', solid: '#2dd4bf' },
+            teal:   { c1: '#6366f1', c2: '#3b82f6', c3: '#8b5cf6', solid: '#6366f1' },
             violet: { c1: '#a78bfa', c2: '#f472b6', c3: '#e879f9', solid: '#a78bfa' },
             amber:  { c1: '#fbbf24', c2: '#f97316', c3: '#ef4444', solid: '#f59e0b' },
             rose:   { c1: '#fb7185', c2: '#f43f5e', c3: '#ec4899', solid: '#f43f5e' }
@@ -2098,32 +2571,37 @@
             }, 2200);
         }
 
-        // ===== PREVIEW -> SCREEN NAVIGATION (with click + open animation) =====
+        // ===== PREVIEW <-> FULL-PAGE AUTH NAVIGATION =====
         function pressFx(btn) {
             if (!btn || !btn.classList) return;
             btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked');
         }
-        function hideAllAuth() {
-            ['previewScreen', 'loginScreen', 'signupScreen'].forEach(id =>
-                document.getElementById(id).classList.add('hidden'));
+        function switchAuth(which) {
+            document.getElementById('loginScreen').classList.toggle('hidden', which !== 'login');
+            document.getElementById('signupScreen').classList.toggle('hidden', which !== 'signup');
+            // re-trigger split animation for the form panel
+            const split = document.querySelector('.auth-split');
+            if (split) { split.style.animation = 'none'; void split.offsetWidth; split.style.animation = ''; }
         }
-        function openCard(id) {
-            const el = document.getElementById(id);
-            // brief delay so the button press animation is visible before the screen swaps
+        function openAuth(which, btn) {
+            pressFx(btn);
             setTimeout(() => {
-                hideAllAuth();
-                el.classList.remove('hidden');
-                el.classList.remove('card-open'); void el.offsetWidth; el.classList.add('card-open');
-            }, 150);
+                document.getElementById('authOverlay').classList.add('show');
+                switchAuth(which);
+                document.body.style.overflow = 'hidden';
+            }, 120);
         }
-        function showLogin(btn) { pressFx(btn); openCard('loginScreen'); }
-        function showSignup(btn) { pressFx(btn); openCard('signupScreen'); }
-        function backToPreview() {
-            hideAllAuth();
-            const p = document.getElementById('previewScreen');
-            p.classList.remove('hidden');
-            p.classList.remove('card-open'); void p.offsetWidth; p.classList.add('card-open');
+        function showLogin(btn)  { openAuth('login', btn);  }
+        function showSignup(btn) { openAuth('signup', btn); }
+        function closeAuth() {
+            document.getElementById('authOverlay').classList.remove('show');
+            document.body.style.overflow = '';
         }
+        // Back-compat alias used by older inline handlers
+        function backToPreview() { closeAuth(); }
+        // Hide previewScreen-targeted helper no longer needed
+        function hideAllAuth() { closeAuth(); }
+        function openCard(id) { /* legacy no-op */ }
 
         // ===== SIGN IN =====
         function handleLogin(event) {
@@ -2274,13 +2752,17 @@
         }
 
         function enterAppWorkspace(verifiedName) {
+            // 1) Close the full-page auth overlay first so accessOverlay isn't hidden behind it
+            closeAuth();
+
             const overlay = document.getElementById('accessOverlay');
             document.getElementById('agUserName').innerText = "Welcome, " + verifiedName;
             document.getElementById('welcomeUser').innerText = "Account Holder: " + verifiedName;
 
             // reset overlay state
             ['ovStep1','ovStep2','ovStep3'].forEach(id => document.getElementById(id).classList.remove('active','done'));
-            document.getElementById('ovCheck').classList.remove('show');
+            const ovCheck = document.getElementById('ovCheck');
+            if (ovCheck) ovCheck.classList.remove('show');
             overlay.classList.remove('hidden');
 
             // professional stepped sequence
@@ -2289,11 +2771,13 @@
             setTimeout(() => document.getElementById('ovStep1').classList.add('active'), t(150));
             setTimeout(() => { document.getElementById('ovStep1').classList.add('done'); document.getElementById('ovStep2').classList.add('active'); }, t(800));
             setTimeout(() => { document.getElementById('ovStep2').classList.add('done'); document.getElementById('ovStep3').classList.add('active'); }, t(1400));
-            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); document.getElementById('ovCheck').classList.add('show'); }, t(1900));
+            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); if (ovCheck) ovCheck.classList.add('show'); }, t(1900));
 
             setTimeout(() => {
                 overlay.classList.add('hidden');
-                hideAllAuth();
+
+                // Hide preview & show workspace
+                document.getElementById('previewScreen').classList.add('hidden');
 
                 const header = document.getElementById('mainHeader');
                 const onboarding = document.getElementById('onboardingScreen');
@@ -2301,6 +2785,12 @@
                 onboarding.classList.remove('hidden');
                 header.classList.add('reveal-up');
                 onboarding.classList.add('reveal-up');
+
+                // Reveal the AETHER side-panel button only after login
+                document.getElementById('aiFabWrap').classList.add('show');
+
+                // Scroll to top of workspace
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, t(2400));
         }
 
@@ -2311,7 +2801,12 @@
             document.getElementById('onboardingScreen').classList.remove('reveal-up');
             document.getElementById('appDashboard').classList.add('hidden');
             document.getElementById('appDashboard').classList.remove('stagger');
+            document.getElementById('aiFabWrap').classList.remove('show');
+            toggleAdvisor(false);
             document.getElementById('loginForm').reset();
+            // Bring preview back so user can re-enter
+            document.getElementById('previewScreen').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             showLogin();
         }
 
@@ -2320,7 +2815,22 @@
             const gross = parseFloat(document.getElementById('monthlyIncomeVal').value) || 0;
             const commitments = parseFloat(document.getElementById('monthlyCommitments').value) || 0;
             const net = gross - commitments;
-            document.getElementById('surplusDisplay').innerText = "PKR " + (net > 0 ? pkGroup(net) : 0);
+            const el = document.getElementById('surplusDisplay');
+            el.innerText = "PKR " + (net > 0 ? pkGroup(net) : 0);
+            // gentle highlight on change
+            el.style.transition = 'color .25s ease';
+            el.style.color = net > 0 ? 'var(--accent)' : 'var(--bad)';
+        }
+
+        function setIncome(v)  { const el = document.getElementById('monthlyIncomeVal'); el.value = v; pulseField(el); calculateSurplus(); }
+        function setExpense(v) { const el = document.getElementById('monthlyCommitments'); el.value = v; pulseField(el); calculateSurplus(); }
+        function pulseField(input) {
+            const fld = input.closest('.field');
+            if (!fld) return;
+            fld.style.transition = 'transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease';
+            fld.style.transform = 'translateY(-3px) scale(1.015)';
+            fld.style.boxShadow = '0 0 0 3px rgba(99,102,241,.28), 0 22px 36px -18px rgba(99,102,241,.7)';
+            setTimeout(() => { fld.style.transform = ''; fld.style.boxShadow = ''; }, 280);
         }
 
         function processRiskProfile(event) {
@@ -2403,16 +2913,18 @@
             ['W1', 'W2', 'W3'].forEach(m => {
                 const btn = document.getElementById('btn' + m);
                 if (m === modelCode) {
-                    btn.className = "btn-press px-4 py-2 rounded text-xs font-bold font-mono border-2 border-emerald-500 bg-emerald-950/60 text-emerald-400 cursor-pointer shadow-lg";
+                    btn.className = "btn-press px-5 py-2.5 rounded-lg text-xs font-bold font-mono text-white cursor-pointer";
+                    btn.style.cssText = "background:linear-gradient(135deg,#6366f1,#3b82f6);box-shadow:0 12px 24px -10px rgba(99,102,241,.7),inset 0 1px 0 rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);";
                 } else {
-                    btn.className = "btn-press px-4 py-2 rounded text-xs font-bold font-mono border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer";
+                    btn.className = "btn-press px-5 py-2.5 rounded-lg text-xs font-bold font-mono cursor-pointer";
+                    btn.style.cssText = "background:var(--surface-2);color:var(--text-muted);border:1px solid var(--surface-border);";
                 }
             });
 
             if (trajectoryChart) {
                 trajectoryChart.data.datasets[0].data = data.trajectory;
                 if(modelCode === 'W1') trajectoryChart.data.datasets[0].borderColor = '#3b82f6';
-                if(modelCode === 'W2') trajectoryChart.data.datasets[0].borderColor = '#10b981';
+                if(modelCode === 'W2') trajectoryChart.data.datasets[0].borderColor = '#6366f1';
                 if(modelCode === 'W3') trajectoryChart.data.datasets[0].borderColor = '#f59e0b';
                 trajectoryChart.update();
             }
@@ -2427,9 +2939,9 @@
             if (trajectoryChart !== null) return;
             const ctx = document.getElementById('trajectoryChart').getContext('2d');
             const grad = ctx.createLinearGradient(0, 0, 0, 260);
-            grad.addColorStop(0, 'rgba(16,185,129,0.42)');
-            grad.addColorStop(0.5, 'rgba(16,185,129,0.14)');
-            grad.addColorStop(1, 'rgba(16,185,129,0)');
+            grad.addColorStop(0, 'rgba(99,102,241,0.42)');
+            grad.addColorStop(0.5, 'rgba(99,102,241,0.14)');
+            grad.addColorStop(1, 'rgba(99,102,241,0)');
             trajectoryChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -2437,13 +2949,13 @@
                     datasets: [{
                         label: 'Projected Value (PKR)',
                         data: modelData.W1.trajectory,
-                        borderColor: '#10b981',
+                        borderColor: '#6366f1',
                         backgroundColor: grad,
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointBackgroundColor: '#fff',
-                        pointBorderColor: '#10b981',
+                        pointBorderColor: '#6366f1',
                         pointBorderWidth: 2,
                         pointRadius: 5,
                         pointHoverRadius: 7
@@ -2456,7 +2968,7 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(15,23,42,.92)', borderColor: '#10b981', borderWidth: 1,
+                            backgroundColor: 'rgba(15,23,42,.92)', borderColor: '#6366f1', borderWidth: 1,
                             padding: 10, displayColors: false,
                             callbacks: { label: (c) => 'PKR ' + pkGroup(Math.round(c.parsed.y)) }
                         }
@@ -2478,7 +2990,7 @@
                     labels: ['High Yield Structure', 'High Growth Segment', 'Trending Macro Beta'],
                     datasets: [{
                         data: modelData.W1.weights,
-                        backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'],
+                        backgroundColor: ['#6366f1', '#3b82f6', '#f59e0b'],
                         borderWidth: 1,
                         borderColor: '#1e293b'
                     }]
@@ -2512,7 +3024,7 @@
             tbody.innerHTML = "";
             const rows = stockUniverse.filter(s => stockFilter === 'All' || s.bucket === stockFilter);
             rows.forEach((s, idx) => {
-                let badgeStyle = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5", dot = "#34d399";
+                let badgeStyle = "border-emerald-500/30 text-emerald-400 bg-emerald-500/5", dot = "#8b5cf6";
                 if (s.bucket === "High Growth") { badgeStyle = "border-blue-500/30 text-blue-400 bg-blue-500/5"; dot = "#60a5fa"; }
                 if (s.bucket === "Trending") { badgeStyle = "border-amber-500/30 text-amber-400 bg-amber-500/5"; dot = "#fbbf24"; }
 
@@ -2549,9 +3061,12 @@
         ];
 
         const aiKB = [
-            { keys: ["hello","hi","hey","salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain — strategies, taxes, ya 28 PSX stocks ke baare me. Bataiye, kya help kar sakta hoon? 🌟" },
-            { keys: ["thanks","thank you","shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
-            { keys: ["who are you","what are you","aether","tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga. Strategies, taxes, stocks, ya general finance — jo bhi poochna ho, pooch lijiye." },
+            { keys: ["hello","hi","hey"], a: "Hello! I'm <b>AETHER</b>, your AI advisor. Ask me anything about the app's strategies, taxes, the 28 PSX stocks, or general investing questions." },
+            { keys: ["salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain. Bataiye, kya help kar sakta hoon? 🌟" },
+            { keys: ["thanks","thank you"], a: "You're welcome! Anything else I can help with?" },
+            { keys: ["shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
+            { keys: ["who are you","what are you","aether"], a: "I'm <b>AETHER</b> — this app's built-in AI advisor. I can explain strategies, taxes, formulas, and the stocks in your universe, plus general investing or finance questions." },
+            { keys: ["tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga." },
             { keys: ["w1","conservative","preservation","mehfooz"], a: "**W1 — Capital Preservation** sab se conservative tier hai. Almost 20% High Yield, 75% High Growth, 5% Trending. Volatility kam, dividends steady. 46+ age ya jise calm performance chahiye, un ke liye behtar." },
             { keys: ["w2","balanced","sanjhi","mutawazin"], a: "**W2 — Balanced Growth** = 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation aur managed risk. 31–45 age group ke liye ideal." },
             { keys: ["w3","aggressive","velocity","momentum","tez"], a: "**W3 — Aggressive Growth** = 30% High Yield, 50% High Growth, 20% Trending. Bade swings, bara potential. Young investors (18–30) ke liye best — runway lambi hoti hai." },
@@ -2624,11 +3139,12 @@
 
         const aiSystemPrompt = `You are AETHER, a premium AI financial advisor inside a Pakistani investment app called Wealth Architecture. Your personality is warm, professional, encouraging, and concise — like a knowledgeable friend.
 
-LANGUAGE: Detect the user's language automatically and reply in the SAME language. Support fluently:
-- English (proper spelling, professional tone)
-- Roman Urdu (Urdu written in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"). Reply in natural Roman Urdu — friendly, simple, accurate. Don't translate to English unless asked.
-- Pure Urdu script if user writes in it.
-If user mixes languages, mirror their mix.
+LANGUAGE:
+- DEFAULT language is **English**. Always reply in English unless the user clearly writes in another language first.
+- If, and only if, the user writes their question in Roman Urdu (Urdu in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"), reply in natural Roman Urdu.
+- If the user writes in pure Urdu script, reply in Urdu script.
+- If the user mixes languages, mirror their dominant language.
+- A short greeting like "salam" or "hi" alone is not enough to switch language — wait until you see a real question in that language.
 
 KNOWLEDGE BASE (use when relevant):
 - 3 portfolio strategies on a PKR 1 Crore base over 2 years (2026–2027):
@@ -2750,7 +3266,7 @@ Always sound human, helpful, and a little bit excited about helping the user.`;
             back.classList.toggle('open', next);
             if (next && !_aiOpened) {
                 _aiOpened = true;
-                aiAppend("Salam! Main <b>AETHER</b> hoon — aap ka AI advisor. 🌟<br><br>Aap mujhse <b>English ya Roman Urdu</b>, jis bhi language me chahein, kuch bhi pooch sakte hain — strategies, taxes, 28 PSX stocks, ya general investing questions. Main ChatGPT ki tarah saaf seedha jawab dunga.", 'bot');
+                aiAppend("Hi! I'm <b>AETHER</b>, your AI advisor. 🌟<br><br>Ask me anything — strategies, taxes, any of the 28 PSX stocks, or general investing questions. I'll reply in English by default; if you write to me in Roman Urdu, I'll switch to that.", 'bot');
                 renderAiSuggestions();
             }
             if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
