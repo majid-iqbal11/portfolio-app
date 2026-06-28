@@ -156,43 +156,22 @@
             position: relative;
             background: var(--surface-2);
             border: 1px solid var(--surface-border);
-            border-radius: 14px;
-            padding: 12px 14px 14px;
+            border-radius: 12px;
+            padding: 10px 12px 12px;
             transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease, background-color .25s ease;
         }
-        .field:hover { transform: translateY(-2px); background: var(--surface-3); border-color: rgba(99,102,241,.4); box-shadow: 0 14px 26px -18px rgba(99,102,241,.5); }
-        .field:focus-within { border-color: var(--accent); background: var(--surface-3); box-shadow: 0 0 0 3px rgba(99,102,241,.2), 0 14px 26px -18px rgba(99,102,241,.55); }
-        .field-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--text-muted); margin-bottom: 8px; }
+        .field:hover { transform: translateY(-2px); box-shadow: 0 14px 26px -18px rgba(99,102,241,.45); border-color: rgba(99,102,241,.45); }
+        .field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.18), 0 14px 26px -18px rgba(99,102,241,.45); }
+        .field-label { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #94a3b8; margin-bottom: 6px; }
         html.light .field-label { color: #475569; }
         .field-icon { width: 14px; height: 14px; color: var(--accent); }
         .field select, .field input {
             width: 100%; background: transparent !important; border: 0 !important; outline: none;
-            color: var(--text-strong) !important; font-size: 14px; font-weight: 600;
-            padding: 4px 0; appearance: none;
+            color: var(--text-strong); font-size: 12px; font-weight: 500;
+            padding: 0; appearance: none;
         }
-        .field input::placeholder { color: var(--text-dim); font-weight: 400; }
-        .field select option { background: var(--surface-2); color: var(--text-strong); }
-        .field select { padding-right: 22px; background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%), linear-gradient(135deg, var(--accent) 50%, transparent 50%) !important; background-position: calc(100% - 14px) 14px, calc(100% - 9px) 14px !important; background-size: 5px 5px, 5px 5px !important; background-repeat: no-repeat !important; }
-        .field .field-help { font-size: 11px; color: var(--text-dim); margin-top: 8px; line-height: 1.5; }
-
-        /* Quick preset chips */
-        .quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-        .quick-chips button {
-            font-size: 10px; font-weight: 700; padding: 5px 10px; border-radius: 999px;
-            background: rgba(99,102,241,.12); color: var(--accent);
-            border: 1px solid rgba(99,102,241,.3); cursor: pointer;
-            transition: background-color .2s ease, transform .12s ease, box-shadow .2s ease;
-        }
-        .quick-chips button:hover { background: rgba(99,102,241,.22); transform: translateY(-1px); box-shadow: 0 6px 14px -8px rgba(99,102,241,.5); }
-        .quick-chips button:active { transform: scale(.94); }
-        html.light .quick-chips button { color: #4338ca; }
-
-        /* Onboarding section reveal */
-        .onb-anim { opacity: 0; transform: perspective(900px) rotateX(-6deg) translateY(20px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .onb-anim.in { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0); }
-        .onb-anim.d1 { transition-delay: .05s; }
-        .onb-anim.d2 { transition-delay: .18s; }
-        .onb-anim.d3 { transition-delay: .31s; }
+        .field select { padding-right: 18px; background-image: linear-gradient(45deg, transparent 50%, #94a3b8 50%), linear-gradient(135deg, #94a3b8 50%, transparent 50%) !important; background-position: calc(100% - 12px) 8px, calc(100% - 7px) 8px !important; background-size: 5px 5px, 5px 5px !important; background-repeat: no-repeat !important; }
+        .field .field-help { font-size: 10px; color: #64748b; margin-top: 6px; line-height: 1.5; }
 
         .surplus-card {
             background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(59,130,246,.08));
@@ -237,32 +216,25 @@
 
         /* ===== AI ROBO ADVISOR (side panel) ===== */
         .ai-fab {
-            position: fixed; top: 22px; right: 22px; z-index: 60;
-            padding: 9px 16px 9px 12px; border-radius: 9999px;
-            display: none;          /* hidden until user signs in */
-            align-items: center; gap: 9px; cursor: pointer;
-            background: linear-gradient(135deg, rgba(99,102,241,.18), rgba(59,130,246,.12));
-            border: 1px solid rgba(99,102,241,.4);
-            backdrop-filter: blur(14px) saturate(140%);
-            -webkit-backdrop-filter: blur(14px) saturate(140%);
-            box-shadow: 0 14px 32px -12px rgba(99,102,241,.55), 0 0 0 0 rgba(99,102,241,.4);
-            transition: transform .2s ease, box-shadow .2s ease;
-            color: #c7d2fe;
-            font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+            position: fixed; bottom: 22px; right: 22px; z-index: 60;
+            width: 58px; height: 58px; border-radius: 9999px;
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            border: 1px solid rgba(255,255,255,.25);
+            box-shadow: 0 16px 32px -12px rgba(99,102,241,.7), 0 0 0 0 rgba(99,102,241,.4);
+            animation: aiPulse 2.6s ease-out infinite;
+            transition: transform .2s ease;
         }
-        .ai-fab.show { display: inline-flex; animation: aiFabIn .55s cubic-bezier(.16,1,.3,1), aiPulse 2.6s ease-out 0.6s infinite; }
-        @keyframes aiFabIn { from { opacity: 0; transform: translateY(-12px) scale(.85); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        html.light .ai-fab { color: #4338ca; background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(59,130,246,.08)); }
-        .ai-fab:hover { transform: scale(1.04); box-shadow: 0 18px 36px -12px rgba(99,102,241,.7); }
-        .ai-fab:active { transform: scale(.96); }
+        .ai-fab:hover { transform: scale(1.07); }
+        .ai-fab:active { transform: scale(.95); }
         @keyframes aiPulse {
-            0% { box-shadow: 0 14px 32px -12px rgba(99,102,241,.55), 0 0 0 0 rgba(99,102,241,.5); }
-            70% { box-shadow: 0 14px 32px -12px rgba(99,102,241,.55), 0 0 0 12px rgba(99,102,241,0); }
-            100% { box-shadow: 0 14px 32px -12px rgba(99,102,241,.55), 0 0 0 0 rgba(99,102,241,0); }
+            0% { box-shadow: 0 16px 32px -12px rgba(99,102,241,.7), 0 0 0 0 rgba(99,102,241,.5); }
+            70% { box-shadow: 0 16px 32px -12px rgba(99,102,241,.7), 0 0 0 18px rgba(99,102,241,0); }
+            100% { box-shadow: 0 16px 32px -12px rgba(99,102,241,.7), 0 0 0 0 rgba(99,102,241,0); }
         }
         .ai-fab .ai-dot {
-            width: 8px; height: 8px; border-radius: 9999px; background: #f59e0b;
-            box-shadow: 0 0 8px #f59e0b;
+            position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-radius: 9999px;
+            background: #f59e0b; border: 2px solid var(--surface);
         }
 
         .ai-panel {
@@ -402,112 +374,8 @@
         }
         .aether-tag { font-size: 9px; letter-spacing: .3em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
 
-        /* ===== FULL-PAGE AUTH LAYOUT ===== */
-        .auth-fullpage {
-            position: fixed; inset: 0; z-index: 80;
-            display: none;
-            overflow-y: auto;
-            background:
-              radial-gradient(1200px 800px at 80% 10%, rgba(99,102,241,.22), transparent 55%),
-              radial-gradient(1000px 700px at 10% 90%, rgba(59,130,246,.16), transparent 60%),
-              radial-gradient(700px 500px at 50% 50%, rgba(139,92,246,.08), transparent 70%),
-              linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-        }
-        .auth-fullpage.show { display: flex; align-items: center; justify-content: center; padding: 24px; }
-
-        .auth-split {
-            position: relative;
-            width: 100%;
-            max-width: 1100px;
-            min-height: 620px;
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow:
-              0 60px 120px -32px rgba(0,0,0,.7),
-              0 0 0 1px rgba(99,102,241,.18),
-              inset 0 1px 0 rgba(255,255,255,.07);
-            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-            animation: authIn3D .85s cubic-bezier(.16,1,.3,1);
-        }
-        @media (max-width: 900px) { .auth-split { grid-template-columns: 1fr; min-height: auto; } .auth-aside { display: none; } }
-
-        /* Decorative left panel */
-        .auth-aside {
-            position: relative;
-            padding: 44px 36px;
-            background:
-              radial-gradient(circle at 80% 10%, rgba(99,102,241,.35), transparent 55%),
-              radial-gradient(circle at 10% 90%, rgba(59,130,246,.25), transparent 60%),
-              linear-gradient(180deg, #0a142a 0%, #050b1a 100%);
-            color: #fff;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .auth-aside::before {
-            content: "";
-            position: absolute; inset: 0;
-            background-image:
-              linear-gradient(rgba(99,102,241,.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(99,102,241,.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 70%);
-            animation: gridFlow 12s linear infinite;
-            pointer-events: none;
-        }
-        .auth-aside-orb {
-            position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none;
-        }
-        .auth-aside-orb.a1 { width: 240px; height: 240px; background: #6366f1; top: -80px; right: -80px; opacity: .6; animation: orbDrift 11s ease-in-out infinite; }
-        .auth-aside-orb.a2 { width: 200px; height: 200px; background: #3b82f6; bottom: -80px; left: -80px; opacity: .5; animation: orbDrift 13s ease-in-out infinite reverse; }
-        .auth-aside-orb.a3 { width: 160px; height: 160px; background: #8b5cf6; top: 40%; right: 20%; opacity: .35; animation: orbDrift 9s ease-in-out infinite; }
-
-        .auth-form-panel {
-            position: relative;
-            padding: 48px 44px;
-            display: flex; flex-direction: column; justify-content: center;
-            background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-        }
-
-        /* Floating preview card on aside */
-        .aside-float-card {
-            position: relative; padding: 18px;
-            border-radius: 18px;
-            background: linear-gradient(180deg, rgba(99,102,241,.16), rgba(59,130,246,.08));
-            border: 1px solid rgba(99,102,241,.32);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 30px 60px -28px rgba(99,102,241,.6);
-            transform: perspective(900px) rotateY(-6deg) rotateX(4deg);
-            animation: cardHover 5s ease-in-out infinite;
-        }
-        @keyframes cardHover {
-            0%,100% { transform: perspective(900px) rotateY(-6deg) rotateX(4deg) translateY(0); }
-            50%     { transform: perspective(900px) rotateY(-4deg) rotateX(3deg) translateY(-8px); }
-        }
-
-        /* Strong premium CTA used on full-page auth */
-        .premium-cta {
-            position: relative;
-            width: 100%;
-            background: linear-gradient(135deg, #6366f1 0%, #3b82f6 50%, #8b5cf6 100%);
-            color: #fff; font-weight: 800; font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
-            padding: 16px 22px; border-radius: 14px; cursor: pointer; border: 0;
-            box-shadow: 0 24px 50px -18px rgba(99,102,241,.75), inset 0 1px 0 rgba(255,255,255,.2);
-            transition: transform .15s ease, filter .2s ease, box-shadow .3s ease;
-            overflow: hidden;
-        }
-        .premium-cta:hover { transform: translateY(-2px); filter: brightness(1.10); box-shadow: 0 30px 60px -18px rgba(99,102,241,.85), inset 0 1px 0 rgba(255,255,255,.2); }
-        .premium-cta:active { transform: scale(.97); }
-        .premium-cta::after {
-            content: ""; position: absolute; inset: 0; border-radius: 14px;
-            background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.32) 50%, transparent 60%);
-            transform: translateX(-120%); animation: btnShine 3.2s ease-in-out infinite;
-            pointer-events: none;
-        }
+        /* ===== SUPER 3D LOGIN/SIGNUP CARDS ===== */
+        .auth-3d {
             position: relative;
             border-radius: 24px;
             background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
@@ -1053,214 +921,7 @@
         .otp-box.err { border-color: #f43f5e; animation: shake .3s; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
 
-        /* ===== 3D CINEMATIC ACCESS OVERLAY ===== */
-        .ao-floor {
-            position: absolute; left: 50%; bottom: 8%; width: 140%; height: 60%;
-            transform: translateX(-50%) rotateX(70deg);
-            background-image:
-              linear-gradient(rgba(99,102,241,.18) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(99,102,241,.18) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(ellipse at center, #000 5%, transparent 60%);
-            -webkit-mask-image: radial-gradient(ellipse at center, #000 5%, transparent 60%);
-            animation: aoFloorFlow 6s linear infinite;
-            opacity: .7; pointer-events: none;
-        }
-        @keyframes aoFloorFlow { from { background-position: 0 0; } to { background-position: 0 48px; } }
-
-        .ao-orbit-wrap { position: absolute; left: 50%; top: 38%; width: 0; height: 0; transform: translate(-50%,-50%); }
-        .ao-orbit {
-            position: absolute; border-radius: 50%; border: 1px solid rgba(99,102,241,.22);
-            transform-origin: center;
-        }
-        .ao-orbit.ao1 { width: 280px; height: 280px; margin: -140px 0 0 -140px; animation: aoSpin 18s linear infinite; }
-        .ao-orbit.ao2 { width: 420px; height: 420px; margin: -210px 0 0 -210px; animation: aoSpin 26s linear infinite reverse; border-style: dashed; }
-        .ao-orbit.ao3 { width: 560px; height: 560px; margin: -280px 0 0 -280px; animation: aoSpin 34s linear infinite; }
-        @keyframes aoSpin { to { transform: rotate(360deg); } }
-        .ao-orbit::before {
-            content: ""; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%;
-            background: #6366f1; transform: translateX(-50%);
-            box-shadow: 0 0 12px #6366f1, 0 0 24px rgba(99,102,241,.4);
-        }
-        .ao-orbit.ao2::before { background: #3b82f6; box-shadow: 0 0 12px #3b82f6, 0 0 24px rgba(59,130,246,.4); }
-        .ao-orbit.ao3::before { background: #8b5cf6; box-shadow: 0 0 12px #8b5cf6, 0 0 24px rgba(139,92,246,.4); }
-
-        .ao-cube-stage {
-            position: relative;
-            width: 140px; height: 140px;
-            margin: 0 auto;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .ao-cube {
-            position: relative; width: 100px; height: 100px;
-            transform-style: preserve-3d;
-            animation: aoCubeSpin 6s cubic-bezier(.16,1,.3,1) forwards;
-        }
-        @keyframes aoCubeSpin {
-            0%   { transform: rotateX(-30deg) rotateY(-45deg) scale(.4); opacity: 0; }
-            40%  { transform: rotateX(15deg) rotateY(270deg) scale(1.08); opacity: 1; }
-            70%  { transform: rotateX(0deg) rotateY(360deg) scale(1); }
-            100% { transform: rotateX(0deg) rotateY(360deg) scale(1); }
-        }
-        .ao-face {
-            position: absolute; inset: 0;
-            border: 1px solid rgba(99,102,241,.35);
-            background: linear-gradient(135deg, rgba(99,102,241,.08), rgba(59,130,246,.04));
-            backdrop-filter: blur(4px);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-        }
-        .ao-front  { transform: translateZ(50px); }
-        .ao-back   { transform: rotateY(180deg) translateZ(50px); }
-        .ao-right  { transform: rotateY(90deg) translateZ(50px); }
-        .ao-left   { transform: rotateY(-90deg) translateZ(50px); }
-        .ao-top    { transform: rotateX(90deg) translateZ(50px); }
-        .ao-bottom { transform: rotateX(-90deg) translateZ(50px); }
-
-        .ao-check {
-            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transform: scale(.4);
-            background: radial-gradient(circle at center, rgba(165,180,252,.18), transparent 70%);
-            border-radius: 50%;
-        }
-        .ao-check.show { animation: aoCheckPop .7s cubic-bezier(.16,1,.3,1) forwards; }
-        @keyframes aoCheckPop {
-            0%   { opacity: 0; transform: scale(.4); }
-            60%  { opacity: 1; transform: scale(1.12); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .ao-steps { text-align: left; max-width: 240px; margin: 0 auto 22px; display: flex; flex-direction: column; gap: 8px; }
-        .ao-step {
-            display: flex; align-items: center; gap: 10px;
-            padding: 8px 12px; border-radius: 10px;
-            background: rgba(15,23,42,.55); border: 1px solid rgba(99,102,241,.18);
-            opacity: .35; transform: translateX(-12px);
-            transition: opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1), background .3s ease, border-color .3s ease;
-        }
-        .ao-step.active { opacity: 1; transform: translateX(0); border-color: rgba(99,102,241,.5); background: rgba(99,102,241,.10); }
-        .ao-step.done   { opacity: 1; transform: translateX(0); border-color: rgba(99,102,241,.35); }
-        .ao-step .ao-step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(148,163,184,.4); flex-shrink: 0; transition: background .3s ease, box-shadow .3s ease; }
-        .ao-step.active .ao-step-dot { background: #6366f1; box-shadow: 0 0 12px #6366f1; animation: aoDotPulse 1s ease-in-out infinite; }
-        .ao-step.done   .ao-step-dot { background: #818cf8; }
-        @keyframes aoDotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
-        .ao-step .ao-step-label { flex: 1; font-size: 12px; font-weight: 600; color: #cbd5e1; }
-        .ao-step .ao-step-tick { font-size: 14px; font-weight: 800; color: #818cf8; opacity: 0; transition: opacity .3s ease; }
-        .ao-step.done .ao-step-tick { opacity: 1; }
-
-        .ao-bar {
-            width: 240px; height: 4px; margin: 0 auto;
-            background: rgba(99,102,241,.15); border-radius: 9999px; overflow: hidden;
-        }
-        .ao-bar > span {
-            display: block; height: 100%; width: 0;
-            background: linear-gradient(90deg, #6366f1, #3b82f6, #8b5cf6);
-            border-radius: 9999px;
-            animation: aoBarFill 2.4s cubic-bezier(.16,1,.3,1) forwards;
-            box-shadow: 0 0 12px rgba(99,102,241,.6);
-        }
-        @keyframes aoBarFill { from { width: 0; } to { width: 100%; } }
-
-        /* ===== ULTRA 3D GLOBAL ENHANCEMENTS ===== */
-        /* Global perspective stage so children with translateZ render in 3D */
-        body { perspective: 1800px; perspective-origin: 50% 30%; }
-
-        /* Every card & panel gets soft 3D parallax on hover */
-        .bg-fintech-card, .panel-3d, .tilt-card, .shot, .glass, .auth-3d {
-            transform-style: preserve-3d;
-            transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease, border-color .25s ease;
-        }
-        .bg-fintech-card:hover, .panel-3d:hover, .glass:hover {
-            transform: translateZ(8px) translateY(-3px);
-            box-shadow:
-              0 32px 64px -28px rgba(0,0,0,.6),
-              0 0 0 1px rgba(99,102,241,.18),
-              inset 0 1px 0 rgba(255,255,255,.06);
-        }
-        html.light .bg-fintech-card:hover, html.light .panel-3d:hover, html.light .glass:hover {
-            box-shadow:
-              0 28px 50px -28px rgba(15,23,42,.28),
-              0 0 0 1px rgba(99,102,241,.18);
-        }
-
-        /* KPI cards: stronger 3D rim + reflection */
-        .tilt-card.bg-fintech-card {
-            background:
-              linear-gradient(180deg, rgba(255,255,255,.04), transparent 30%),
-              var(--surface);
-            border: 1px solid var(--surface-border);
-            box-shadow:
-              0 24px 50px -30px rgba(0,0,0,.55),
-              inset 0 1px 0 rgba(255,255,255,.07),
-              inset 0 -1px 0 rgba(0,0,0,.25);
-        }
-        html.light .tilt-card.bg-fintech-card {
-            box-shadow:
-              0 20px 36px -28px rgba(15,23,42,.22),
-              inset 0 1px 0 rgba(255,255,255,.8);
-        }
-
-        /* Buttons get deeper press feel */
-        button { transform-style: preserve-3d; }
-        .btn-press { transition: transform .12s ease, box-shadow .25s ease, background-color .2s ease, filter .2s ease; }
-        .btn-press:hover { transform: translateZ(4px) translateY(-1px); }
-        .btn-press:active { transform: translateZ(0) scale(.96); }
-
-        /* Headings get a faint indigo halo for depth */
-        h1, h2, h3 { text-shadow: 0 1px 0 rgba(255,255,255,.04); }
-        html.dark h2, html.dark h3 { text-shadow: 0 2px 16px rgba(99,102,241,.12); }
-
-        /* Section dividers — subtle 3D glow line */
-        hr, .border-t { border-image: linear-gradient(90deg, transparent, rgba(99,102,241,.45), transparent) 1; }
-
-        /* Inputs/selects subtle inner depth */
-        .auth-field, .field {
-            box-shadow:
-              inset 0 1px 0 rgba(255,255,255,.04),
-              inset 0 -1px 0 rgba(0,0,0,.18);
-        }
-        html.light .auth-field, html.light .field {
-            box-shadow:
-              inset 0 1px 0 rgba(255,255,255,.8),
-              inset 0 -1px 0 rgba(15,23,42,.04);
-        }
-
-        /* W1/W2/W3 model switcher row gets a glass-panel feel */
-        #appDashboard > div:first-child {
-            background:
-              linear-gradient(180deg, rgba(99,102,241,.05), transparent 40%),
-              var(--surface);
-            border: 1px solid var(--surface-border);
-            box-shadow:
-              0 24px 50px -30px rgba(0,0,0,.5),
-              inset 0 1px 0 rgba(255,255,255,.06);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Stock table rows: hover 3D pop */
-        .stock-row { transition: transform .22s cubic-bezier(.16,1,.3,1), background-color .2s ease, box-shadow .25s ease; }
-        .stock-row:hover { transform: translateX(4px) translateZ(3px); box-shadow: -3px 0 0 0 var(--accent) inset, 0 14px 22px -18px rgba(99,102,241,.5); background: rgba(99,102,241,.05); }
-
-        /* Header: floating glass bar */
-        #mainHeader {
-            background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
-            backdrop-filter: blur(8px);
-            border-radius: 16px;
-            padding: 14px 16px;
-            border: 1px solid var(--surface-border);
-            box-shadow: 0 18px 36px -24px rgba(0,0,0,.5);
-        }
-
-        /* Footer subtle glass */
-        footer { background: linear-gradient(180deg, transparent, rgba(99,102,241,.04)); border-top: 1px solid var(--surface-border); border-radius: 12px 12px 0 0; }
-
-        /* Soft ambient inner glow on every important section */
-        main, #onboardingScreen, #appDashboard { position: relative; }
-        main::before, #appDashboard::before {
-            content: ""; position: absolute; inset: -30px; pointer-events: none; z-index: -1;
-            background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,.06), transparent 60%);
-        }
-
+        /* ===== PROFESSIONAL LOGIN OVERLAY (upgraded) ===== */
         .ov-rings { position: relative; width: 96px; height: 96px; margin: 0 auto; }
         .ov-rings span { position: absolute; inset: 0; border-radius: 9999px; border: 2px solid rgba(99,102,241,.25); }
         .ov-rings span:nth-child(1) { animation: ovSpin 2.4s linear infinite; border-top-color: #6366f1; }
@@ -1399,50 +1060,34 @@
         <button class="tp-accent" data-accent="rose"   onclick="setAccent('rose')"   style="background:linear-gradient(135deg,#fb7185,#f43f5e)" title="Rose"></button>
     </div>
 
-    <!-- ACCESS GRANTED · 3D CINEMATIC OVERLAY -->
-    <div id="accessOverlay" class="hidden fixed inset-0 flex items-center justify-center" style="perspective:1400px;z-index:90;">
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at center, rgba(15,23,42,.96), rgba(2,6,23,.99));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
-        <!-- ambient orbiting particles -->
-        <div class="ao-orbit-wrap">
-            <div class="ao-orbit ao1"></div>
-            <div class="ao-orbit ao2"></div>
-            <div class="ao-orbit ao3"></div>
-        </div>
-        <!-- depth grid floor -->
-        <div class="ao-floor"></div>
-
-        <div class="relative text-center px-6 w-full max-w-sm" style="transform-style:preserve-3d;">
-            <!-- 3D rotating cube wrapping the AETHER mark -->
-            <div class="ao-cube-stage" style="perspective:900px;">
-                <div class="ao-cube">
-                    <div class="ao-face ao-front">
-                        <div class="aether-mark lg">
-                            <div class="aether-orbit"></div>
-                            <div class="aether-core"></div>
-                            <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
-                        </div>
-                    </div>
-                    <div class="ao-face ao-back"></div>
-                    <div class="ao-face ao-right"></div>
-                    <div class="ao-face ao-left"></div>
-                    <div class="ao-face ao-top"></div>
-                    <div class="ao-face ao-bottom"></div>
-                </div>
-                <div id="ovCheck" class="ao-check">
-                    <svg style="width:36px;height:36px;color:#a5b4fc;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    <!-- ACCESS GRANTED REVEAL OVERLAY -->
+    <div id="accessOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="absolute inset-0 bg-slate-950/96 backdrop-blur-md"></div>
+        <div class="relative text-center px-6 w-full max-w-xs">
+            <div class="ov-rings mb-6">
+                <span></span><span></span><span></span>
+                <div id="ovCheck" class="ov-check">
+                    <svg class="h-9 w-9 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                 </div>
             </div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-emerald-400 mb-2">Authentication</div>
+            <div id="agUserName" class="text-lg font-semibold text-white mb-6">Welcome back</div>
 
-            <div class="ao-title" style="font-size:11px;font-weight:800;letter-spacing:.5em;text-transform:uppercase;background:linear-gradient(135deg,#a5b4fc,#93c5fd,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent;margin:24px 0 6px;">Access Granted</div>
-            <div id="agUserName" style="font-size:18px;font-weight:700;color:#fff;margin-bottom:24px;">Welcome back</div>
-
-            <div class="ao-steps">
-                <div id="ovStep1" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Verifying credentials</span><span class="ao-step-tick">✓</span></div>
-                <div id="ovStep2" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Loading portfolio engine</span><span class="ao-step-tick">✓</span></div>
-                <div id="ovStep3" class="ao-step"><span class="ao-step-dot"></span><span class="ao-step-label">Preparing workspace</span><span class="ao-step-tick">✓</span></div>
+            <div class="text-left space-y-2 mb-6 max-w-[220px] mx-auto">
+                <div id="ovStep1" class="ov-step text-xs font-medium text-slate-300">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Verifying credentials
+                </div>
+                <div id="ovStep2" class="ov-step text-xs font-medium text-slate-300">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Loading portfolio engine
+                </div>
+                <div id="ovStep3" class="ov-step text-xs font-medium text-slate-300">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Preparing workspace
+                </div>
             </div>
-
-            <div class="ao-bar"><span></span></div>
+            <div class="ag-bar mx-auto"><span></span></div>
         </div>
     </div>
 
@@ -1802,109 +1447,99 @@
     </header>
 
     <!-- ===== SIGN IN SCREEN ===== -->
-    <!-- ===== FULL-PAGE AUTH OVERLAY ===== -->
-    <div id="authOverlay" class="auth-fullpage">
-      <div class="auth-split">
-        <!-- Decorative left aside -->
-        <aside class="auth-aside">
-            <div class="auth-aside-orb a1"></div>
-            <div class="auth-aside-orb a2"></div>
-            <div class="auth-aside-orb a3"></div>
+    <section id="loginScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
+        <div class="auth-orb o1"></div>
+        <div class="auth-orb o2"></div>
+        <div class="auth-orb o3"></div>
+        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+            <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
 
-            <div style="position:relative;z-index:2;">
-                <div class="aether-logo mb-4">
-                    <div class="aether-mark"><div class="aether-core"></div><div class="aether-inner"><span class="aether-glyph">Æ</span></div></div>
-                    <div>
-                        <div class="aether-name">AETHER</div>
-                        <div class="aether-tag">Wealth Architecture</div>
-                    </div>
+        <div class="relative z-10 text-center mb-6">
+            <div class="flex justify-center mb-3">
+                <div class="aether-mark lg">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
                 </div>
-                <h2 style="font-size:32px;line-height:1.1;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:14px;">A premium<br><span style="background:linear-gradient(135deg,#a5b4fc,#93c5fd,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent;">AI-powered</span><br>portfolio engine.</h2>
-                <p style="font-size:13px;color:#cbd5e1;line-height:1.6;max-width:340px;">Build, simulate and master your PSX portfolio with an institutional-grade workspace and an AI advisor that speaks your language.</p>
             </div>
-
-            <!-- floating 3D preview card -->
-            <div class="aside-float-card" style="position:relative;z-index:2;margin-top:24px;">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                    <span style="font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#a5b4fc;">Projected · 2027</span>
-                    <span class="live-dot"></span>
-                </div>
-                <div style="font-size:24px;font-weight:800;color:#fff;letter-spacing:-.01em;">PKR 1.52 Cr</div>
-                <div style="font-size:11px;color:#818cf8;font-weight:700;">+49.8% over 2 years</div>
-                <svg viewBox="0 0 220 56" style="width:100%;height:56px;margin-top:8px;">
-                    <defs><linearGradient id="agra" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#818cf8" stop-opacity=".5"/><stop offset="1" stop-color="#818cf8" stop-opacity="0"/></linearGradient></defs>
-                    <polyline fill="url(#agra)" stroke="none" points="2,50 40,44 78,36 116,40 154,22 196,12 218,4 218,56 2,56"/>
-                    <polyline fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round" points="2,50 40,44 78,36 116,40 154,22 196,12 218,4"/>
-                </svg>
-            </div>
-
-            <div style="position:relative;z-index:2;display:flex;gap:18px;font-size:10px;color:#94a3b8;">
-                <div><div style="color:#fff;font-weight:800;font-size:18px;">28</div>PSX Stocks</div>
-                <div><div style="color:#fff;font-weight:800;font-size:18px;">3</div>Models</div>
-                <div><div style="color:#fff;font-weight:800;font-size:18px;">AI</div>Advisor</div>
-            </div>
-        </aside>
-
-        <!-- Right form panel -->
-        <div class="auth-form-panel">
-            <button onclick="toggleTheme()" aria-label="Toggle theme" style="position:absolute;top:18px;right:18px;z-index:5;padding:8px;border-radius:10px;background:var(--surface-3);border:1px solid var(--surface-border);color:var(--text-dim);cursor:pointer;">
-                <svg class="theme-icon-moon" style="width:14px;height:14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                <svg class="theme-icon-sun hidden" style="width:14px;height:14px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-            </button>
-
-            <!-- LOGIN -->
-            <section id="loginScreen" class="hidden">
-                <h1 style="font-size:26px;font-weight:800;color:var(--text-strong);letter-spacing:-.02em;margin-bottom:6px;">Welcome back</h1>
-                <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;">Sign in to access your portfolio workspace.</p>
-
-                <form id="loginForm" onsubmit="handleLogin(event)" style="display:flex;flex-direction:column;gap:14px;">
-                    <div class="auth-field">
-                        <span class="af-label">Email or Username</span>
-                        <input type="text" id="loginEmail" required placeholder="you@example.com" autocomplete="username">
-                    </div>
-                    <div class="auth-field">
-                        <span class="af-label">Password</span>
-                        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
-                    </div>
-                    <button type="submit" class="premium-cta" style="margin-top:8px;">Sign in to workspace</button>
-                </form>
-
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--surface-border);">
-                    <button onclick="closeAuth()" style="font-size:11px;color:var(--text-dim);background:none;border:0;cursor:pointer;">← Back to overview</button>
-                    <button onclick="switchAuth('signup')" style="font-size:11px;color:var(--accent);font-weight:700;background:none;border:0;cursor:pointer;">Create account →</button>
-                </div>
-            </section>
-
-            <!-- SIGNUP / GET STARTED -->
-            <section id="signupScreen" class="hidden">
-                <h1 style="font-size:26px;font-weight:800;color:var(--text-strong);letter-spacing:-.02em;margin-bottom:6px;">Create your account</h1>
-                <p style="font-size:13px;color:var(--text-dim);margin-bottom:28px;">A few details and your workspace is ready.</p>
-
-                <form id="signupForm" onsubmit="handleGetStarted(event)" style="display:flex;flex-direction:column;gap:14px;">
-                    <div class="auth-field">
-                        <span class="af-label">Full Name</span>
-                        <input type="text" id="suName" placeholder="e.g., Muhammad Majid" autocomplete="name">
-                    </div>
-                    <div class="auth-field">
-                        <span class="af-label">Email or Username</span>
-                        <input type="text" id="suEmail" required placeholder="you@example.com" autocomplete="username">
-                    </div>
-                    <div class="auth-field">
-                        <span class="af-label">Password</span>
-                        <input type="password" id="suPassword" required placeholder="Create a password" autocomplete="new-password">
-                    </div>
-                    <button type="submit" class="premium-cta" style="margin-top:8px;">Get started →</button>
-                </form>
-
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:18px;border-top:1px solid var(--surface-border);">
-                    <button onclick="closeAuth()" style="font-size:11px;color:var(--text-dim);background:none;border:0;cursor:pointer;">← Back to overview</button>
-                    <button onclick="switchAuth('login')" style="font-size:11px;color:var(--accent);font-weight:700;background:none;border:0;cursor:pointer;">Sign in →</button>
-                </div>
-            </section>
+            <h2 class="text-2xl font-bold tracking-tight text-white">Welcome Back</h2>
+            <p class="text-xs text-slate-300 mt-1">Sign in to access your portfolio workspace</p>
         </div>
-      </div>
-    </div>
 
+        <div class="relative z-10 clock-panel bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 mb-5 flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-1"><span class="live-dot"></span><span class="text-[9px] font-bold uppercase tracking-widest text-emerald-400">Current Local Time</span></div>
+                <div class="js-clock-time clock-readout text-emerald-400 font-mono text-xl font-semibold">--:-- --</div>
+            </div>
+            <div class="text-right">
+                <div class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-1">Today's Date</div>
+                <div class="js-clock-date text-slate-200 font-mono text-xs">--- -- ----</div>
+            </div>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" class="relative z-10 space-y-3">
+            <div class="auth-field">
+                <span class="af-label">Email or Username</span>
+                <input type="text" id="loginEmail" required placeholder="you@example.com" autocomplete="username">
+            </div>
+            <div class="auth-field">
+                <span class="af-label">Password</span>
+                <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button type="submit" class="auth-cta btn-press mt-2">Sign In to Workspace</button>
+        </form>
+
+        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
+            <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
+            <button onclick="showSignup(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">New here? Create account</button>
+        </div>
+    </section>
+
+    <!-- ===== GET STARTED SCREEN ===== -->
+    <section id="signupScreen" class="hidden auth-3d relative max-w-md w-full mx-auto my-auto p-7 md:p-8">
+        <div class="auth-orb o1"></div>
+        <div class="auth-orb o2"></div>
+        <div class="auth-orb o3"></div>
+        <button onclick="toggleTheme()" aria-label="Toggle theme" class="absolute top-4 right-4 z-10 p-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">
+            <svg class="theme-icon-moon h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            <svg class="theme-icon-sun hidden h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+
+        <div class="relative z-10 text-center mb-6">
+            <div class="flex justify-center mb-3">
+                <div class="aether-mark lg">
+                    <div class="aether-orbit"></div>
+                    <div class="aether-core"></div>
+                    <div class="aether-inner"><span class="aether-glyph">Æ</span></div>
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold tracking-tight text-white">Get Started</h2>
+            <p class="text-xs text-slate-300 mt-1">Open your workspace and meet AETHER, your AI advisor</p>
+        </div>
+
+        <form id="signupForm" onsubmit="handleGetStarted(event)" class="relative z-10 space-y-3">
+            <div class="auth-field">
+                <span class="af-label">Full Name</span>
+                <input type="text" id="suName" placeholder="e.g., Muhammad Majid" autocomplete="name">
+            </div>
+            <div class="auth-field">
+                <span class="af-label">Email or Username</span>
+                <input type="text" id="suEmail" required placeholder="you@example.com" autocomplete="username">
+            </div>
+            <div class="auth-field">
+                <span class="af-label">Password</span>
+                <input type="password" id="suPassword" required placeholder="Create a password" autocomplete="new-password">
+            </div>
+            <button type="submit" class="auth-cta btn-press mt-2">Get Started →</button>
+        </form>
+
+        <div class="relative z-10 flex items-center justify-between mt-5 pt-4 border-t border-slate-700">
+            <button onclick="backToPreview()" class="text-[11px] text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer">← Overview</button>
+            <button onclick="showLogin(this)" class="text-[11px] text-slate-200 hover:text-emerald-400 transition-colors cursor-pointer font-semibold">Already have an account? Sign in</button>
+        </div>
+    </section>
 
     <!-- CAPITAL QUANT INTERACTIVE WORKSPACE -->
     <main class="max-w-7xl w-full mx-auto">
@@ -1992,28 +1627,21 @@
                                 <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Monthly income (PKR)
                             </div>
-                            <input type="number" id="monthlyIncomeVal" value="250000" min="0" step="5000" oninput="calculateSurplus()" placeholder="e.g., 2,50,000">
-                            <div class="quick-chips">
-                                <button type="button" onclick="setIncome(100000)">1 Lakh</button>
-                                <button type="button" onclick="setIncome(250000)">2.5 Lakh</button>
-                                <button type="button" onclick="setIncome(500000)">5 Lakh</button>
-                                <button type="button" onclick="setIncome(1000000)">10 Lakh</button>
-                            </div>
-                            <p class="field-help">Type any amount or pick a quick preset.</p>
+                            <select id="monthlyIncomeVal" onchange="calculateSurplus()">
+                                <option value="100000">1,00,000</option>
+                                <option value="250000" selected>2,50,000</option>
+                                <option value="500000">5,00,000</option>
+                                <option value="1000000">10,00,000</option>
+                            </select>
+                            <p class="field-help">Approximate gross monthly income.</p>
                         </div>
                         <div class="field">
                             <div class="field-label">
                                 <svg class="field-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                                 Monthly expenses (PKR)
                             </div>
-                            <input type="number" id="monthlyCommitments" value="90000" min="0" step="5000" oninput="calculateSurplus()" placeholder="e.g., 90,000">
-                            <div class="quick-chips">
-                                <button type="button" onclick="setExpense(50000)">50 K</button>
-                                <button type="button" onclick="setExpense(90000)">90 K</button>
-                                <button type="button" onclick="setExpense(150000)">1.5 Lakh</button>
-                                <button type="button" onclick="setExpense(300000)">3 Lakh</button>
-                            </div>
-                            <p class="field-help">Rent, bills, EMIs, household — your fixed outflow.</p>
+                            <input type="number" id="monthlyCommitments" value="90000" oninput="calculateSurplus()">
+                            <p class="field-help">Rent, bills, EMIs, household — your fixed monthly outflow.</p>
                         </div>
 
                         <div class="field md:col-span-2">
@@ -2230,13 +1858,13 @@
         <p>Wealth Architecture — for educational and demonstration purposes only. Equities involve market risk; past performance is not a guarantee of future results.</p>
     </footer>
 
-    <!-- ===== AETHER AI ADVISOR (top-right pill) ===== -->
+    <!-- ===== AETHER AI ADVISOR ===== -->
     <button id="aiFab" class="ai-fab" onclick="toggleAdvisor()" aria-label="Open AETHER AI">
-        <div class="aether-mark" style="width:26px;height:26px;">
+        <div class="aether-mark" style="width:36px;height:36px;">
+            <div class="aether-orbit"></div>
             <div class="aether-core"></div>
-            <div class="aether-inner"><span class="aether-glyph" style="font-size:11px;">Æ</span></div>
+            <div class="aether-inner"><span class="aether-glyph" style="font-size:14px;">Æ</span></div>
         </div>
-        <span>AETHER</span>
         <span class="ai-dot"></span>
     </button>
 
@@ -2512,37 +2140,32 @@
             }, 2200);
         }
 
-        // ===== PREVIEW <-> FULL-PAGE AUTH NAVIGATION =====
+        // ===== PREVIEW -> SCREEN NAVIGATION (with click + open animation) =====
         function pressFx(btn) {
             if (!btn || !btn.classList) return;
             btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked');
         }
-        function switchAuth(which) {
-            document.getElementById('loginScreen').classList.toggle('hidden', which !== 'login');
-            document.getElementById('signupScreen').classList.toggle('hidden', which !== 'signup');
-            // re-trigger split animation for the form panel
-            const split = document.querySelector('.auth-split');
-            if (split) { split.style.animation = 'none'; void split.offsetWidth; split.style.animation = ''; }
+        function hideAllAuth() {
+            ['previewScreen', 'loginScreen', 'signupScreen'].forEach(id =>
+                document.getElementById(id).classList.add('hidden'));
         }
-        function openAuth(which, btn) {
-            pressFx(btn);
+        function openCard(id) {
+            const el = document.getElementById(id);
+            // brief delay so the button press animation is visible before the screen swaps
             setTimeout(() => {
-                document.getElementById('authOverlay').classList.add('show');
-                switchAuth(which);
-                document.body.style.overflow = 'hidden';
-            }, 120);
+                hideAllAuth();
+                el.classList.remove('hidden');
+                el.classList.remove('card-open'); void el.offsetWidth; el.classList.add('card-open');
+            }, 150);
         }
-        function showLogin(btn)  { openAuth('login', btn);  }
-        function showSignup(btn) { openAuth('signup', btn); }
-        function closeAuth() {
-            document.getElementById('authOverlay').classList.remove('show');
-            document.body.style.overflow = '';
+        function showLogin(btn) { pressFx(btn); openCard('loginScreen'); }
+        function showSignup(btn) { pressFx(btn); openCard('signupScreen'); }
+        function backToPreview() {
+            hideAllAuth();
+            const p = document.getElementById('previewScreen');
+            p.classList.remove('hidden');
+            p.classList.remove('card-open'); void p.offsetWidth; p.classList.add('card-open');
         }
-        // Back-compat alias used by older inline handlers
-        function backToPreview() { closeAuth(); }
-        // Hide previewScreen-targeted helper no longer needed
-        function hideAllAuth() { closeAuth(); }
-        function openCard(id) { /* legacy no-op */ }
 
         // ===== SIGN IN =====
         function handleLogin(event) {
@@ -2693,17 +2316,13 @@
         }
 
         function enterAppWorkspace(verifiedName) {
-            // 1) Close the full-page auth overlay first so accessOverlay isn't hidden behind it
-            closeAuth();
-
             const overlay = document.getElementById('accessOverlay');
             document.getElementById('agUserName').innerText = "Welcome, " + verifiedName;
             document.getElementById('welcomeUser').innerText = "Account Holder: " + verifiedName;
 
             // reset overlay state
             ['ovStep1','ovStep2','ovStep3'].forEach(id => document.getElementById(id).classList.remove('active','done'));
-            const ovCheck = document.getElementById('ovCheck');
-            if (ovCheck) ovCheck.classList.remove('show');
+            document.getElementById('ovCheck').classList.remove('show');
             overlay.classList.remove('hidden');
 
             // professional stepped sequence
@@ -2712,13 +2331,11 @@
             setTimeout(() => document.getElementById('ovStep1').classList.add('active'), t(150));
             setTimeout(() => { document.getElementById('ovStep1').classList.add('done'); document.getElementById('ovStep2').classList.add('active'); }, t(800));
             setTimeout(() => { document.getElementById('ovStep2').classList.add('done'); document.getElementById('ovStep3').classList.add('active'); }, t(1400));
-            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); if (ovCheck) ovCheck.classList.add('show'); }, t(1900));
+            setTimeout(() => { document.getElementById('ovStep3').classList.add('done'); document.getElementById('ovCheck').classList.add('show'); }, t(1900));
 
             setTimeout(() => {
                 overlay.classList.add('hidden');
-
-                // Hide preview & show workspace
-                document.getElementById('previewScreen').classList.add('hidden');
+                hideAllAuth();
 
                 const header = document.getElementById('mainHeader');
                 const onboarding = document.getElementById('onboardingScreen');
@@ -2726,12 +2343,6 @@
                 onboarding.classList.remove('hidden');
                 header.classList.add('reveal-up');
                 onboarding.classList.add('reveal-up');
-
-                // Reveal the AETHER side-panel button only after login
-                document.getElementById('aiFab').classList.add('show');
-
-                // Scroll to top of workspace
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, t(2400));
         }
 
@@ -2742,12 +2353,7 @@
             document.getElementById('onboardingScreen').classList.remove('reveal-up');
             document.getElementById('appDashboard').classList.add('hidden');
             document.getElementById('appDashboard').classList.remove('stagger');
-            document.getElementById('aiFab').classList.remove('show');
-            toggleAdvisor(false);
             document.getElementById('loginForm').reset();
-            // Bring preview back so user can re-enter
-            document.getElementById('previewScreen').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             showLogin();
         }
 
@@ -2756,22 +2362,7 @@
             const gross = parseFloat(document.getElementById('monthlyIncomeVal').value) || 0;
             const commitments = parseFloat(document.getElementById('monthlyCommitments').value) || 0;
             const net = gross - commitments;
-            const el = document.getElementById('surplusDisplay');
-            el.innerText = "PKR " + (net > 0 ? pkGroup(net) : 0);
-            // gentle highlight on change
-            el.style.transition = 'color .25s ease';
-            el.style.color = net > 0 ? 'var(--accent)' : 'var(--bad)';
-        }
-
-        function setIncome(v)  { const el = document.getElementById('monthlyIncomeVal'); el.value = v; pulseField(el); calculateSurplus(); }
-        function setExpense(v) { const el = document.getElementById('monthlyCommitments'); el.value = v; pulseField(el); calculateSurplus(); }
-        function pulseField(input) {
-            const fld = input.closest('.field');
-            if (!fld) return;
-            fld.style.transition = 'transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease';
-            fld.style.transform = 'translateY(-3px) scale(1.015)';
-            fld.style.boxShadow = '0 0 0 3px rgba(99,102,241,.28), 0 22px 36px -18px rgba(99,102,241,.7)';
-            setTimeout(() => { fld.style.transform = ''; fld.style.boxShadow = ''; }, 280);
+            document.getElementById('surplusDisplay').innerText = "PKR " + (net > 0 ? pkGroup(net) : 0);
         }
 
         function processRiskProfile(event) {
@@ -3002,12 +2593,9 @@
         ];
 
         const aiKB = [
-            { keys: ["hello","hi","hey"], a: "Hello! I'm <b>AETHER</b>, your AI advisor. Ask me anything about the app's strategies, taxes, the 28 PSX stocks, or general investing questions." },
-            { keys: ["salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain. Bataiye, kya help kar sakta hoon? 🌟" },
-            { keys: ["thanks","thank you"], a: "You're welcome! Anything else I can help with?" },
-            { keys: ["shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
-            { keys: ["who are you","what are you","aether"], a: "I'm <b>AETHER</b> — this app's built-in AI advisor. I can explain strategies, taxes, formulas, and the stocks in your universe, plus general investing or finance questions." },
-            { keys: ["tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga." },
+            { keys: ["hello","hi","hey","salam","assalam","kaise ho","kese ho"], a: "**Salam!** Main hoon **AETHER** — aap ka AI advisor. Aap mujhse English ya Roman Urdu, dono me kuch bhi pooch sakte hain — strategies, taxes, ya 28 PSX stocks ke baare me. Bataiye, kya help kar sakta hoon? 🌟" },
+            { keys: ["thanks","thank you","shukria","shukriya"], a: "Khush amdeed! Aur kuch help chahiye ho to bilkul bataiyega." },
+            { keys: ["who are you","what are you","aether","tum kaun","aap kaun"], a: "Main **AETHER** hoon — is app ka built-in AI advisor. English, Roman Urdu, ya Urdu — jo language aap likhein, usi me jawab dunga. Strategies, taxes, stocks, ya general finance — jo bhi poochna ho, pooch lijiye." },
             { keys: ["w1","conservative","preservation","mehfooz"], a: "**W1 — Capital Preservation** sab se conservative tier hai. Almost 20% High Yield, 75% High Growth, 5% Trending. Volatility kam, dividends steady. 46+ age ya jise calm performance chahiye, un ke liye behtar." },
             { keys: ["w2","balanced","sanjhi","mutawazin"], a: "**W2 — Balanced Growth** = 50% High Yield, 40% High Growth, 10% Trending. Steady accumulation aur managed risk. 31–45 age group ke liye ideal." },
             { keys: ["w3","aggressive","velocity","momentum","tez"], a: "**W3 — Aggressive Growth** = 30% High Yield, 50% High Growth, 20% Trending. Bade swings, bara potential. Young investors (18–30) ke liye best — runway lambi hoti hai." },
@@ -3080,12 +2668,11 @@
 
         const aiSystemPrompt = `You are AETHER, a premium AI financial advisor inside a Pakistani investment app called Wealth Architecture. Your personality is warm, professional, encouraging, and concise — like a knowledgeable friend.
 
-LANGUAGE:
-- DEFAULT language is **English**. Always reply in English unless the user clearly writes in another language first.
-- If, and only if, the user writes their question in Roman Urdu (Urdu in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"), reply in natural Roman Urdu.
-- If the user writes in pure Urdu script, reply in Urdu script.
-- If the user mixes languages, mirror their dominant language.
-- A short greeting like "salam" or "hi" alone is not enough to switch language — wait until you see a real question in that language.
+LANGUAGE: Detect the user's language automatically and reply in the SAME language. Support fluently:
+- English (proper spelling, professional tone)
+- Roman Urdu (Urdu written in English letters — e.g. "CAGR kya hota hai?", "Mujhe FFC ke baare me batao", "Salam, kaise ho?"). Reply in natural Roman Urdu — friendly, simple, accurate. Don't translate to English unless asked.
+- Pure Urdu script if user writes in it.
+If user mixes languages, mirror their mix.
 
 KNOWLEDGE BASE (use when relevant):
 - 3 portfolio strategies on a PKR 1 Crore base over 2 years (2026–2027):
@@ -3207,7 +2794,7 @@ Always sound human, helpful, and a little bit excited about helping the user.`;
             back.classList.toggle('open', next);
             if (next && !_aiOpened) {
                 _aiOpened = true;
-                aiAppend("Hi! I'm <b>AETHER</b>, your AI advisor. 🌟<br><br>Ask me anything — strategies, taxes, any of the 28 PSX stocks, or general investing questions. I'll reply in English by default; if you write to me in Roman Urdu, I'll switch to that.", 'bot');
+                aiAppend("Salam! Main <b>AETHER</b> hoon — aap ka AI advisor. 🌟<br><br>Aap mujhse <b>English ya Roman Urdu</b>, jis bhi language me chahein, kuch bhi pooch sakte hain — strategies, taxes, 28 PSX stocks, ya general investing questions. Main ChatGPT ki tarah saaf seedha jawab dunga.", 'bot');
                 renderAiSuggestions();
             }
             if (next) setTimeout(() => document.getElementById('aiInput').focus(), 300);
